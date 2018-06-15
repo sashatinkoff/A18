@@ -4,6 +4,7 @@ import android.app.Application
 import com.isidroid.a18.di.DaggerNetComponent
 import com.isidroid.a18.di.NetComponent
 import com.isidroid.a18.di.NetModule
+import com.isidroid.utilsmodule.VersionsModule
 
 class App : Application() {
     companion object {

@@ -10,7 +10,7 @@ buildscript {
             'archComp'                   : '1.1.1',
             'buildTools'                 : '27.0.2',
             'constraint'                 : '1.1.2',
-            'dagger'                     : '2.12',
+            'dagger'                     : '2.15',
             'gson'                       : '2.8.5',
             'retrofit'                   : '2.4.0',
             'glide'                      : '4.7.1',

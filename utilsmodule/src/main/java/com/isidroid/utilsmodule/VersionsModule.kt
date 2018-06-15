@@ -1,6 +1,4 @@
-package com.isidroid.a18.di
-
-import javax.inject.Named
+package com.isidroid.utilsmodule
 
 import dagger.Module
 import dagger.Provides
@@ -9,14 +7,17 @@ import javax.inject.Qualifier
 
 @Module
 class VersionsModule {
+    var name: String? = null
+    var version: String? = null
+
     @Provides @Version
     fun provideVersion(): String {
-        return "1.0.0"
+        return version ?: "undefined version"
     }
 
     @Provides @Name
     fun provideName(): String {
-        return "Sasha"
+        return name ?: "unknown person"
     }
 
     @Qualifier @Retention(AnnotationRetention.RUNTIME) annotation class Version
