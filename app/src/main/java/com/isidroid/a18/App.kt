@@ -1,25 +1,24 @@
 package com.isidroid.a18
 
 import android.app.Application
-import com.isidroid.a18.di.DaggerNetComponent
-import com.isidroid.a18.di.NetComponent
-import com.isidroid.a18.di.NetModule
-import com.isidroid.utilsmodule.VersionsModule
+import com.isidroid.a18.di.AppComponent
+import com.isidroid.a18.di.AppModule
+import com.isidroid.a18.di.DaggerAppComponent
 
 class App : Application() {
     companion object {
         lateinit var instance: App
-        lateinit var netComponent: NetComponent
+        lateinit var component: AppComponent
     }
-
 
     override fun onCreate() {
         super.onCreate()
         instance = this
 
-        netComponent = DaggerNetComponent.builder()
-                .netModule(NetModule("http://ya.ru"))
+        component = DaggerAppComponent.builder()
+                .appModule(AppModule(this))
                 .build()
+                .apply { inject(this@App) }
     }
 
 }
