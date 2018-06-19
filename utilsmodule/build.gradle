@@ -25,9 +25,12 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    // di
+// di
     implementation "com.google.dagger:dagger-android:${versions.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
+
+//Stuff
+    api "com.jakewharton.timber:timber:${versions.timber}"
 }
 repositories {
     mavenCentral()
