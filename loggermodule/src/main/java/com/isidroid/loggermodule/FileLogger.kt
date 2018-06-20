@@ -1,9 +1,10 @@
 package com.isidroid.loggermodule
 
-import timber.log.Timber
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+
+const val DEFAULT_LOG_FILENAME = "events"
 
 class FileLogger(baseDir: File, val tag: String) {
     private var file: File? = null
@@ -16,8 +17,11 @@ class FileLogger(baseDir: File, val tag: String) {
                 .replace(" ", "_").substring(0, limit)
                 .toLowerCase()
 
-        var filename = StringBuilder(sf.format(Date())).apply {
-            append("_")
+        var filename = StringBuilder().apply {
+            if (DEFAULT_LOG_FILENAME != tag) {
+                append(sf.format(Date()))
+                append("_")
+            }
             append(tagname)
             append(".log")
         }.toString()
@@ -25,12 +29,9 @@ class FileLogger(baseDir: File, val tag: String) {
         var file = File(baseDir, filename)
         if (!file.parentFile.exists()) file.parentFile.mkdirs()
         file.createNewFile()
-
-        save("Debug $tag, created at ${Utils.now()}")
-
-        Timber.i("created file = ${file.absolutePath}")
-
         this.file = file
+
+        save("Debug $tag, created at ${Utils.now()}", true)
     }
 
     fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
@@ -53,11 +54,11 @@ class FileLogger(baseDir: File, val tag: String) {
         save(message)
     }
 
-    private fun save(message: String) {
+    private fun save(message: String, isCreate: Boolean = false) {
         try {
-            file?.printWriter()?.write("$message\n")
+            if (isCreate) file?.writeText("$message\n")
+            else file?.appendText("$message\n")
         } catch (e: Exception) {
-
         }
     }
 

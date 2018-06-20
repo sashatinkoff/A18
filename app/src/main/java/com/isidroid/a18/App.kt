@@ -23,7 +23,9 @@ class App : Application() {
                 .apply { inject(this@App) }
 
 
-        Diagnostics.create(this)
+        Diagnostics.create(this).apply {
+            authority = "${BuildConfig.APPLICATION_ID}.fileprovider"
+        }
     }
 
 }

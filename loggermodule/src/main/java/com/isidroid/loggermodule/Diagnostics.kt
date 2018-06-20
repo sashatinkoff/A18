@@ -1,13 +1,18 @@
 package com.isidroid.loggermodule
 
 import android.content.Context
-import timber.log.Timber
+import android.content.Intent
+import android.net.Uri
+import android.support.v4.content.FileProvider
+import io.reactivex.Flowable
+import java.io.File
 
-class Diagnostics private constructor(context: Context) {
-    private var baseDir = context.cacheDir
+class Diagnostics {
+    var authority: String? = null
+    private lateinit var baseDir: File
     private var debugTree = YDebugTree()
 
-    fun start(tag: String = "events") {
+    fun start(tag: String = DEFAULT_LOG_FILENAME) {
         debugTree.startLogger(FileLogger(baseDir, tag))
     }
 
@@ -19,16 +24,47 @@ class Diagnostics private constructor(context: Context) {
         debugTree.stopAll()
     }
 
-    companion object {
-        private var isInit = false
-        lateinit var get: Diagnostics
+    private fun uri(context: Context, file: File): Uri? {
+        return if (!authority.isNullOrEmpty()) {
+            FileProvider.getUriForFile(context, authority!!, file)
+        } else null
+    }
 
-        fun create(context: Context) {
-            if (!isInit) {
-                get = Diagnostics(context)
-                Timber.plant(Timber.DebugTree())
+    fun getLogs(context: Context, withLogcat: Boolean = false): Flowable<MutableList<LogData>> {
+        return Flowable.just(baseDir)
+                .map {
+                    var result = mutableListOf<LogData>()
+                    baseDir.listFiles()
+                            ?.filter { it.isFile }
+                            ?.forEach { result.add(LogData(it, uri(context, it))) }
+
+                    if (withLogcat) {
+                        var file = File(baseDir, "logcat.log").apply { createNewFile() }
+                        Runtime.getRuntime().exec("logcat -f" + " ${file.absolutePath}")
+                        result.add(LogData(file, uri(context, file)))
+                    }
+                    result
+                }
+    }
+
+    fun getShareLogsIntent(context: Context, withLogcat: Boolean = false): Flowable<Intent> {
+        return getLogs(context, withLogcat).map { Utils.shareLogsIntent(it) }
+    }
+
+    fun clearLogs() {
+        baseDir.deleteRecursively()
+    }
+
+    companion object {
+        lateinit var instance: Diagnostics
+
+        fun create(context: Context): Diagnostics {
+            instance = Diagnostics().apply {
+                baseDir = File(context.cacheDir, "logs")
             }
-            isInit = true
+            return instance!!
         }
     }
+
+    data class LogData(val file: File, val uri: Uri? = null)
 }

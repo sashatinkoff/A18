@@ -16,13 +16,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun execute() {
-        Timber.i("execute")
+        Diagnostics.instance.clearLogs()
+        Diagnostics.instance.start()
+        Timber.i("Please add something here")
+        Diagnostics.instance.stop()
 
-        Diagnostics.get.start()
-        Timber.i("1")
-        Diagnostics.get.stop()
+        Diagnostics.instance.start("Some errors")
+        Timber.i("started")
 
-
+        Diagnostics.instance
+                .getShareLogsIntent(this, false)
+                .subscribe { startActivity(it) }
     }
+
 
 }
