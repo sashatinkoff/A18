@@ -11,8 +11,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-
-        execute()
     }
 
     private fun execute() {
@@ -23,11 +21,5 @@ class MainActivity : AppCompatActivity() {
 
         Diagnostics.instance.start("Some errors")
         Timber.i("started")
-
-        Diagnostics.instance
-                .getShareLogsIntent(this, false)
-                .subscribe { startActivity(it) }
     }
-
-
 }

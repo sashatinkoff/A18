@@ -1,6 +1,12 @@
 package com.isidroid.loggermodule
 
+import android.util.Log
+import com.crashlytics.android.Crashlytics
 import timber.log.Timber
+
+private const val CRASHLYTICS_KEY_PRIORITY = "priority"
+private const val CRASHLYTICS_KEY_TAG = "tag"
+private const val CRASHLYTICS_KEY_MESSAGE = "message"
 
 open class YDebugTree : Timber.DebugTree() {
     private var fileLoggers = mutableListOf<FileLogger>()
@@ -23,6 +29,17 @@ open class YDebugTree : Timber.DebugTree() {
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         super.log(priority, tag, message, t)
         fileLoggers.forEach { it.log(priority, tag, message, t) }
+
+        if (priority == Log.VERBOSE || priority == Log.DEBUG || priority == Log.INFO)
+            return
+
+        Crashlytics.setInt(CRASHLYTICS_KEY_PRIORITY, priority)
+        Crashlytics.setString(CRASHLYTICS_KEY_TAG, tag)
+        Crashlytics.setString(CRASHLYTICS_KEY_MESSAGE, message)
+
+        val exception = t?.let { Exception(it) } ?: Exception(message)
+        Crashlytics.logException(exception)
+
     }
 
     override fun log(priority: Int, message: String?, vararg args: Any?) {

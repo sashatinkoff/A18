@@ -6,6 +6,10 @@ import android.net.Uri
 import android.support.v4.content.FileProvider
 import io.reactivex.Flowable
 import java.io.File
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
+import timber.log.Timber
+
 
 class Diagnostics {
     var authority: String? = null
@@ -61,8 +65,9 @@ class Diagnostics {
         fun create(context: Context): Diagnostics {
             instance = Diagnostics().apply {
                 baseDir = File(context.cacheDir, "logs")
+                Timber.plant(debugTree)
             }
-            return instance!!
+            return instance
         }
     }
 

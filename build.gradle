@@ -12,6 +12,7 @@ buildscript {
             'constraint'                 : '1.1.2',
             'dagger'                     : '2.15',
             'gson'                       : '2.8.5',
+            'fabric'                     : '1.25.4',
             'retrofit'                   : '2.4.0',
             'glide'                      : '4.7.1',
             'kotlin'                     : '1.2.50',
@@ -30,12 +31,14 @@ buildscript {
         google()
         jcenter()
         maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:${versions.androidPlugin}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "io.realm:realm-gradle-plugin:${versions.realm}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "io.fabric.tools:gradle:${versions.fabric}"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

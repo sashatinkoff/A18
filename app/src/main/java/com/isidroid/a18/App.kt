@@ -1,10 +1,12 @@
 package com.isidroid.a18
 
 import android.app.Application
+import com.crashlytics.android.Crashlytics
 import com.isidroid.a18.di.AppComponent
 import com.isidroid.a18.di.AppModule
 import com.isidroid.a18.di.DaggerAppComponent
 import com.isidroid.loggermodule.Diagnostics
+import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
 class App : Application() {
@@ -23,6 +25,7 @@ class App : Application() {
                 .apply { inject(this@App) }
 
 
+        Fabric.with(this, Crashlytics())
         Diagnostics.create(this).apply {
             authority = "${BuildConfig.APPLICATION_ID}.fileprovider"
         }
