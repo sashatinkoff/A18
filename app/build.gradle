@@ -77,7 +77,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:3.6.0"
     // Stuff
     implementation "com.google.code.gson:gson:${versions.gson}"
-    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
     // cores
     api project(':utilsmodule')
+    api project(':loggermodule')
 }

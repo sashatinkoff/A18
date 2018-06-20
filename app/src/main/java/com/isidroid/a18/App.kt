@@ -4,6 +4,7 @@ import android.app.Application
 import com.isidroid.a18.di.AppComponent
 import com.isidroid.a18.di.AppModule
 import com.isidroid.a18.di.DaggerAppComponent
+import com.isidroid.loggermodule.Diagnostics
 import timber.log.Timber
 
 class App : Application() {
@@ -21,7 +22,8 @@ class App : Application() {
                 .build()
                 .apply { inject(this@App) }
 
-        Timber.plant(component.diagnostics)
+
+        Diagnostics.create(this)
     }
 
 }
