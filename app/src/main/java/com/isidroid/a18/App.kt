@@ -4,6 +4,7 @@ import android.app.Application
 import com.isidroid.a18.di.AppComponent
 import com.isidroid.a18.di.AppModule
 import com.isidroid.a18.di.DaggerAppComponent
+import timber.log.Timber
 
 class App : Application() {
     companion object {
@@ -19,6 +20,8 @@ class App : Application() {
                 .appModule(AppModule(this))
                 .build()
                 .apply { inject(this@App) }
+
+        Timber.plant(component.diagnostics)
     }
 
 }
