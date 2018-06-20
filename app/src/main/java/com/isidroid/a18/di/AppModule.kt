@@ -1,7 +1,6 @@
 package com.isidroid.a18.di
 
 import android.app.Application
-import com.isidroid.utilsmodule.Diagnostics
 import com.isidroid.utilsmodule.ScreenUtils
 import dagger.Module
 import dagger.Provides
@@ -15,15 +14,5 @@ class AppModule(val application: Application) {
     @Singleton @Provides
     fun provideScreenUtils(): ScreenUtils {
         return ScreenUtils(application)
-    }
-
-    @Singleton @Provides
-    fun logFile(): File {
-        return logFile
-    }
-
-    @Singleton @Provides
-    fun diagnosti(): Diagnostics {
-        return Diagnostics(logFile)
     }
 }
