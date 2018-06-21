@@ -26,13 +26,13 @@ internal object Utils {
     }
 
     fun shareLogsIntent(data: MutableList<Diagnostics.LogData>): Intent {
-        var mutableUris = mutableListOf<Uri>()
+        val mutableUris = mutableListOf<Uri>()
         data
                 .filter { it.uri != null }
                 .forEach { mutableUris.add(it.uri!!) }
 
         return Intent().apply {
-            action = if (mutableUris.size > 1) Intent.ACTION_SEND_MULTIPLE else Intent.ACTION_SEND
+            action = Intent.ACTION_SEND_MULTIPLE
             putParcelableArrayListExtra(Intent.EXTRA_STREAM, ArrayList(mutableUris))
             type = "text/*"
         }

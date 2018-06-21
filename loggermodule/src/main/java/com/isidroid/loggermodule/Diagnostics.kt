@@ -5,22 +5,35 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v4.content.FileProvider
 import io.reactivex.Flowable
-import java.io.File
-import com.crashlytics.android.Crashlytics
-import io.fabric.sdk.android.Fabric
 import timber.log.Timber
+import java.io.BufferedReader
+import java.io.File
+import java.io.InputStreamReader
+import java.text.SimpleDateFormat
+import java.util.*
 
+const val LOGCAT_FILENAME = "logcat.log"
+const val LOGCAT_BASEDIR = "logs"
 
 class Diagnostics {
     var authority: String? = null
     private lateinit var baseDir: File
     private var debugTree = YDebugTree()
+    private var logsStart: Date? = null
 
-    fun start(tag: String = DEFAULT_LOG_FILENAME) {
+    fun start() {
+        logsStart = Date()
+    }
+
+    fun cancel() {
+        logsStart = null
+    }
+
+    fun startInfo(tag: String = DEFAULT_LOG_FILENAME) {
         debugTree.startLogger(FileLogger(baseDir, tag))
     }
 
-    fun stop(tag: String? = null) {
+    fun stopInfo(tag: String? = null) {
         debugTree.stopLogger(tag)
     }
 
@@ -40,23 +53,60 @@ class Diagnostics {
                     var result = mutableListOf<LogData>()
                     baseDir.listFiles()
                             ?.filter { it.isFile }
+                            ?.filter { it.name != LOGCAT_FILENAME }
                             ?.forEach { result.add(LogData(it, uri(context, it))) }
-
-                    if (withLogcat) {
-                        var file = File(baseDir, "logcat.log").apply { createNewFile() }
-                        Runtime.getRuntime().exec("logcat -f" + " ${file.absolutePath}")
-                        result.add(LogData(file, uri(context, file)))
-                    }
                     result
+                }
+                .doOnNext {
+                    if (withLogcat || logsStart != null) {
+                        var command = "logcat -d"
+                        val year = Calendar.getInstance().get(Calendar.YEAR)
+                        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US)
+
+                        val process = Runtime.getRuntime().exec(command)
+                        val bufferedReader = BufferedReader(
+                                InputStreamReader(process.inputStream))
+
+                        // Grab the results
+                        val log = StringBuilder()
+                        var line: String?
+
+                        do {
+                            line = bufferedReader.readLine()
+
+                            val isLog = if (logsStart != null) {
+                                val time = try {
+                                    dateFormat.parse("$year-$line")
+                                } catch (e: Exception) {
+                                    Date()
+                                }
+                                time.after(logsStart)
+                            } else true
+
+                            if (isLog && line != null) log.append(line + "\n")
+                        } while (line != null)
+
+
+                        // save in file
+                        if (log.isNotEmpty()) {
+                            val file = File(baseDir, LOGCAT_FILENAME).apply {
+                                createNewFile()
+                                writeText(log.toString())
+                            }
+                            it.add(LogData(file, uri(context, file)))
+                        }
+                    }
                 }
     }
 
     fun getShareLogsIntent(context: Context, withLogcat: Boolean = false): Flowable<Intent> {
-        return getLogs(context, withLogcat).map { Utils.shareLogsIntent(it) }
+        return getLogs(context, withLogcat)
+                .map { Utils.shareLogsIntent(it) }
     }
 
     fun clearLogs() {
         baseDir.deleteRecursively()
+        baseDir.mkdirs()
     }
 
     companion object {
@@ -64,8 +114,9 @@ class Diagnostics {
 
         fun create(context: Context): Diagnostics {
             instance = Diagnostics().apply {
-                baseDir = File(context.cacheDir, "logs")
+                baseDir = File(context.cacheDir, LOGCAT_BASEDIR)
                 Timber.plant(debugTree)
+                clearLogs()
             }
             return instance
         }
