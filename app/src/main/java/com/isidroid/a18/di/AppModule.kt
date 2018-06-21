@@ -9,8 +9,6 @@ import javax.inject.Singleton
 
 @Module
 class AppModule(val application: Application) {
-    var logFile = File(application.cacheDir, "debug.log")
-
     @Singleton @Provides
     fun provideScreenUtils(): ScreenUtils {
         return ScreenUtils(application)
