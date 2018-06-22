@@ -34,18 +34,18 @@ class FileLogger(baseDir: File, val tag: String) {
         save("Debug $tag, created at ${Utils.now()}", true)
     }
 
-    fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        var message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $tag $message $t"
+    fun log(priority: Int, tag: String?, iMessage: String, t: Throwable?) {
+        var message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $tag $iMessage $t"
         save(message)
     }
 
-    fun log(priority: Int, message: String?, vararg args: Any?) {
-        var message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $message $args"
+    fun log(priority: Int, iMessage: String?, vararg args: Any?) {
+        var message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $iMessage $args"
         save(message)
     }
 
-    fun log(priority: Int, t: Throwable?, message: String?, vararg args: Any?) {
-        var message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $message $args $t"
+    fun log(priority: Int, t: Throwable?, iMessage: String?, vararg args: Any?) {
+        var message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $iMessage $args $t"
         save(message)
     }
 
