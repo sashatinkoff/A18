@@ -102,6 +102,7 @@ class Diagnostics {
     fun getShareLogsIntent(context: Context, withLogcat: Boolean = false): Flowable<Intent> {
         return getLogs(context, withLogcat)
                 .map { Utils.shareLogsIntent(it) }
+                .doOnNext { cancel() }
     }
 
     fun clearLogs() {
