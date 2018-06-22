@@ -68,7 +68,7 @@ class Diagnostics {
                                 InputStreamReader(process.inputStream))
 
                         // Grab the results
-                        val log = StringBuilder()
+                        val log = StringBuilder().append(Utils.deviceInfo())
                         var line: String?
 
                         do {

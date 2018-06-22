@@ -1,7 +1,9 @@
 package com.isidroid.loggermodule
 
 import android.content.Intent
+import android.content.res.Resources
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,7 +36,21 @@ internal object Utils {
         return Intent().apply {
             action = Intent.ACTION_SEND_MULTIPLE
             putParcelableArrayListExtra(Intent.EXTRA_STREAM, ArrayList(mutableUris))
-            type = "text/*"
+            type = "application/octet-stream"
         }
+    }
+
+    fun deviceInfo(): String {
+        val os = try {
+            Build.VERSION_CODES::class.java.fields[android.os.Build.VERSION.SDK_INT].name
+        } catch (e: Exception) {
+            ""
+        }
+
+        return StringBuilder().apply {
+            append("device=${Build.MANUFACTURER} ${Build.BRAND} ${Build.MODEL}\n")
+            append("${Build.BRAND} $os ${Build.VERSION.RELEASE}, API ${Build.VERSION.SDK_INT}\n")
+            append("Screen ${Resources.getSystem().displayMetrics.widthPixels}x${Resources.getSystem().displayMetrics.heightPixels}\n")
+        }.toString()
     }
 }
