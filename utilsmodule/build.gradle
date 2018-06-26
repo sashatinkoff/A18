@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -14,7 +13,6 @@ android {
 
     buildTypes {
         release {
-
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -28,7 +26,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${versions.support}"
 // di
     implementation "com.google.dagger:dagger-android:${versions.dagger}"
-    kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${versions.dagger}"
 }
 repositories {
     mavenCentral()
