@@ -24,5 +24,22 @@
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
--keepresourcexmlelements manifest/application/meta-data@name=io.fabric.ApiKey
+#-keepresourcexmlelements manifest/application/meta-data@name=io.fabric.ApiKey
 -printmapping mapping.txt
+
+
+# Dagger 2
+-dontwarn com.google.errorprone.annotations.**
+
+# Retrofit 2.X
+-dontnote retrofit2.Platform
+-dontwarn retrofit2.Platform$Java8
+-dontwarn okio.**
+-keepattributes Signature
+-keepattributes Exceptions
+-keepattributes Annotation
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
+-dontwarn okio.**
+
