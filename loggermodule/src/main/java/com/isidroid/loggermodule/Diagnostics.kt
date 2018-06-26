@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.v4.content.FileProvider
+import com.crashlytics.android.Crashlytics
+import io.fabric.sdk.android.Fabric
 import io.reactivex.Flowable
 import timber.log.Timber
 import java.io.BufferedReader
@@ -115,6 +117,8 @@ class Diagnostics {
 
         fun create(context: Context): Diagnostics {
             instance = Diagnostics().apply {
+                Fabric.with(context, Crashlytics())
+
                 baseDir = File(context.cacheDir, LOGCAT_BASEDIR)
                 Timber.plant(debugTree)
                 clearLogs()

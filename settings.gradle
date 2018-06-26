@@ -1,1 +1,5 @@
 include ':app', ':utilsmodule', ':loggermodule'
+
+// in case of using as a single project
+//project(':loggermodule').projectDir=new File(System.getProperty("user.home") + '/Android/A18/loggermodule')
+//project(':utilsmodule').projectDir=new File(System.getProperty("user.home") + '/Android/A18/utilsmodule')
