@@ -7,7 +7,10 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <!-- In case you  add utils module -->
+        <!--
         <item name="bgColor">#000</item>
+        -->
     </style>
 
     <style name="SelectableItemTheme">

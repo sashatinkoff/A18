@@ -1,9 +1,9 @@
 package com.isidroid.a18
 
 import android.os.Bundle
-import com.isidroid.utilsmodule.BaseActivity
+import android.support.v7.app.AppCompatActivity
 
-class MainActivity : BaseActivity() {
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
