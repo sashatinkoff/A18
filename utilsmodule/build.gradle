@@ -19,6 +19,20 @@ android {
         }
     }
 
+    task aPublishAll(type: Copy, dependsOn: "assembleRelease") {
+        println("Copy the complete apk")
+        from("$buildDir/outputs/aar") {
+            include "*.aar"
+        }
+        into '../apks/'
+
+        doLast {
+            delete "$buildDir/outputs"
+            delete "$buildDir/tmp"
+            println("delete compiled data")
+        }
+    }
+
 }
 
 dependencies {
