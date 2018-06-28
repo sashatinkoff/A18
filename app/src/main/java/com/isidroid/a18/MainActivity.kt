@@ -13,11 +13,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Timber.i("before=${count()}")
-        Exercise().apply {
-            save()
-        }
-        Timber.i("affter=${count()}")
+        var exercise = Exercise()
+        Timber.i("exercise1=$exercise")
+
+        Timber.i("1=${count()}")
+        exercise.save()
+        Timber.i("exercise2=$exercise")
+
+        Timber.i("2=${count()}")
+
+        val ex2 = Realm.getDefaultInstance().where(Exercise::class.java).equalTo("guid", exercise.guid).findFirst()
+        Timber.i("ex2=$ex2")
+
+
+        exercise.delete()
+        Timber.i("3=${count()}")
     }
 
     fun count(): Long {
