@@ -5,6 +5,12 @@ task aPublishLibrary(type: Copy, dependsOn: "assembleRelease") {
     }
     into '../apks/'
 
+    rename { String fileName ->
+        fileName.replace(fileName, "${project.name}.${versions.isidroid}.aar")
+    }
+
+    // ${applicationId}.${variant.versionName}
+
     doLast {
         delete "$buildDir/outputs"
         delete "$buildDir/tmp"

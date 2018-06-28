@@ -56,19 +56,16 @@ android {
         preDexLibraries = false
     }
 
-// Tasks
-    android.applicationVariants.all { variant ->
-        variant.outputs.all {
-            outputFileName = "${applicationId}.${variant.versionName}.apk"
-        }
-    }
-
     task aPublishAll(type: Copy, dependsOn: "assembleRelease") {
-        println("Copy the complete apk")
+        println("Copy the complete apk from $buildDir/outputs/apk/release")
         from("$buildDir/outputs/apk/release") {
-            include "*${defaultConfig.versionName}*.apk"
+            include "*.apk"
         }
         into '../apks'
+
+        rename { String fileName ->
+            fileName.replace(fileName, "${applicationId}.apk")
+        }
 
         doLast {
             delete "$buildDir/outputs"

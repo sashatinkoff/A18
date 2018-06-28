@@ -4,6 +4,7 @@ apply plugin: 'io.fabric'
 
 apply from: '../tasks.gradle'
 
+
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
@@ -49,3 +50,5 @@ dependencies {
 repositories {
     mavenCentral()
 }
+
+
