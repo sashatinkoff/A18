@@ -3,8 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'realm-android'
 apply plugin: 'kotlin-kapt'
 
-apply from: '../tasks.gradle'
-
+apply from: '../gradle-scripts/tasks.gradle'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -12,8 +11,8 @@ android {
     defaultConfig {
         minSdkVersion versions.minSdk
         targetSdkVersion versions.compileSdk
-        versionCode 1
-        versionName "1.0"
+        versionCode versions.isidroidCode
+        versionName versions.isidroid
     }
 
     buildTypes {
@@ -30,7 +29,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${versions.support}"
 // di
     implementation "com.google.dagger:dagger-android:${versions.dagger}"
-    annotationProcessor "com.google.dagger:dagger-compiler:${versions.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
 }
 repositories {
     mavenCentral()
