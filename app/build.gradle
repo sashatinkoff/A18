@@ -79,7 +79,6 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${versions.espresso}"
 // support
     implementation "com.android.support:appcompat-v7:${versions.support}"
@@ -98,7 +97,12 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp_logging_intercept}"
 // Stuff
     implementation "com.google.code.gson:gson:${versions.gson}"
+    implementation "com.karumi:dexter:${versions.dexter}"
+
 // cores
     api project(':utilsmodule')
     api project(':loggermodule')
 }
+
+
+//apply plugin: 'com.google.gms.google-services'
