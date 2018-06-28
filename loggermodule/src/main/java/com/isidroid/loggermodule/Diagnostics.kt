@@ -3,7 +3,7 @@ package com.isidroid.loggermodule
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.support.v4.content.FileProvider
+import androidx.core.content.FileProvider
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 import io.reactivex.Flowable

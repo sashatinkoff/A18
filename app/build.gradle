@@ -23,7 +23,7 @@ android {
 
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild;
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
@@ -79,10 +79,11 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${versions.espresso}"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
 // support
-    implementation "com.android.support:appcompat-v7:${versions.support}"
-    implementation "com.android.support.constraint:constraint-layout:${versions.constraint}"
+    implementation "com.google.android.material:material:${versions.androidx}"
+    implementation "com.android.support:coordinatorlayout:${versions.support}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
 // rx
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
@@ -98,7 +99,6 @@ dependencies {
 // Stuff
     implementation "com.google.code.gson:gson:${versions.gson}"
     implementation "com.karumi:dexter:${versions.dexter}"
-
 // cores
     api project(':utilsmodule')
     api project(':loggermodule')
