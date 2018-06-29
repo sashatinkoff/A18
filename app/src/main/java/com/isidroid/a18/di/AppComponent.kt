@@ -1,7 +1,6 @@
 package com.isidroid.a18.di
 
 import com.isidroid.a18.App
-import com.isidroid.utilsmodule.ScreenUtils
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -15,6 +14,7 @@ interface AppComponent {
     interface Builder {
         @BindsInstance
         fun application(application: App): Builder
+        fun appModule(module: AppModule): Builder
         fun build(): AppComponent
     }
 

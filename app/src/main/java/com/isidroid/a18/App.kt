@@ -25,6 +25,7 @@ class App : Application(), HasActivityInjector {
         instance = this
 
         component = DaggerAppComponent.builder()
+                .appModule(AppModule(this))
                 .application(this)
                 .build()
                 .apply { inject(this@App) }

@@ -7,14 +7,10 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class AppModule {
-//    @Singleton @Provides
-//    fun provideScreenUtils(): ScreenUtils {
-//        return ScreenUtils(application)
-//    }
-
+class AppModule(private val application: Application){
     @Singleton @Provides
-    fun provideCommonHelloService(): CommonHelloServise {
-        return CommonHelloServise()
+    fun provideScreenUtils(): ScreenUtils {
+        return ScreenUtils(application)
     }
+
 }
