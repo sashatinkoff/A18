@@ -29,8 +29,9 @@ ext {
 
             'kotlin'                    : '1.2.50',
 
-            'minSdk'                    : 16,
+            'minSdk'                    : 21,
             'androidx'                  : '1.0.0-alpha3',
+            'nav_version'               : '1.0.0-alpha02',
 
             'okhttp'                    : '3.10.0',
             'okhttp_logging_intercept'  : '3.9.0',

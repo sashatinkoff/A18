@@ -4,6 +4,8 @@
     package="com.isidroid.a18">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:name=".App"
@@ -14,8 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="ExtraText">
-
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,8 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         // Providers
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -39,6 +37,7 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="838fb419d5dd966c34fbf0f6e6dbd5e6c6e6be72" />
+
     </application>
 
 </manifest>
