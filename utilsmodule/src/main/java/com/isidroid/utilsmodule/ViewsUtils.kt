@@ -1,12 +1,12 @@
 package com.isidroid.utilsmodule
 
-import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 
 object ViewsUtils {
-    fun hideSoftKeyboard(activity: Activity?) {
+    fun hideSoftKeyboard(activity: AppCompatActivity?) {
         if (activity == null || activity.isFinishing) return
         val view = activity.findViewById<View>(android.R.id.content)
         if (view != null) {

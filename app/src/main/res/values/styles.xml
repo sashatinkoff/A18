@@ -16,7 +16,7 @@
     </style>
 
     <style name="SelectableItemBackground">
-        <item name="android:theme">@style/SelectableItemTheme</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="theme">@style/SelectableItemTheme</item>
+        <item name="background">?attr/selectableItemBackground</item>
     </style>
 </resources>
