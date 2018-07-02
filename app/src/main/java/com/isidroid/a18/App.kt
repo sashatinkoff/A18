@@ -2,9 +2,9 @@ package com.isidroid.a18
 
 import android.app.Activity
 import android.app.Application
-import com.isidroid.a18.di.AppComponent
-import com.isidroid.a18.di.AppModule
-import com.isidroid.a18.di.DaggerAppComponent
+import com.isidroid.a18.core.di.AppComponent
+import com.isidroid.a18.core.di.AppModule
+import com.isidroid.a18.core.di.DaggerAppComponent
 import com.isidroid.loggermodule.Diagnostics
 import dagger.android.AndroidInjector
 import dagger.android.HasActivityInjector
