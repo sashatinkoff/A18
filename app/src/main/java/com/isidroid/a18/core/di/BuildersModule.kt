@@ -1,4 +1,4 @@
-package com.isidroid.a18.di
+package com.isidroid.a18.core.di
 
 import com.isidroid.a18.MainActivity
 

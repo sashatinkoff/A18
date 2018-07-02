@@ -12,16 +12,10 @@ import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
-    @Inject lateinit var upgradeHelper: UpgradeHelper
-
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this);
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        Timber.i("version=${upgradeHelper.version}, isUpdated=${upgradeHelper.isUpgraded}," +
-                " isInstalled=${upgradeHelper.isInstalled}")
-
     }
 
 }

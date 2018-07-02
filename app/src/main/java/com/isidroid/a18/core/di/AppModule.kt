@@ -1,4 +1,4 @@
-package com.isidroid.a18.di
+package com.isidroid.a18.core.di
 
 import android.app.Application
 import com.isidroid.a18.BuildConfig
