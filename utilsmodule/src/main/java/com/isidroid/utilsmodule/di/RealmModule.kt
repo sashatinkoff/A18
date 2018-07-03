@@ -9,12 +9,11 @@ import io.realm.RealmMigration
 import javax.inject.Singleton
 
 @Module
-class RealmModule(private val application: Application) {
+class RealmModule(application: Application) {
     var migration: RealmMigration? = null
     var version = 1L
 
-    @Singleton @Provides
-    fun provideRealm(): Realm {
+    init {
         Realm.init(application)
         val config = RealmConfiguration.Builder()
                 .name("default.realm")
@@ -25,6 +24,10 @@ class RealmModule(private val application: Application) {
         else config.deleteRealmIfMigrationNeeded()
 
         Realm.setDefaultConfiguration(config.build())
+    }
+
+    @Singleton @Provides
+    fun provideRealm(): Realm {
         return Realm.getDefaultInstance()
     }
 }
