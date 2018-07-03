@@ -1,4 +1,4 @@
-package com.isidroid.utilsmodule
+package com.isidroid.utilsmodule.utils
 
 import java.text.SimpleDateFormat
 import java.util.*

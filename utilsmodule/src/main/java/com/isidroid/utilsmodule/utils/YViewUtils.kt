@@ -1,4 +1,4 @@
-package com.isidroid.utilsmodule
+package com.isidroid.utilsmodule.utils
 
 import android.content.Context
 import android.view.View
