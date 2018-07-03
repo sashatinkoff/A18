@@ -65,6 +65,5 @@ fastlane/test_output
 fastlane/readme.md
 
 .idea/*
-apks/
 
 .DS_Store
