@@ -112,7 +112,10 @@ class Diagnostics {
         baseDir.mkdirs()
     }
 
+    data class LogData(val file: File, val uri: Uri? = null)
+
     companion object {
+        const val LOGTAG = "Diagnostics"
         lateinit var instance: Diagnostics
 
         fun create(context: Context): Diagnostics {
@@ -126,6 +129,4 @@ class Diagnostics {
             return instance
         }
     }
-
-    data class LogData(val file: File, val uri: Uri? = null)
 }
