@@ -1,7 +1,6 @@
-package com.isidroid.a18.core.di
+package com.isidroid.utilsmodule.di
 
 import android.app.Application
-import com.isidroid.a18.BuildConfig
 import com.isidroid.utilsmodule.ScreenUtils
 import com.isidroid.utilsmodule.upgrade.UpgradeHelper
 import dagger.Module
@@ -9,7 +8,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class AppModule(private val application: Application){
+class AppModule(private val application: Application, private val versionCode: Int) {
     @Singleton @Provides
     fun provideScreenUtils(): ScreenUtils {
         return ScreenUtils(application)
@@ -17,7 +16,6 @@ class AppModule(private val application: Application){
 
     @Singleton @Provides
     fun upgradeHelper(): UpgradeHelper {
-        return UpgradeHelper(application, BuildConfig.VERSION_CODE)
+        return UpgradeHelper(application, versionCode)
     }
-
 }
