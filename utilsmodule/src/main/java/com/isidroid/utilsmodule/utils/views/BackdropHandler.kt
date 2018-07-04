@@ -13,12 +13,13 @@ import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.button.MaterialButton
 import com.isidroid.utilsmodule.R
 
-open class BackdropClickListener @JvmOverloads constructor(
+open class BackdropHandler @JvmOverloads constructor(
         private val activity: Activity, private val sheet: View, var interpolator: Interpolator? = null) : View.OnClickListener {
 
-    protected val animatorSet = AnimatorSet()
-    protected val height: Int
-    protected var backdropShown = false
+    private lateinit var view: View
+    private val animatorSet = AnimatorSet()
+    private val height: Int
+    private var backdropShown = false
 
     private var openIcon: Drawable? = null
     private var closeIcon: Drawable? = null
@@ -41,11 +42,26 @@ open class BackdropClickListener @JvmOverloads constructor(
         openIcon?.let { this.closeIcon = AnimatedVectorDrawableCompat.create(activity, it) }
     }
 
+    fun isBackdropShown(): Boolean {
+        return backdropShown
+    }
 
-    @CallSuper
-    override fun onClick(view: View) {
+    fun show() {
+        backdropShown = true
+        execute()
+    }
+
+    fun hide() {
+        backdropShown = false
+        execute()
+    }
+
+    fun toggle() {
         backdropShown = !backdropShown
+        execute()
+    }
 
+    private fun execute() {
         // Cancel the existing animations
         animatorSet.removeAllListeners()
         animatorSet.end()
@@ -60,6 +76,12 @@ open class BackdropClickListener @JvmOverloads constructor(
         if (interpolator != null) animator.interpolator = interpolator
         animatorSet.play(animator)
         animator.start()
+    }
+
+    @CallSuper
+    override fun onClick(view: View) {
+        this.view = view
+        toggle()
     }
 
     private fun updateIcon(view: View) {
