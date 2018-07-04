@@ -31,7 +31,7 @@ open class BackdropClickListener @JvmOverloads constructor(
         height = displayMetrics.heightPixels
     }
 
-    fun animateIcons(openIcon: Int?, closeIcon: Int?) {
+    fun animateIcons(openIcon: Int?, closeIcon: Int? = null) {
         closeIcon?.let { this.openIcon = AnimatedVectorDrawableCompat.create(activity, it) }
         openIcon?.let { this.closeIcon = AnimatedVectorDrawableCompat.create(activity, it) }
     }
