@@ -1,5 +1,4 @@
 package com.isidroid.utilsmodule.utils.views
-
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Activity
@@ -8,18 +7,16 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.view.animation.Interpolator
 import android.widget.ImageView
-import androidx.annotation.CallSuper
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.button.MaterialButton
 import com.isidroid.utilsmodule.R
+import com.isidroid.utilsmodule.utils.YViewUtils
 
-open class BackdropHandler constructor(
-        private val sheet: View,
-        private var interpolator: Interpolator? = null,
-        private var view: View?) : View.OnClickListener {
+open class BackdropHandler(private val sheet: View,
+                           private var clickView: View? = null) {
 
-    constructor(sheet: View, view: View) : this(sheet, null, view)
 
+    var interpolator: Interpolator? = null
     private val activity: Activity = sheet.context as Activity
     private val animatorSet = AnimatorSet()
     private val height: Int
@@ -27,6 +24,7 @@ open class BackdropHandler constructor(
 
     private var openIcon: Drawable? = null
     private var closeIcon: Drawable? = null
+    private var backgroundContainerHeight: Int? = null
 
     var duration = 500L
 
@@ -34,6 +32,14 @@ open class BackdropHandler constructor(
         val displayMetrics = DisplayMetrics()
         activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
         height = displayMetrics.heightPixels
+    }
+
+    fun backgroundContainerHeight(height: Int? = null) {
+        backgroundContainerHeight = height
+    }
+
+    fun backgroundContainer(view: View? = null) {
+        view?.post { backgroundContainerHeight = YViewUtils.height(view) }
     }
 
     fun animateIcons(openIcon: Int?, closeIcon: Int? = null) {
@@ -71,9 +77,12 @@ open class BackdropHandler constructor(
         animatorSet.end()
         animatorSet.cancel()
 
-        view?.let { updateIcon(it) }
+        clickView?.let { updateIcon(it) }
 
-        val translateY = height - activity.resources.getDimensionPixelSize(R.dimen.navigation_reveal_height)
+
+        val translateFullScreen = (height - activity.resources.getDimensionPixelSize(R.dimen.navigation_reveal_height))
+        var translateY = backgroundContainerHeight ?: translateFullScreen
+        if (translateY == 0 || translateY > translateFullScreen) translateY = translateFullScreen
 
         val animator = ObjectAnimator.ofFloat(sheet, "translationY", (if (backdropShown) translateY else 0).toFloat())
         animator.duration = duration
@@ -82,9 +91,8 @@ open class BackdropHandler constructor(
         animator.start()
     }
 
-    @CallSuper
-    override fun onClick(view: View) {
-        this.view = view
+
+    fun onClick() {
         toggle()
     }
 
