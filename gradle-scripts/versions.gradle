@@ -9,7 +9,7 @@ ext {
     ]
 
     versions = [
-            "isidroid"                  : "1.0.8",
+            "isidroid"                  : "1.0.9",
             "isidroidCode"              : 1,
 
             'archComp'                  : '1.1.1',

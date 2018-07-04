@@ -13,10 +13,14 @@ import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.button.MaterialButton
 import com.isidroid.utilsmodule.R
 
-open class BackdropHandler @JvmOverloads constructor(
-        private val activity: Activity, private val sheet: View, var interpolator: Interpolator? = null) : View.OnClickListener {
+open class BackdropHandler constructor(
+        private val sheet: View,
+        private var interpolator: Interpolator? = null,
+        private var view: View?) : View.OnClickListener {
 
-    private lateinit var view: View
+    constructor(sheet: View, view: View) : this(sheet, null, view)
+
+    private val activity: Activity = sheet.context as Activity
     private val animatorSet = AnimatorSet()
     private val height: Int
     private var backdropShown = false
@@ -67,7 +71,7 @@ open class BackdropHandler @JvmOverloads constructor(
         animatorSet.end()
         animatorSet.cancel()
 
-        updateIcon(view)
+        view?.let { updateIcon(it) }
 
         val translateY = height - activity.resources.getDimensionPixelSize(R.dimen.navigation_reveal_height)
 
