@@ -18,6 +18,7 @@ object YViewUtils {
 
     fun height(view: View): Int {
         val params = view.layoutParams as ViewGroup.MarginLayoutParams
-        return params.bottomMargin + params.topMargin + view.paddingBottom + view.paddingTop
+        var result = params.topMargin + params.bottomMargin + view.paddingTop + view.paddingBottom + view.height
+        return result
     }
 }
