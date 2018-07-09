@@ -1,9 +1,8 @@
 package com.isidroid.a18.sample.viewmodels
 
-import androidx.lifecycle.MediatorLiveData
+import io.reactivex.subjects.PublishSubject
 
 interface IPostsRepository {
-    val data: MediatorLiveData<Outcome<List<Post>>>
-
+    val data: PublishSubject<Outcome<List<Post>>>
     fun posts()
 }
