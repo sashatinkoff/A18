@@ -14,7 +14,7 @@ class PostsRepository(private val compositeDisposable: CompositeDisposable) : IP
         data.loading(true)
 
         val disposable = ApiService.Factory.create().posts()
-                .doOnNext { Thread.sleep(1000) }
+                .doOnNext { Thread.sleep(500) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

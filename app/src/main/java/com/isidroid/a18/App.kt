@@ -33,6 +33,8 @@ class App : Application(), HasActivityInjector {
                 .build()
                 .apply { inject(this@App) }
 
+
+
         Diagnostics.create(this).apply {
             authority = "${BuildConfig.APPLICATION_ID}.fileprovider"
         }
