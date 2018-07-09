@@ -84,6 +84,11 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
     implementation "com.google.android.material:material:${versions.androidx}"
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
+// livedata
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
+    kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
+
 // rx
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"

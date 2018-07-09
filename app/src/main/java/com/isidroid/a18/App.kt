@@ -3,10 +3,10 @@ package com.isidroid.a18
 import android.app.Activity
 import android.app.Application
 import com.isidroid.a18.core.di.AppComponent
-import com.isidroid.utilsmodule.di.AppModule
 import com.isidroid.a18.core.di.DaggerAppComponent
-import com.isidroid.utilsmodule.di.RealmModule
 import com.isidroid.loggermodule.Diagnostics
+import com.isidroid.utilsmodule.di.AppModule
+import com.isidroid.utilsmodule.di.RealmModule
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector

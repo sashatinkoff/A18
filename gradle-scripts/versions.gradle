@@ -28,6 +28,7 @@ ext {
             'glide'                     : '4.7.1',
 
             'kotlin'                    : '1.2.50',
+            'lifecycle'                 : '2.0.0-alpha1',
 
             'minSdk'                    : 21,
             'androidx'                  : '1.0.0-alpha3',

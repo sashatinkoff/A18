@@ -1,50 +1,56 @@
 package com.isidroid.a18
 
 import android.os.Bundle
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import com.isidroid.utilsmodule.utils.YViewUtils
-import com.isidroid.utilsmodule.utils.views.BackdropHandler
+import android.text.Editable
+import android.text.TextWatcher
+import com.isidroid.utilsmodule.BaseActivity
 import dagger.android.AndroidInjection
+import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 
-class MainActivity : AppCompatActivity() {
-    private var back1Height = 0
-    private var back2Height = 0
-    private var parentHeight = 0
+class MainActivity : BaseActivity() {
+    var ts = System.currentTimeMillis()
+    var time = 0L
+    var dispose: Disposable? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this);
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        backgroundView.post {
-            parentHeight = YViewUtils.height(backgroundView)
-        }
-        back1.post {
-            back1Height = YViewUtils.height(back1)
-        }
-        back2.post { back2Height = YViewUtils.height(back2) }
-
-        backgroundSwitcher.setOnClickListener {
-            val first = back1.visibility == View.VISIBLE
-
-            back1.visibility = if (first) View.GONE else View.VISIBLE
-            back2.visibility = if (!first) View.GONE else View.VISIBLE
-        }
-
-        val listener = BackdropHandler(container, backgroundView)
-                .apply {
-                    duration = 300L
+        val publishSubject = PublishSubject.create<String>()
+        dispose = publishSubject.debounce(300, TimeUnit.MILLISECONDS)
+                .doOnNext {
+                    Timber.i("on next t")
+                }
+                .subscribe {
+                    time()
+                    Timber.i("onTextChanged $time")
                 }
 
-        toolbar.setNavigationOnClickListener {
-            listener.apply {
-                val height = if (back1.visibility == View.VISIBLE) back1Height else back2Height
-                backgroundContainerHeight(height + parentHeight)
-                onClick()
+
+        input.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(p0: Editable?) {
             }
-        }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                publishSubject.onNext(p0.toString())
+            }
+        })
+    }
+
+    fun time() {
+        val now = System.currentTimeMillis()
+        time = now - ts
+        ts = now
     }
 }
