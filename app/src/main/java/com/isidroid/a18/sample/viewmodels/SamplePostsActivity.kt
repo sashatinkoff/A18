@@ -6,10 +6,10 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.isidroid.a18.R
+import com.isidroid.a18.core.Outcome
 import com.isidroid.a18.sample.viewmodels.di.DaggerPostsComponent
 import com.isidroid.a18.sample.viewmodels.di.PostsDH
 import kotlinx.android.synthetic.main.activity_sample_posts.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class SamplePostsActivity : AppCompatActivity() {

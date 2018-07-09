@@ -1,4 +1,4 @@
-package com.isidroid.a18.sample.viewmodels
+package com.isidroid.a18.core
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData

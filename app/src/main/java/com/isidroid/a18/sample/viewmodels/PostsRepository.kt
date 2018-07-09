@@ -1,6 +1,10 @@
 package com.isidroid.a18.sample.viewmodels
 
 import android.annotation.SuppressLint
+import com.isidroid.a18.core.Outcome
+import com.isidroid.a18.core.failed
+import com.isidroid.a18.core.loading
+import com.isidroid.a18.core.success
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
