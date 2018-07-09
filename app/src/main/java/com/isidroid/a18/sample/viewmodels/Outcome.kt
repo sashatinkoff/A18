@@ -1,4 +1,4 @@
-package com.isidroid.a18.viewmodels
+package com.isidroid.a18.sample.viewmodels
 
 sealed class Outcome<T> {
     data class Progress<T>(var loading: Boolean) : Outcome<T>()

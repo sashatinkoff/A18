@@ -1,4 +1,4 @@
-package com.isidroid.a18.viewmodels
+package com.isidroid.a18.sample.viewmodels
 
 import com.google.gson.Gson
 import io.reactivex.Flowable

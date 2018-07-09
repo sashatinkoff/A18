@@ -3,6 +3,13 @@ package com.isidroid.a18
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.isidroid.a18.sample.viewmodels.Outcome
+import com.isidroid.a18.sample.viewmodels.PostsViewModel
 import com.isidroid.utilsmodule.BaseActivity
 import dagger.android.AndroidInjection
 import io.reactivex.disposables.Disposable
@@ -12,45 +19,27 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
-class MainActivity : BaseActivity() {
-    var ts = System.currentTimeMillis()
-    var time = 0L
-    var dispose: Disposable? = null
-
+class MainActivity : BaseActivity(), LifecycleObserver {
+    private val viewModel: PostsViewModel by lazy {
+        ViewModelProviders.of(this).get(PostsViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val publishSubject = PublishSubject.create<String>()
-        dispose = publishSubject.debounce(300, TimeUnit.MILLISECONDS)
-                .doOnNext {
-                    Timber.i("on next t")
-                }
-                .subscribe {
-                    time()
-                    Timber.i("onTextChanged $time")
-                }
+        lifecycle.addObserver(this)
 
-
-        input.addTextChangedListener(object : TextWatcher {
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                publishSubject.onNext(p0.toString())
+        viewModel.data.observe(this, Observer {
+            Timber.i("update $it")
+            when (it) {
+                is Outcome.Progress -> progressbar.visibility = if (it.loading) View.VISIBLE else View.GONE
+                is Outcome.Failure -> Timber.e("error=${it.e}")
+                is Outcome.Success -> Timber.i("ok ${it.data.size}")
             }
         })
-    }
 
-    fun time() {
-        val now = System.currentTimeMillis()
-        time = now - ts
-        ts = now
+        backgroundSwitcher.setOnClickListener { viewModel.posts() }
     }
 }
