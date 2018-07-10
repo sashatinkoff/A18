@@ -9,8 +9,9 @@ import io.reactivex.subjects.PublishSubject
 /**
  * Extension function to add a Disposable to a CompositeDisposable
  */
-fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
+fun Disposable.addTo(compositeDisposable: CompositeDisposable): Disposable {
     compositeDisposable.add(this)
+    return this
 }
 
 
@@ -27,7 +28,7 @@ fun <T> PublishSubject<T>.toLiveData(compositeDisposable: CompositeDisposable): 
  * Extension function to push a failed event with an exception to the observing outcome
  * */
 fun <T> PublishSubject<Outcome<T>>.failed(e: Throwable) {
-    with(this){
+    with(this) {
         loading(false)
         onNext(Outcome.failure(e))
     }
@@ -37,7 +38,7 @@ fun <T> PublishSubject<Outcome<T>>.failed(e: Throwable) {
  * Extension function to push  a success event with data to the observing outcome
  * */
 fun <T> PublishSubject<Outcome<T>>.success(t: T) {
-    with(this){
+    with(this) {
         loading(false)
         onNext(Outcome.success(t))
     }
