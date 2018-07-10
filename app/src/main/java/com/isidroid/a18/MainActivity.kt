@@ -2,7 +2,7 @@ package com.isidroid.a18
 
 import android.content.Intent
 import android.os.Bundle
-import com.isidroid.a18.sample.viewmodels.SamplePostsActivity
+import com.isidroid.a18.sample.SamplePostsActivity
 import com.isidroid.utilsmodule.BaseActivity
 import dagger.android.AndroidInjection
 
