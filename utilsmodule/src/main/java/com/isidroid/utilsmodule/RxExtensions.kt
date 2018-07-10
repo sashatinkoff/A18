@@ -1,4 +1,4 @@
-package com.isidroid.a18.core
+package com.isidroid.utilsmodule
 
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

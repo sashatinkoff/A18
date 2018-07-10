@@ -1,4 +1,4 @@
-package com.isidroid.a18.core
+package com.isidroid.utilsmodule
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -34,7 +34,7 @@ fun <T> PublishSubject<T>.toLiveData(compositeDisposable: CompositeDisposable): 
 fun <T> PublishSubject<Outcome<T>>.failed(e: Throwable) {
     with(this){
         loading(false)
-        onNext(Outcome.failure(e))
+        onNext(com.isidroid.utilsmodule.Outcome.Companion.failure(e))
     }
 }
 
@@ -44,7 +44,7 @@ fun <T> PublishSubject<Outcome<T>>.failed(e: Throwable) {
 fun <T> PublishSubject<Outcome<T>>.success(t: T) {
     with(this){
         loading(false)
-        onNext(Outcome.success(t))
+        onNext(com.isidroid.utilsmodule.Outcome.Companion.success(t))
     }
 }
 
@@ -52,5 +52,5 @@ fun <T> PublishSubject<Outcome<T>>.success(t: T) {
  * Extension function to push the loading status to the observing outcome
  * */
 fun <T> PublishSubject<Outcome<T>>.loading(isLoading: Boolean) {
-    this.onNext(Outcome.loading(isLoading))
+    this.onNext(com.isidroid.utilsmodule.Outcome.Companion.loading(isLoading))
 }

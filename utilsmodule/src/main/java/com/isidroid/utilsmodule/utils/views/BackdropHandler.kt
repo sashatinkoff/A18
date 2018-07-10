@@ -10,7 +10,6 @@ import android.widget.ImageView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.button.MaterialButton
 import com.isidroid.utilsmodule.R
-import com.isidroid.utilsmodule.utils.YViewUtils
 
 open class BackdropHandler(private val sheet: View,
                            private var clickView: View? = null) {
