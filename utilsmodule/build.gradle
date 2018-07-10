@@ -30,6 +30,8 @@ dependencies {
 // di
     implementation "com.google.dagger:dagger-android:${versions.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
+// Stuff
+    implementation "com.google.code.gson:gson:${versions.gson}"
 }
 repositories {
     mavenCentral()
