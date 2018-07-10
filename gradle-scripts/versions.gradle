@@ -4,7 +4,7 @@ ext {
             'androidPlugin'         : '3.3.0-alpha01',
             'fabric'                : '1.25.4',
             'kotlin'                : '1.2.50',
-            'realm'                 : '5.1.0',
+            'realm'                 : '5.3.1',
             'gms_google_servivces'  : '4.0.1'
     ]
 
