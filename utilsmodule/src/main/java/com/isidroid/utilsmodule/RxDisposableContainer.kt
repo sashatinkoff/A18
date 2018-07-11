@@ -16,5 +16,9 @@ interface RxDisposableContainer {
     }
 
     fun onCancel(isCanceled: Boolean) {}
+
+    fun onCleared() {
+        compositeDisposable.clear()
+    }
 }
 
