@@ -9,11 +9,16 @@ import io.reactivex.subjects.PublishSubject
 /**
  * Extension function to add a Disposable to a CompositeDisposable
  */
+
 fun Disposable.addTo(compositeDisposable: CompositeDisposable): Disposable {
     compositeDisposable.add(this)
     return this
 }
 
+fun Disposable.addTo(container: RxDisposableContainer){
+    container.disposable = this
+    container.compositeDisposable.add(this)
+}
 
 /**
  * Extension function to convert a Publish subject into a LiveData by subscribing to it.
