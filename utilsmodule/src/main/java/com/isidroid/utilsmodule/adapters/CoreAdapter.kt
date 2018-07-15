@@ -8,7 +8,7 @@ import java.util.ArrayList
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class CoreAdapter<T, VH : CoreHolder<T>> : RecyclerView.Adapter<VH>() {
-    protected var items: MutableList<T> = ArrayList()
+    var items: MutableList<T> = ArrayList()
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         try {
@@ -25,9 +25,18 @@ abstract class CoreAdapter<T, VH : CoreHolder<T>> : RecyclerView.Adapter<VH>() {
         return LayoutInflater.from(parent.context).inflate(resourceId(viewType), parent, false)
     }
 
-    fun update(data: List<T>) {
+    fun update(data: List<T>, callback: ((items: MutableList<T>) -> Unit)? = null) {
         items.clear()
         items.addAll(data)
+        callback?.let { it(items) }
+
+        notifyDataSetChanged()
+    }
+
+    fun update(item: T, callback: ((items: MutableList<T>) -> Unit)? = null) {
+        items.add(item)
+        callback?.let { it(items) }
+
         notifyDataSetChanged()
     }
 

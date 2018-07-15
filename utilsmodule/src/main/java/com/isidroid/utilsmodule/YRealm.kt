@@ -11,6 +11,7 @@ import java.io.File
 object YRealm {
     val gson by lazy {
         GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
                 .create()
     }
 
@@ -30,15 +31,15 @@ object YRealm {
             if (destination.exists()) destination.delete()
             Realm.getDefaultInstance().writeCopyTo(destination)
 
-            activity?.let {
-                it.runOnUiThread { Toast.makeText(it, "Realm copied", Toast.LENGTH_SHORT).show() }
+            activity?.let { a ->
+                a.runOnUiThread { Toast.makeText(a, "Realm copied", Toast.LENGTH_SHORT).show() }
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    fun toString(item: Any): String {
+    fun toJson(item: Any): String {
         return gson.toJson(item)
     }
 
