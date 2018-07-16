@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import io.realm.Realm
 import java.io.File
+import java.lang.reflect.Type
 
 
 object YRealm {
@@ -44,7 +45,11 @@ object YRealm {
         return gson.toJson(item)
     }
 
-    fun <T> fromJson(json: String): T {
-        return gson.fromJson<T>(json, object : TypeToken<T>() {}.type)
+    fun <T> fromJson(json: String, type: Type): T {
+        return gson.fromJson<T>(json, type)
+    }
+
+    fun <T> fromJson(json: String, cl: Class<T>): T {
+        return gson.fromJson<T>(json, cl)
     }
 }
