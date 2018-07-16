@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Environment
 import android.widget.Toast
 import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import io.realm.Realm
 import java.io.File
 
@@ -43,7 +44,7 @@ object YRealm {
         return gson.toJson(item)
     }
 
-    fun <T> fromJson(json: String, cls: Class<T>): T {
-        return gson.fromJson(json, cls)
+    fun <T> fromJson(json: String): T {
+        return gson.fromJson<T>(json, object : TypeToken<T>() {}.type)
     }
 }
