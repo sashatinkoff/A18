@@ -33,6 +33,10 @@ android {
     }
 }
 
+crashlytics {
+    manifestPath = "$buildDir/../../app/src/main/AndroidManifest.xml"
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
