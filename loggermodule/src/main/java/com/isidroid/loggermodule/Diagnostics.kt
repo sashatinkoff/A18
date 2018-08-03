@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 const val LOGCAT_FILENAME = "logcat.log"
-const val LOGCAT_BASEDIR = "logs"
+const val LOGCAT_BASEDIR = "diagnostics"
 
 class Diagnostics {
     var authority: String? = null
