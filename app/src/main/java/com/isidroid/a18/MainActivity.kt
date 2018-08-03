@@ -15,17 +15,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        add(arrayListOf(20,201,101))
-
-//        add(arrayListOf(1, 2, 3)) {}
-//        Timber.i("1. $items")
-//
-//        add(arrayListOf(8, 9, 10)) { it.sortDescending()}
-//        Timber.i("2. $items")
     }
 
-    fun add(i: List<Int>, callback: ((items: MutableList<Int>) -> Unit)? = null) {
-        items.addAll(i)
-        callback?.invoke(items)
-    }
 }
