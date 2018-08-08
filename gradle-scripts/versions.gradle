@@ -1,50 +1,34 @@
 ext {
-    // need to be copied into PROJECT_PATH/build.gradle, buildscript section
-    ext.versions = [
-            'androidPlugin'         : '3.3.0-alpha01',
-            'fabric'                : '1.25.4',
-            'kotlin'                : '1.2.51',
-            'realm'                 : '5.3.1',
-            'gms_google_servivces'  : '4.0.1'
-    ]
-
     versions = [
-            "isidroid"                  : "1.0.25",
+            // specific for project
+
+
+            // common
+            "isidroid"                  : "1.0.26",
             "isidroidCode"              : 1,
 
-            'archComp'                  : '1.1.1',
-            'buildTools'                : '27.0.2',
-
-            'crashlytics'               : "2.9.4",
-            'core_ktx'                  : '1.0.0-alpha1',
-            'constraint'                : '1.1.2',
+            // sdk
             'compileSdk'                : 28,
-
-            'dagger'                    : '2.15',
-            'dexter'                    : '5.0.0',
-
-            'espresso'                  : "3.0.2",
-
-            'gson'                      : '2.8.5',
-            'glide'                     : '4.7.1',
-
-            'kotlin'                    : '1.2.50',
-            'lifecycle'                 : '2.0.0-alpha1',
-
             'minSdk'                    : 21,
-            'androidx'                  : '1.0.0-alpha3',
+
+            // Android components
+            'androidx'                  : '1.0.0-rc01',
+            'constraint'                : '1.1.2',
+            'kotlin'                    : '1.2.50',
+            'lifecycle'                 : '2.0.0-rc01',
             'nav_version'               : '1.0.0-alpha02',
 
+            // libraries
+            'crashlytics'               : "2.9.4",
+            'dagger'                    : '2.15',
+            'dexter'                    : '5.0.0',
+            'gson'                      : '2.8.5',
+            'glide'                     : '4.7.1',
             'okhttp'                    : '3.10.0',
             'okhttp_logging_intercept'  : '3.9.0',
-
             'retrofit'                  : '2.4.0',
             'rxJava'                    : '2.1.7',
             'rxAndroid'                 : '2.0.2',
-
-            'stetho'                    : '1.5.0',
-            'support'                   : '28.0.0-alpha1',
-
             'timber'                    : '4.7.1'
     ]
 }
