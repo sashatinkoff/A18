@@ -83,7 +83,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
 // support
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
     implementation "com.google.android.material:material:${versions.androidx}"
     implementation "androidx.appcompat:appcompat:${versions.androidx}"

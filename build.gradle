@@ -3,7 +3,7 @@ apply from: 'gradle-scripts/versions.gradle'
 
 buildscript {
     ext.versions = [
-            'androidPlugin'         : '3.3.0-alpha04',
+            'androidPlugin'         : '3.3.0-alpha05',
             'fabric'                : '1.25.4',
             'kotlin'                : '1.2.60',
             'realm'                 : '5.3.1',
