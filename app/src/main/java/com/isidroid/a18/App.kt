@@ -38,6 +38,8 @@ class App : Application(), HasActivityInjector {
         Diagnostics.create(this).apply {
             authority = "${BuildConfig.APPLICATION_ID}.fileprovider"
         }
+
+        NotificationsChannels()
     }
 
 
