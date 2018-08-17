@@ -67,3 +67,4 @@ fastlane/readme.md
 .idea/*
 
 .DS_Store
+app/mapping.txt
