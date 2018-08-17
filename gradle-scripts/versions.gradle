@@ -14,7 +14,6 @@ ext {
             // Android components
             'androidx'                  : '1.0.0-rc01',
             'constraint'                : '1.1.2',
-            'kotlin'                    : '1.2.60',
             'lifecycle'                 : '2.0.0-rc01',
 
             // libraries

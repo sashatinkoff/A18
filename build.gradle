@@ -1,15 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply from: 'gradle-scripts/versions.gradle'
 
-buildscript {
-    ext.versions = [
-            'androidPlugin'         : '3.3.0-alpha05',
-            'fabric'                : '1.25.4',
-            'kotlin'                : '1.2.60',
-            'realm'                 : '5.3.1',
-            'gms_google_servivces'  : '4.0.1'
-    ]
+// global variables are stored in gradle.properties
 
+buildscript {
     repositories {
         google()
         jcenter()
@@ -17,10 +11,10 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:${versions.androidPlugin}"
-        classpath "io.realm:realm-gradle-plugin:${versions.realm}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-        classpath "io.fabric.tools:gradle:${versions.fabric}"
+        classpath "com.android.tools.build:gradle:$androidPlugin"
+        classpath "io.realm:realm-gradle-plugin:$realm"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
+        classpath "io.fabric.tools:gradle:$fabric"
         // NOTE: Do not place your application versions here; they belong
         // in the individual module build.gradle files
     }
