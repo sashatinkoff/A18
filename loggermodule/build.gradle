@@ -48,7 +48,7 @@ dependencies {
     }
 
     // must be removed in the project's build.gradle
-    implementation "com.google.android.material:material:${versions.androidx}"
+    implementation "com.google.android.material:material:${versions.material}"
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
 }
