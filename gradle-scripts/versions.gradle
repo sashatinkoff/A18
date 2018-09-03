@@ -2,31 +2,31 @@ ext {
     versions = [
             // specific for project
 
-
             // common
-            "isidroid"                  : "1.0.26",
-            "isidroidCode"              : 1,
+            "isidroid"                : "1.0.26",
+            "isidroidCode"            : 1,
 
             // sdk
-            'compileSdk'                : 28,
-            'minSdk'                    : 21,
+            'compileSdk'              : 28,
+            'minSdk'                  : 21,
 
             // Android components
-            'androidx'                  : '1.0.0-rc01',
-            'constraint'                : '1.1.2',
-            'lifecycle'                 : '2.0.0-rc01',
+            'androidx'                : '1.0.0-rc02',
+            'constraint'              : '1.1.2',
+            'lifecycle'               : '2.0.0-rc01',
+            'material'                : '1.0.0-rc01',
 
             // libraries
-            'crashlytics'               : "2.9.4",
-            'dagger'                    : '2.15',
-            'dexter'                    : '5.0.0',
-            'gson'                      : '2.8.5',
-            'glide'                     : '4.7.1',
-            'okhttp'                    : '3.10.0',
-            'okhttp_logging_intercept'  : '3.9.0',
-            'retrofit'                  : '2.4.0',
-            'rxJava'                    : '2.1.7',
-            'rxAndroid'                 : '2.0.2',
-            'timber'                    : '4.7.1'
+            'crashlytics'             : "2.9.4",
+            'dagger'                  : '2.15',
+            'dexter'                  : '5.0.0',
+            'gson'                    : '2.8.5',
+            'glide'                   : '4.7.1',
+            'okhttp'                  : '3.10.0',
+            'okhttp_logging_intercept': '3.9.0',
+            'retrofit'                : '2.4.0',
+            'rxJava'                  : '2.1.7',
+            'rxAndroid'               : '2.0.2',
+            'timber'                  : '4.7.1'
     ]
 }

@@ -26,7 +26,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
 // support
-    implementation "com.google.android.material:material:${versions.androidx}"
+    implementation "com.google.android.material:material:${versions.material}"
 // di
     implementation "com.google.dagger:dagger-android:${versions.dagger}"
     kapt "com.google.dagger:dagger-compiler:${versions.dagger}"

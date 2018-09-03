@@ -41,6 +41,7 @@ android {
             shrinkResources true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
 
             ndk {
                 abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
@@ -73,7 +74,7 @@ android {
         into '../apks'
 
         rename { String fileName ->
-            fileName.replace(fileName, "${applicationId}.apk")
+            fileName.replace(fileName, "${defaultConfig.applicationId}.${defaultConfig.versionName}.apk")
         }
 
         doLast {
@@ -91,11 +92,11 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
 // support
+    implementation "androidx.core:core-ktx:${versions.androidx}"
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
-    implementation "androidx.core:core-ktx:${versions.androidx}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
-    implementation "com.google.android.material:material:${versions.androidx}"
+    implementation "com.google.android.material:material:${versions.material}"
 
 // livedata
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
