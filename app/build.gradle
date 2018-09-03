@@ -89,8 +89,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
 
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    testImplementation "junit:junit:${versions.junit}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso_core}"
 // support
     implementation "androidx.core:core-ktx:${versions.androidx}"
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
