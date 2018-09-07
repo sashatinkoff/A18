@@ -6,7 +6,7 @@
 
         <variable
             name="employee"
-            type="com.isidroid.a18.sample.adapters.Employee" />
+            type="com.isidroid.a18.sample.Employee" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,18 +15,32 @@
         android:background="?attr/bgColor">
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@{employee.name} w/age=@{employee.age}"
+            android:text="@{employee.name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/materialButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/materialButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
