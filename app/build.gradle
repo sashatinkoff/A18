@@ -12,6 +12,10 @@ repositories {
 android {
     compileSdkVersion versions.compileSdk
 
+    dataBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "com.isidroid.a18"
         minSdkVersion versions.minSdk
