@@ -28,6 +28,7 @@ class MainActivity : BaseActivity() {
             adapter.add(Employee(adapter.itemCount + 1, UUID.randomUUID().toString().substring(0, 5)))
         }
 
+        adapter.items.first().image = "https://pbs.twimg.com/media/Dme7cMlXoAEVx27.jpg"
 
         recyclerview.layoutManager = LinearLayoutManager(this)
         recyclerview.adapter = adapter
