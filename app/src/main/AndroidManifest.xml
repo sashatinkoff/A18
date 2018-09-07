@@ -37,6 +37,8 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="838fb419d5dd966c34fbf0f6e6dbd5e6c6e6be72" />
+
+        <activity android:name=".sample.viewmodel.ViewModelActivity"></activity>
     </application>
 
 </manifest>

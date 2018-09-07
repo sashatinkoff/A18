@@ -34,7 +34,6 @@ class MainActivity : BaseActivity() {
         recyclerview.adapter = adapter
 
         materialButton.setOnClickListener {
-
         }
     }
 }
