@@ -24,7 +24,7 @@ class MainActivity : BaseActivity() {
         binding.employee = employee
 
         val adapter = EmployeeAdapter()
-        (0 until 10).forEach { _ ->
+        (0 until 4).forEach { _ ->
             adapter.add(Employee(adapter.itemCount + 1, UUID.randomUUID().toString().substring(0, 5)))
         }
 
