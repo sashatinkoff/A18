@@ -12,6 +12,6 @@ class ViewModelActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sample_activity_view_model)
 
-         viewmodel = ViewModelProviders.of(this).get(ScoreViewModel::class.java)
+        viewmodel = ViewModelProviders.of(this).get(ScoreViewModel::class.java)
     }
 }

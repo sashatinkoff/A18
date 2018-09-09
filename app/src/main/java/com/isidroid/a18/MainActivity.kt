@@ -24,7 +24,7 @@ class MainActivity : BaseActivity() {
         binding.employee = employee
 
         val adapter = EmployeeAdapter()
-        (0 until 10).forEach {
+        (0 until 10).forEach { _ ->
             adapter.add(Employee(adapter.itemCount + 1, UUID.randomUUID().toString().substring(0, 5)))
         }
 
@@ -34,6 +34,9 @@ class MainActivity : BaseActivity() {
         recyclerview.adapter = adapter
 
         materialButton.setOnClickListener {
+            val item = adapter.items.first()//Employee(122, "", 10) //
+            item.name = "Sasha"
+            adapter.update(item)
         }
     }
 }
