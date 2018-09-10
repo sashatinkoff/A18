@@ -2,7 +2,7 @@ package com.isidroid.utilsmodule.di
 
 import android.app.Application
 import com.isidroid.utilsmodule.ScreenUtils
-import com.isidroid.utilsmodule.upgrade.UpgradeHelper
+import com.isidroid.utilsmodule.utils.UpgradeHelper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

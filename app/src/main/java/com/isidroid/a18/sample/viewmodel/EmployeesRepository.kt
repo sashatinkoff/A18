@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 
 class EmployeesRepository(private val compositeDisposable: CompositeDisposable) {
     fun load(callback: ((MutableList<Employee>) -> Unit)) {
-        Flowable.just(5)
+        Flowable.just(1)
                 .map {
                     Thread.sleep(1000)
                     val result = mutableListOf<Employee>()

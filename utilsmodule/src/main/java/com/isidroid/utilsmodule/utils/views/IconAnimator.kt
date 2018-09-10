@@ -31,7 +31,7 @@ open class IconAnimator(private val view: View, openIcon: Int, closeIcon: Int) {
         val drawable = if (isOpen) openIcon else closeIcon
 
         drawable?.let {
-            var isAvailable = when (view) {
+            val isAvailable = when (view) {
                 is ImageView -> {
                     view.setImageDrawable(drawable)
                     true

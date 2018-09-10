@@ -39,7 +39,7 @@ class MainActivity : BaseActivity() {
             val hasMore = adapter.items.size == 0
 
             swipeLayout.isRefreshing = false
-            adapter.insert(it, hasMore)
+            adapter.insert(it, false)
         })
 
         viewModel.editEmployee.observe(this, Observer {

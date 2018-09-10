@@ -1,4 +1,4 @@
-package com.isidroid.a18.data
+package com.isidroid.utilsmodule
 
 import androidx.annotation.CallSuper
 import com.isidroid.utilsmodule.YRealm

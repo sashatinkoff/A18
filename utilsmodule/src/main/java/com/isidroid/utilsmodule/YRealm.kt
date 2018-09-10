@@ -3,6 +3,7 @@ package com.isidroid.utilsmodule
 import android.app.Activity
 import android.os.Environment
 import android.widget.Toast
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import io.realm.Realm
@@ -11,7 +12,7 @@ import java.lang.reflect.Type
 
 
 object YRealm {
-    val gson by lazy {
+    val gson: Gson by lazy {
         GsonBuilder()
                 .setDateFormat("yyyy-MM-dd HH:mm:ss")
                 .create()

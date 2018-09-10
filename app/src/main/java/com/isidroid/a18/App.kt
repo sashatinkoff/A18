@@ -39,6 +39,7 @@ class App : Application(), HasActivityInjector {
             authority = "${BuildConfig.APPLICATION_ID}.fileprovider"
         }
 
+        BindAdapter.create()
         NotificationsChannels()
     }
 
