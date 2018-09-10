@@ -3,7 +3,7 @@ ext {
             // specific for project
 
             // common
-            "isidroid"                : "1.0.26",
+            "isidroid"                : "1.1.0",
             "isidroidCode"            : 1,
 
             // sdk
@@ -14,7 +14,7 @@ ext {
             'androidx'                : '1.0.0-rc02',
             'constraint'              : '1.1.3',
             'lifecycle'               : '2.0.0-rc01',
-            'material'                : '1.0.0-rc01',
+            'material'                : '1.0.0-rc02',
 
             // libraries
             'crashlytics'             : "2.9.4",
@@ -30,7 +30,7 @@ ext {
             'timber'                  : '4.7.1',
 
             // tests
-            'junit': '4.12',
-            'espresso_core': '3.1.0-alpha4'
+            'junit'                   : '4.12',
+            'espresso_core'           : '3.1.0-alpha4'
     ]
 }
