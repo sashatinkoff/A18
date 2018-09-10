@@ -10,9 +10,13 @@ import com.isidroid.a18.sample.Employee
 import com.isidroid.a18.sample.EmployeeAdapter
 import com.isidroid.utilsmodule.BaseActivity
 import com.isidroid.utilsmodule.adapters.CoreBindAdapter
+import com.isidroid.utilsmodule.addTo
 import dagger.android.AndroidInjection
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
 
 
 class MainActivity : BaseActivity() {
@@ -40,15 +44,20 @@ class MainActivity : BaseActivity() {
     }
 
     private fun more() {
-        Timber.tag("Diagnostic").i("Activity.Load more")
-
-        val result = mutableListOf<Employee>()
-        (0 until 4).forEach { pos ->
-            val email = "${adapter.items.size + pos}@gmail.com"
-            result.add(Employee(email))
-        }
-
-        adapter.update(result, true)
+        Flowable.just(5)
+                .map {
+                    Thread.sleep(1000)
+                    val result = mutableListOf<Employee>()
+                    (0 until it).forEach { pos ->
+                        val email = "${adapter.items.size + pos}@gmail.com"
+                        result.add(Employee(email))
+                    }
+                    result
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { adapter.update(it, true) }
+                .addTo(CompositeDisposable())
     }
 }
 
