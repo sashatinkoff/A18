@@ -30,14 +30,13 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        adapter = EmployeeAdapter()
+        viewModel = ViewModelProviders.of(this).get(EmployeesViewModel::class.java)
+
+        adapter = EmployeeAdapter().apply { this.viewModel = this@MainActivity.viewModel }
                 .create()
                 .onLoadMore { more() }
 
-        viewModel = ViewModelProviders.of(this).get(EmployeesViewModel::class.java)
         viewModel.employees.observe(this, Observer {
-            Timber.tag("EmployeesViewModel").i("employees.list")
-
             val hasMore = adapter.items.size == 0
 
             swipeLayout.isRefreshing = false
@@ -45,8 +44,6 @@ class MainActivity : BaseActivity() {
         })
 
         viewModel.editEmployee.observe(this, Observer {
-            Timber.tag("EmployeesViewModel").i("employees.one")
-
             swipeLayout.isRefreshing = false
             if (it.isEdit) adapter.update(it.employee)
             else if (it.isRemove) adapter.remove(it.employee)

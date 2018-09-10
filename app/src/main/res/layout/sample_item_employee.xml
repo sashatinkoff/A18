@@ -9,6 +9,10 @@
             name="employee"
             type="com.isidroid.a18.sample.Employee" />
 
+        <variable
+            name="viewModel"
+            type="com.isidroid.a18.sample.viewmodel.EmployeesViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +41,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:background="#11000000"
-            android:text="NAME: "
+            android:text="@{employee.email}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +54,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:background="#11000000"
-            android:text="@{employee.email}"
+            android:text="@{`` + employee.age}"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"

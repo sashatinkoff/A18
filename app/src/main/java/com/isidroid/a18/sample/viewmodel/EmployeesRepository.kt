@@ -11,7 +11,7 @@ class EmployeesRepository(private val compositeDisposable: CompositeDisposable) 
     fun load(callback: ((MutableList<Employee>) -> Unit)) {
         Flowable.just(5)
                 .map {
-                    Thread.sleep(4000)
+                    Thread.sleep(1000)
                     val result = mutableListOf<Employee>()
                     (0 until it).forEach { result.add(Employee("$it@")) }
                     result
@@ -23,7 +23,7 @@ class EmployeesRepository(private val compositeDisposable: CompositeDisposable) 
                 .addTo(compositeDisposable)
     }
 
-    fun edit(item: Employee, callback: (EmployeeAction) -> Unit) {
+    fun edit(item: Employee, callback: ((EmployeeAction) -> Unit)? = null) {
         Flowable.just(item)
                 .map {
                     Thread.sleep(300)
@@ -32,7 +32,7 @@ class EmployeesRepository(private val compositeDisposable: CompositeDisposable) 
 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { callback.invoke(EmployeeAction(it, ACTION_EDIT)) }
+                .subscribe { callback?.invoke(EmployeeAction(it, ACTION_EDIT)) }
                 .addTo(compositeDisposable)
     }
 
