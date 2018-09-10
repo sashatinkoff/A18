@@ -22,19 +22,18 @@ import timber.log.Timber
 class MainActivity : BaseActivity() {
     private lateinit var adapter: CoreBindAdapter<Employee, SampleItemEmployeeBinding>
     private lateinit var viewModel: EmployeesViewModel
-    private var counter = 0
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 
-        val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        setContentView(R.layout.activity_main)
         viewModel = ViewModelProviders.of(this).get(EmployeesViewModel::class.java)
 
         adapter = EmployeeAdapter().apply { this.viewModel = this@MainActivity.viewModel }
                 .create()
-                .onLoadMore { more() }
+                .onLoadMore { viewModel.loadMore() }
 
         viewModel.employees.observe(this, Observer {
             val hasMore = adapter.items.size == 0
@@ -50,30 +49,14 @@ class MainActivity : BaseActivity() {
         })
 
 
-        materialButton.setOnClickListener {
-            val item = adapter.items.first()//Employee(122, "", 10) //
-            item.email = "Sasha"
-            swipeLayout.isRefreshing = true
-
-            when (counter) {
-                0 -> viewModel.edit(item)
-                1 -> viewModel.remove(item)
-            }
-            counter++
-        }
-
         (recyclerview.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
         recyclerview.layoutManager = LinearLayoutManager(this)
         recyclerview.adapter = adapter
 
         swipeLayout.setOnRefreshListener {
-            counter = 0
             adapter.reset()
         }
     }
 
-    private fun more() {
-        viewModel.loadMore()
-    }
 }
 
