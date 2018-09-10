@@ -11,5 +11,7 @@ class EmployeeHolder(b: SampleItemEmployeeBinding) : CoreBindHolder<Employee, Sa
             item.age++
             binding.viewModel?.edit(item)
         }
+
+        binding.textView.setOnClickListener { binding.viewModel?.remove(item) }
     }
 }
