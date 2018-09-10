@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.isidroid.a18.databinding.ActivityMainBinding
 import com.isidroid.a18.databinding.SampleItemEmployeeBinding
 import com.isidroid.a18.sample.Employee
@@ -15,12 +16,13 @@ import com.isidroid.utilsmodule.BaseActivity
 import com.isidroid.utilsmodule.adapters.CoreBindAdapter
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 
 
 class MainActivity : BaseActivity() {
     private lateinit var adapter: CoreBindAdapter<Employee, SampleItemEmployeeBinding>
-
     private lateinit var viewModel: EmployeesViewModel
+    private var counter = 0
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,30 +31,48 @@ class MainActivity : BaseActivity() {
 
         val binding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         adapter = EmployeeAdapter()
+                .create()
                 .onLoadMore { more() }
 
         viewModel = ViewModelProviders.of(this).get(EmployeesViewModel::class.java)
-        viewModel.data.observe(this, Observer {
+        viewModel.employees.observe(this, Observer {
+            Timber.tag("EmployeesViewModel").i("employees.list")
+
+            val hasMore = adapter.items.size == 0
+
             swipeLayout.isRefreshing = false
-            adapter.update(it, true)
+            adapter.insert(it, hasMore)
+        })
+
+        viewModel.editEmployee.observe(this, Observer {
+            Timber.tag("EmployeesViewModel").i("employees.one")
+
+            swipeLayout.isRefreshing = false
+            if (it.isEdit) adapter.update(it.employee)
+            else if (it.isRemove) adapter.remove(it.employee)
         })
 
 
         materialButton.setOnClickListener {
-//            val item = adapter.items.first()//Employee(122, "", 10) //
-//            item.email = "Sasha"
-//            adapter.update(item)
+            val item = adapter.items.first()//Employee(122, "", 10) //
+            item.email = "Sasha"
+            swipeLayout.isRefreshing = true
 
-            finish()
+            when (counter) {
+                0 -> viewModel.edit(item)
+                1 -> viewModel.remove(item)
+            }
+            counter++
         }
 
-        swipeLayout.isRefreshing = true
-
+        (recyclerview.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
         recyclerview.layoutManager = LinearLayoutManager(this)
         recyclerview.adapter = adapter
-        adapter.loadMore()
 
-        swipeLayout.setOnRefreshListener { adapter.reset() }
+        swipeLayout.setOnRefreshListener {
+            counter = 0
+            adapter.reset()
+        }
     }
 
     private fun more() {

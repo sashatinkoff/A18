@@ -5,17 +5,37 @@ import androidx.lifecycle.ViewModel
 import com.isidroid.a18.sample.Employee
 import io.reactivex.disposables.CompositeDisposable
 
+const val ACTION_EDIT = "edit"
+const val ACTION_REMOVE = "remove"
+
 class EmployeesViewModel : ViewModel() {
     private var compositeDisposable = CompositeDisposable()
     private var repository = EmployeesRepository(compositeDisposable)
 
-    var data = MutableLiveData<List<Employee>>()
+    var employees = MutableLiveData<MutableList<Employee>>()
+    var editEmployee = MutableLiveData<EmployeeAction>()
 
     override fun onCleared() {
         compositeDisposable.clear()
     }
 
     fun loadMore() {
-        repository.load { data.postValue(it) }
+        repository.load { employees.postValue(it) }
     }
+
+    fun edit(item: Employee) {
+        repository.edit(item) { editEmployee.postValue(it) }
+    }
+
+    fun remove(item: Employee) {
+        repository.remove(item) {
+            employees.value?.remove(it.employee)
+            editEmployee.postValue(it)
+        }
+    }
+}
+
+class EmployeeAction(val employee: Employee, val action: String) {
+    val isEdit: Boolean by lazy { action == ACTION_EDIT }
+    val isRemove: Boolean by lazy { action == ACTION_REMOVE }
 }
