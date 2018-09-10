@@ -50,7 +50,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:background="#11000000"
-            android:text="@{employee.name}"
+            android:text="@{employee.email}"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"

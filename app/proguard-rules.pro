@@ -7,7 +7,7 @@
 
 
 # If you keep the line number information, uncomment this to
-# hide the original source file name.
+# hide the original source file email.
 
 # Basic
 -keepattributes SourceFile,LineNumberTable
@@ -18,7 +18,7 @@
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
-#-keepresourcexmlelements manifest/application/meta-data@name=io.fabric.ApiKey
+#-keepresourcexmlelements manifest/application/meta-data@email=io.fabric.ApiKey
 -printmapping mapping.txt
 
 
