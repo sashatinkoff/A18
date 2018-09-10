@@ -3,24 +3,24 @@ package com.isidroid.a18
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.isidroid.a18.databinding.ActivityMainBinding
 import com.isidroid.a18.databinding.SampleItemEmployeeBinding
 import com.isidroid.a18.sample.Employee
 import com.isidroid.a18.sample.EmployeeAdapter
+import com.isidroid.a18.sample.viewmodel.EmployeesViewModel
 import com.isidroid.utilsmodule.BaseActivity
 import com.isidroid.utilsmodule.adapters.CoreBindAdapter
-import com.isidroid.utilsmodule.addTo
 import dagger.android.AndroidInjection
-import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : BaseActivity() {
     private lateinit var adapter: CoreBindAdapter<Employee, SampleItemEmployeeBinding>
+
+    private lateinit var viewModel: EmployeesViewModel
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,33 +31,32 @@ class MainActivity : BaseActivity() {
         adapter = EmployeeAdapter()
                 .onLoadMore { more() }
 
+        viewModel = ViewModelProviders.of(this).get(EmployeesViewModel::class.java)
+        viewModel.data.observe(this, Observer {
+            swipeLayout.isRefreshing = false
+            adapter.update(it, true)
+        })
+
 
         materialButton.setOnClickListener {
-            val item = adapter.items.first()//Employee(122, "", 10) //
-            item.email = "Sasha"
-            adapter.update(item)
+//            val item = adapter.items.first()//Employee(122, "", 10) //
+//            item.email = "Sasha"
+//            adapter.update(item)
+
+            finish()
         }
+
+        swipeLayout.isRefreshing = true
 
         recyclerview.layoutManager = LinearLayoutManager(this)
         recyclerview.adapter = adapter
         adapter.loadMore()
+
+        swipeLayout.setOnRefreshListener { adapter.reset() }
     }
 
     private fun more() {
-        Flowable.just(5)
-                .map {
-                    Thread.sleep(1000)
-                    val result = mutableListOf<Employee>()
-                    (0 until it).forEach { pos ->
-                        val email = "${adapter.items.size + pos}@gmail.com"
-                        result.add(Employee(email))
-                    }
-                    result
-                }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { adapter.update(it, true) }
-                .addTo(CompositeDisposable())
+        viewModel.loadMore()
     }
 }
 

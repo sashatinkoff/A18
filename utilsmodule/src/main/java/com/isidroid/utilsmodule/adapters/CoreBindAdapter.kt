@@ -81,8 +81,18 @@ abstract class CoreBindAdapter<T, B : ViewDataBinding> : RecyclerView.Adapter<Co
         Handler().postDelayed({ loadMoreCallback?.invoke() }, 500)
     }
 
+    fun reset() {
+        hasMore = false
+        items.clear()
+
+        onReset()
+        notifyDataSetChanged()
+    }
+
     // Open and abstract functions
     open fun onUpdate(item: T) {}
+
+    open fun onReset() {}
 
     open fun loadingResource(): Int {
         return R.layout.item_loading
@@ -90,7 +100,6 @@ abstract class CoreBindAdapter<T, B : ViewDataBinding> : RecyclerView.Adapter<Co
 
     abstract fun resource(viewType: Int): Int
     abstract fun createHolder(binding: B, viewType: Int): CoreHolder
-
 
     companion object {
         const val VIEW_TYPE_NORMAL = 0
