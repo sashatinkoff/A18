@@ -48,9 +48,9 @@ dependencies {
     }
 
     // must be removed in the project's build.gradle
-    implementation "com.google.android.material:material:${versions.material}"
-    implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
-    implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
+    api "com.google.android.material:material:${versions.material}"
+    api "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
+    api "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
 }
 repositories {
     mavenCentral()

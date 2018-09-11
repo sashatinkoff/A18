@@ -3,7 +3,7 @@ ext {
             // specific for project
 
             // common
-            "isidroid"                : "1.1.0",
+            "isidroid"                : "1.1.1",
             "isidroidCode"            : 1,
 
             // sdk
