@@ -1,4 +1,4 @@
-package com.isidroid.a18
+package com.isidroid.a18.core
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.isidroid.a18.App
 
 
 class NotificationsChannels {
@@ -19,7 +20,6 @@ class NotificationsChannels {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun create(app: App) {
         val manager = app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
         manager.createNotificationChannel(defaultChannel())
     }
 

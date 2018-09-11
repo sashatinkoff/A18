@@ -1,10 +1,12 @@
-package com.isidroid.utils
+package com.isidroid.utils.utils
 
 import android.app.Application
 import android.content.res.Resources
 import android.util.DisplayMetrics
 
-class ScreenUtils(private val application: Application) {
+object ScreenUtils {
+    private lateinit var application: Application
+
     val width: Int
         get() = Resources.getSystem().displayMetrics.widthPixels
 
@@ -23,4 +25,8 @@ class ScreenUtils(private val application: Application) {
         return dp
     }
 
+
+    fun create(application: Application) {
+        this.application = application
+    }
 }

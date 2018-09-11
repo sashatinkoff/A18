@@ -5,10 +5,10 @@ import androidx.databinding.BindingAdapter
 
 @BindingAdapter("imageurl")
 fun loadImage(imageView: ImageView, url: String?) {
-    BindAdapterHelper.instance.imageLoader?.invoke(imageView, url)
+    DataBindingConfig.instance.imageLoader?.invoke(imageView, url)
 }
 
-class BindAdapterHelper private constructor() {
+open class DataBindingConfig private constructor() {
     internal var imageLoader: ((imageView: ImageView, url: String?) -> Unit)? = null
 
     fun withImageLoader(callback: (imageView: ImageView, url: String?) -> Unit) = apply {
@@ -16,6 +16,7 @@ class BindAdapterHelper private constructor() {
     }
 
     companion object {
-        val instance: BindAdapterHelper by lazy { BindAdapterHelper() }
+        internal val instance: DataBindingConfig by lazy { DataBindingConfig() }
+        fun create(): DataBindingConfig = instance
     }
 }

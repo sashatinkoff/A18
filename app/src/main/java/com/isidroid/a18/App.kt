@@ -1,8 +1,13 @@
 package com.isidroid.a18
 
 import android.app.Application
+import com.bumptech.glide.Glide
+import com.isidroid.a18.core.NotificationsChannels
 import com.isidroid.logger.DiagnosticsConfig
 import com.isidroid.realm.RealmConfig
+import com.isidroid.utils.DataBindingConfig
+import com.isidroid.utils.utils.ScreenUtils
+import com.isidroid.utils.utils.UpgradeHelper
 
 
 class App : Application() {
@@ -24,7 +29,12 @@ class App : Application() {
                 .disableCrashlytics(BuildConfig.DEBUG)
                 .create()
 
-        BindAdapter.create()
+        ScreenUtils.create(this)
+        UpgradeHelper.create(this, BuildConfig.VERSION_CODE)
+
+        DataBindingConfig.create()
+                .withImageLoader { imageView, url -> Glide.with(imageView).load(url).into(imageView) }
+
         NotificationsChannels()
     }
 }
