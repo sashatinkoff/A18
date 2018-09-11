@@ -1,4 +1,4 @@
-package com.isidroid.utilsmodule.utils.views
+package com.isidroid.utils.utils.views
 
 import android.view.View
 import android.widget.ImageView

@@ -1,7 +1,7 @@
 package com.isidroid.a18
 
 import com.bumptech.glide.Glide
-import com.isidroid.utilsmodule.BindAdapterHelper
+import com.isidroid.utils.BindAdapterHelper
 
 object BindAdapter {
     fun create() {

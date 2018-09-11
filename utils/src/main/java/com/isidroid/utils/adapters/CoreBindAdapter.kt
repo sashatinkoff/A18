@@ -1,4 +1,4 @@
-package com.isidroid.utilsmodule.adapters
+package com.isidroid.utils.adapters
 
 import android.os.Handler
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.isidroid.utilsmodule.R
+import com.isidroid.utils.R
 
 abstract class CoreBindAdapter<T, B : ViewDataBinding> : RecyclerView.Adapter<CoreHolder>() {
     private var loadMoreCallback: (() -> Unit)? = null

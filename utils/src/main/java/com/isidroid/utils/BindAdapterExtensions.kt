@@ -1,4 +1,4 @@
-package com.isidroid.utilsmodule
+package com.isidroid.utils
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

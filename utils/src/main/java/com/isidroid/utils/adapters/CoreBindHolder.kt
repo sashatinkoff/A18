@@ -1,7 +1,6 @@
-package com.isidroid.utilsmodule.adapters
+package com.isidroid.utils.adapters
 
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.RecyclerView
 
 abstract class CoreBindHolder<T, B : ViewDataBinding>(protected val binding: B) : CoreHolder(binding.root) {
     fun bind(item: T) {

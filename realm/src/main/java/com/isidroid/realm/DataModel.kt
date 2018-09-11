@@ -1,7 +1,6 @@
-package com.isidroid.utilsmodule
+package com.isidroid.realm
 
 import androidx.annotation.CallSuper
-import com.isidroid.utilsmodule.YRealm
 import io.realm.Realm
 import io.realm.RealmModel
 import io.realm.kotlin.deleteFromRealm

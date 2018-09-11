@@ -1,4 +1,4 @@
-package com.isidroid.utilsmodule.utils.views
+package com.isidroid.utils.utils.views
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Activity
@@ -9,7 +9,7 @@ import android.view.animation.Interpolator
 import android.widget.ImageView
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.button.MaterialButton
-import com.isidroid.utilsmodule.R
+import com.isidroid.utils.R
 
 open class BackdropHandler(private val sheet: View,
                            private var clickView: View? = null) {

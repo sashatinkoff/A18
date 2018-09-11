@@ -1,8 +1,8 @@
-package com.isidroid.utilsmodule.di
+package com.isidroid.utils.di
 
 import android.app.Application
-import com.isidroid.utilsmodule.ScreenUtils
-import com.isidroid.utilsmodule.utils.UpgradeHelper
+import com.isidroid.utils.ScreenUtils
+import com.isidroid.utils.utils.UpgradeHelper
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

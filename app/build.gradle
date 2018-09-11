@@ -132,6 +132,7 @@ dependencies {
 // cores
     api project(':utils')
     api project(':logger')
+    api project(':realm')
 }
 
 //apply plugin: 'com.google.gms.google-services'

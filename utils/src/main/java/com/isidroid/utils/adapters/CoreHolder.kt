@@ -1,4 +1,4 @@
-package com.isidroid.utilsmodule.adapters
+package com.isidroid.utils.adapters
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

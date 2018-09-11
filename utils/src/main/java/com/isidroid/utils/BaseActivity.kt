@@ -1,9 +1,9 @@
-package com.isidroid.utilsmodule
+package com.isidroid.utils
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleObserver
-import com.isidroid.utilsmodule.utils.views.YViewUtils
+import com.isidroid.utils.utils.views.YViewUtils
 
 abstract class BaseActivity : AppCompatActivity(), LifecycleObserver {
     override fun onCreate(savedInstanceState: Bundle?) {

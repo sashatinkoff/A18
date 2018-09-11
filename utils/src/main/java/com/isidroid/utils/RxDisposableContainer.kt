@@ -1,4 +1,4 @@
-package com.isidroid.utilsmodule
+package com.isidroid.utils
 
 import androidx.annotation.CallSuper
 import io.reactivex.disposables.CompositeDisposable

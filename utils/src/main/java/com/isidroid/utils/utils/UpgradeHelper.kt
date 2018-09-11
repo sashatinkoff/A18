@@ -1,4 +1,4 @@
-package com.isidroid.utilsmodule.utils
+package com.isidroid.utils.utils
 
 import android.app.Application
 import android.preference.PreferenceManager

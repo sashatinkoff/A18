@@ -1,11 +1,10 @@
-package com.isidroid.utilsmodule
+package com.isidroid.realm
 
 import android.app.Activity
 import android.os.Environment
 import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import io.realm.Realm
 import java.io.File
 import java.lang.reflect.Type
