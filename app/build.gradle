@@ -130,7 +130,7 @@ dependencies {
     implementation "com.google.code.gson:gson:${versions.gson}"
     implementation "com.karumi:dexter:${versions.dexter}"
 // cores
-    api project(':utilsmodule')
+    api project(':utils')
     api project(':logger')
 }
 
