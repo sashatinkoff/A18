@@ -130,9 +130,9 @@ dependencies {
     implementation "com.google.code.gson:gson:${versions.gson}"
     implementation "com.karumi:dexter:${versions.dexter}"
 // cores
-    api project(':utils')
-    api project(':logger')
-    api project(':realm')
+    implementation project(':utils')
+    implementation project(':logger')
+    implementation project(':realm')
 }
 
 //apply plugin: 'com.google.gms.google-services'

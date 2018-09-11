@@ -41,16 +41,15 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
 
 // logging
-// implementation(name: "loggermodule.${versions.isidroid}", ext: 'aar')
     api "com.jakewharton.timber:timber:${versions.timber}"
-    api("com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}@aar") {
+    implementation("com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}@aar") {
         transitive = true
     }
 
     // must be removed in the project's build.gradle
-    api "com.google.android.material:material:${versions.material}"
-    api "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
-    api "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
+    implementation "androidx.core:core-ktx:${versions.androidx}"
+    implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
+    implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
 }
 repositories {
     mavenCentral()

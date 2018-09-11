@@ -52,9 +52,8 @@ class Diagnostics {
                 .map {
                     val result = mutableListOf<LogData>()
                     baseDir.listFiles()
-                            ?.filter { it.isFile }
-                            ?.filter { it.name != LOGCAT_FILENAME }
-                            ?.forEach { result.add(LogData(it, uri(context, it))) }
+                            ?.filter { file -> file.isFile && file.name != LOGCAT_FILENAME }
+                            ?.forEach { file -> result.add(LogData(file, uri(context, it))) }
                     result
                 }
                 .doOnNext {

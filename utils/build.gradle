@@ -26,19 +26,19 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
 // support
-    api "com.google.android.material:material:${versions.material}"
+    implementation "com.google.android.material:material:${versions.material}"
 // Stuff
-    api "com.google.code.gson:gson:${versions.gson}"
-    api "androidx.annotation:annotation:${versions.androidx}"
+    implementation "com.google.code.gson:gson:${versions.gson}"
+    implementation "androidx.annotation:annotation:${versions.androidx}"
 // rx
-    api "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
-    api "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
+    implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
+    implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
 // livedata
-    api "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
-    api "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
     kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
 }
 repositories {
