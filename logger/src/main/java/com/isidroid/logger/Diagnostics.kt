@@ -1,4 +1,4 @@
-package com.isidroid.loggermodule
+package com.isidroid.logger
 
 import android.content.Context
 import android.content.Intent

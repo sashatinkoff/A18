@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Application
 import com.isidroid.a18.core.di.AppComponent
 import com.isidroid.a18.core.di.DaggerAppComponent
-import com.isidroid.loggermodule.Diagnostics
+import com.isidroid.logger.Diagnostics
 import com.isidroid.utilsmodule.di.AppModule
 import com.isidroid.utilsmodule.di.RealmModule
 import dagger.android.AndroidInjector

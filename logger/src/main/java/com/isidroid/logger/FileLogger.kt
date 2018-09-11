@@ -1,4 +1,4 @@
-package com.isidroid.loggermodule
+package com.isidroid.logger
 
 import java.io.File
 import java.text.SimpleDateFormat
@@ -11,13 +11,13 @@ class FileLogger(baseDir: File, val tag: String) {
 
     init {
         val sf = SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault())
-        var limit = if (tag.length > 10) 10 else tag.length
-        var tagname = tag
+        val limit = if (tag.length > 10) 10 else tag.length
+        val tagname = tag
                 .replace("[^a-z A-Z0-9 .]+", "")
                 .replace(" ", "_").substring(0, limit)
                 .toLowerCase()
 
-        var filename = StringBuilder().apply {
+        val filename = StringBuilder().apply {
             if (DEFAULT_LOG_FILENAME != tag) {
                 append(sf.format(Date()))
                 append("_")
@@ -26,7 +26,7 @@ class FileLogger(baseDir: File, val tag: String) {
             append(".log")
         }.toString()
 
-        var file = File(baseDir, filename)
+        val file = File(baseDir, filename)
         if (!file.parentFile.exists()) file.parentFile.mkdirs()
         file.createNewFile()
         this.file = file
@@ -35,22 +35,22 @@ class FileLogger(baseDir: File, val tag: String) {
     }
 
     fun log(priority: Int, tag: String?, iMessage: String, t: Throwable?) {
-        var message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $tag $iMessage $t"
+        val message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $tag $iMessage $t"
         save(message)
     }
 
     fun log(priority: Int, iMessage: String?, vararg args: Any?) {
-        var message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $iMessage $args"
+        val message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $iMessage $args"
         save(message)
     }
 
     fun log(priority: Int, t: Throwable?, iMessage: String?, vararg args: Any?) {
-        var message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $iMessage $args $t"
+        val message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $iMessage $args $t"
         save(message)
     }
 
     fun log(priority: Int, t: Throwable?) {
-        var message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $t"
+        val message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $t"
         save(message)
     }
 

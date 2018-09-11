@@ -1,4 +1,4 @@
-include ':app', ':utilsmodule', ':loggermodule'
+include ':app', ':utilsmodule', ':logger'
 
 // in case of using as a single project
 //project(':loggermodule').projectDir=new File(System.getProperty("user.home") + '/Android/A18/loggermodule')

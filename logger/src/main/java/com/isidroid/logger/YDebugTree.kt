@@ -1,4 +1,4 @@
-package com.isidroid.loggermodule
+package com.isidroid.logger
 
 import android.util.Log
 import com.crashlytics.android.Crashlytics

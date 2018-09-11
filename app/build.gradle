@@ -131,7 +131,7 @@ dependencies {
     implementation "com.karumi:dexter:${versions.dexter}"
 // cores
     api project(':utilsmodule')
-    api project(':loggermodule')
+    api project(':logger')
 }
 
 //apply plugin: 'com.google.gms.google-services'
