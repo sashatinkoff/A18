@@ -1,7 +1,7 @@
 package com.isidroid.a18
 
 import android.app.Application
-import com.isidroid.logger.Diagnostics
+import com.isidroid.logger.DiagnosticsConfig
 import com.isidroid.realm.RealmConfig
 
 
@@ -14,16 +14,15 @@ class App : Application() {
         super.onCreate()
         instance = this
 
-
         RealmConfig(this)
                 .version(1L)
                 .migration(null)
                 .create()
 
-
-        Diagnostics.create(this).apply {
-            authority = "${BuildConfig.APPLICATION_ID}.fileprovider"
-        }
+        DiagnosticsConfig(this)
+                .appname(BuildConfig.APPLICATION_ID)
+                .disableCrashlytics(BuildConfig.DEBUG)
+                .create()
 
         BindAdapter.create()
         NotificationsChannels()

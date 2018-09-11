@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.content.FileProvider
-import com.crashlytics.android.Crashlytics
-import io.fabric.sdk.android.Fabric
 import io.reactivex.Flowable
 import timber.log.Timber
 import java.io.BufferedReader
@@ -19,8 +17,8 @@ const val LOGCAT_BASEDIR = "diagnostics"
 
 class Diagnostics {
     var authority: String? = null
-    private lateinit var baseDir: File
-    private var debugTree = YDebugTree()
+    internal lateinit var baseDir: File
+    internal var debugTree: Timber.DebugTree = YDebugTree()
     private var logsStart: Date? = null
 
     fun start() {
@@ -32,15 +30,15 @@ class Diagnostics {
     }
 
     fun startInfo(tag: String = DEFAULT_LOG_FILENAME) {
-        debugTree.startLogger(FileLogger(baseDir, tag))
+        (debugTree as? YDebugTree)?.startLogger(FileLogger(baseDir, tag))
     }
 
     fun stopInfo(tag: String? = null) {
-        debugTree.stopLogger(tag)
+        (debugTree as? YDebugTree)?.stopLogger(tag)
     }
 
     fun stopAll() {
-        debugTree.stopAll()
+        (debugTree as? YDebugTree)?.stopAll()
     }
 
     private fun uri(context: Context, file: File): Uri? {
@@ -52,7 +50,7 @@ class Diagnostics {
     fun getLogs(context: Context, withLogcat: Boolean = false): Flowable<MutableList<LogData>> {
         return Flowable.just(baseDir)
                 .map {
-                    var result = mutableListOf<LogData>()
+                    val result = mutableListOf<LogData>()
                     baseDir.listFiles()
                             ?.filter { it.isFile }
                             ?.filter { it.name != LOGCAT_FILENAME }
@@ -61,7 +59,7 @@ class Diagnostics {
                 }
                 .doOnNext {
                     if (withLogcat || logsStart != null) {
-                        var command = "logcat -d"
+                        val command = "logcat -d"
                         val year = Calendar.getInstance().get(Calendar.YEAR)
                         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US)
 
@@ -116,17 +114,6 @@ class Diagnostics {
 
     companion object {
         const val LOGTAG = "Diagnostics"
-        lateinit var instance: Diagnostics
-
-        fun create(context: Context): Diagnostics {
-            instance = Diagnostics().apply {
-                Fabric.with(context, Crashlytics())
-
-                baseDir = File(context.cacheDir, LOGCAT_BASEDIR)
-                Timber.plant(debugTree)
-                clearLogs()
-            }
-            return instance
-        }
+        val instance = Diagnostics()
     }
 }
