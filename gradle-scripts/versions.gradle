@@ -3,7 +3,7 @@ ext {
             // specific for project
 
             // common
-            "isidroid"                : "1.1.1",
+            "isidroid"                : "1.1.2",
             "isidroidCode"            : 1,
 
             // sdk
@@ -18,7 +18,7 @@ ext {
 
             // libraries
             'crashlytics'             : "2.9.4",
-            'dagger'                  : '2.15',
+            'dagger'                  : '2.16',
             'dexter'                  : '5.0.0',
             'gson'                    : '2.8.5',
             'glide'                   : '4.7.1',
