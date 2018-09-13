@@ -16,8 +16,9 @@ object YViewUtils {
         }
     }
 
-    fun height(view: View): Int {
+    fun height(view: View, onlyHeight: Boolean): Int {
         val params = view.layoutParams as ViewGroup.MarginLayoutParams
-        return params.topMargin + params.bottomMargin + view.paddingTop + view.paddingBottom + view.height
+        val offsets = params.topMargin + params.bottomMargin + view.paddingTop + view.paddingBottom
+        return view.height + if (onlyHeight) 0 else offsets
     }
 }
