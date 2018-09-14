@@ -14,11 +14,11 @@
             app:elevation="14dp">
 
             <LinearLayout
+                android:paddingTop="100dp"
                 android:id="@+id/backdropContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="40dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -31,6 +31,12 @@
                     android:textSize="24sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Lorem impsum, a lot of texts and views..." />
 
             </LinearLayout>
 
@@ -88,10 +94,17 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Backdrop"
-                        app:layout_anchorGravity="bottom|end"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        android:text="Backdrop" />
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/loadContentButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="Load content" />
 
 
                     <com.google.android.material.button.MaterialButton
@@ -101,10 +114,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
-                        android:text="Destroy"
-                        app:layout_anchorGravity="bottom|end"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        android:text="Destroy" />
 
                 </LinearLayout>
 

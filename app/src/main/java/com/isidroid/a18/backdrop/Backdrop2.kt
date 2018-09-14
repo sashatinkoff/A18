@@ -30,7 +30,19 @@ class Backdrop2(
     private val activity: Activity = frontContainer.context as Activity
     private val height: Int
     private var duration = 500L
+    private val listeners = mutableListOf<BackdropListener>()
     private var state = STATE_COLLAPSED
+        set(value) {
+            when (value) {
+                STATE_TO_COLLAPSE -> listeners.forEach { it.onCollapse() }
+                STATE_TO_EXPAND -> listeners.forEach { it.onExpand() }
+                STATE_EXPANDING -> listeners.forEach { it.onExpandStarted() }
+                STATE_COLLAPSING -> listeners.forEach { it.onCollapseStarted() }
+                STATE_EXPANDED -> listeners.forEach { it.onExpandDone() }
+                STATE_COLLAPSED -> listeners.forEach { it.onCollapseDone() }
+            }
+            field = value
+        }
 
     init {
         val displayMetrics = DisplayMetrics()
@@ -52,19 +64,17 @@ class Backdrop2(
 
     fun withDuration(duration: Long) = apply { this.duration = duration }
     fun withInterpolator(interpolator: Interpolator) = apply { this.interpolator = interpolator }
+    fun addListener(listener: BackdropListener) = apply { this.listeners.add(listener) }
 
     fun view(): View? = (backContainer as? ViewGroup)?.findViewWithTag(VIEW_TAG)
 
-    fun show() {
+    fun expand() {
         if (!isCollapsed()) return
-        state = STATE_TO_EXPAND
-
         toggle()
     }
 
-    fun hide() {
-        if (state != STATE_EXPANDED) return
-        state = STATE_TO_COLLAPSE
+    fun collapse() {
+        if (!isExpanded()) return
         toggle()
     }
 
@@ -88,6 +98,8 @@ class Backdrop2(
             state = STATE_TO_COLLAPSE
             animate(0) {
                 (view() as? ViewGroup)?.removeAllViews()
+                listeners.forEach { it.onDestroy() }
+                listeners.clear()
             }
         }
     }
@@ -133,6 +145,5 @@ class Backdrop2(
         } else if (isExpanded()) {
             frontContainer.translationY = translateY(backHeight)
         }
-
     }
 }

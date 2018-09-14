@@ -1,16 +1,24 @@
 package com.isidroid.a18
 
 import android.os.Bundle
-import com.isidroid.a18.backdrop.Backdrop2
+import android.view.LayoutInflater
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import com.isidroid.a18.backdrop.*
 import com.isidroid.utils.BaseActivity
+import com.isidroid.utils.addTo
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
+import java.util.*
 
 
 class MainActivity : BaseActivity() {
     private val compositeDisposable = CompositeDisposable()
     private lateinit var backdrop: Backdrop2
-    private var counter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,44 +26,51 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         backdrop = Backdrop2(container, backdropContainer)
+                .onCollapse { log("onCollapse") }
+                .onExpand { log("onExpand") }
+                .onCollapseStarted { log("onCollapseStarted") }
+                .onExpandStarted { log("onExpandStarted") }
+                .onCollapseDone { log("onCollapseDone") }
+                .onExpandDone { log("onExpandDone") }
+                .onDestroy { log("onDestroy") }
 
         button.setOnClickListener {
-            when (counter) {
-                0 -> backdrop.show()
-                1 -> backdrop.hide()
-                2 -> backdrop.show()
-                else -> backdrop.toggle()
-            }
-            counter++
+            backdrop.expand()
         }
+
+        loadContentButton.setOnClickListener { loadContent() }
 
         destroyButton.setOnClickListener { backdrop.destroy() }
     }
 
-
-    private fun showBackdrop() {
-//        val view = LayoutInflater.from(this).inflate(R.layout.sample_backdrop, backdropContainer)
-//        backdrop.show()
-//
-//        Flowable.range(1, 30)
-//                .doOnNext {
-//                    Thread.sleep(100)
-//                }
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe {
-//                    val chipView = Chip(this).apply { text = UUID.randomUUID().toString().substring(0, 5) }
-//                    view.chipGroup.addView(chipView)
-//                }
-//                .addTo(compositeDisposable)
+    private fun log(msg: String) {
+        Timber.tag("Backdrop").i(msg)
     }
 
-//    override fun onBackPressed() {
-//        if (backdrop.isShown) {
-//            compositeDisposable.clear()
+    private fun loadContent() {
+        backdrop
+                .withView(LayoutInflater.from(this).inflate(R.layout.sample_backdrop, backdropContainer, false))
+                .expand()
+
+        Flowable.range(1, 30)
+                .doOnNext { Thread.sleep(100) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    val chipView = Chip(this).apply { text = UUID.randomUUID().toString().substring(0, 5) }
+                    backdrop.view()?.findViewById<ChipGroup>(R.id.chipGroup)?.addView(chipView)
+                }
+                .addTo(compositeDisposable)
+    }
+
+
+    override fun onBackPressed() {
+        if (backdrop.isExpanded()) {
+            compositeDisposable.clear()
 //            backdrop.destroy()
-//        } else super.onBackPressed()
-//    }
+            backdrop.collapse()
+        } else super.onBackPressed()
+    }
 //
 //    override fun onPause() {
 //        super.onPause()
