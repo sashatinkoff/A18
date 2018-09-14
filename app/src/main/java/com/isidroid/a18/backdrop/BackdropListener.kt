@@ -1,5 +1,7 @@
 package com.isidroid.a18.backdrop
 
+import android.animation.Animator
+
 interface BackdropListener {
     fun onCollapse()
     fun onExpand()
@@ -9,6 +11,14 @@ interface BackdropListener {
     fun onCollapseDone()
     fun onDestroy()
 }
+
+open class BackdropAnimatorListener : Animator.AnimatorListener {
+    override fun onAnimationRepeat(p0: Animator?) {}
+    override fun onAnimationEnd(p0: Animator?) {}
+    override fun onAnimationCancel(p0: Animator?) {}
+    override fun onAnimationStart(p0: Animator?) {}
+}
+
 
 inline fun Backdrop2.onCollapse(crossinline action: () -> Unit) = addListener(collapse = action)
 inline fun Backdrop2.onExpand(crossinline action: () -> Unit) = addListener(expand = action)
@@ -26,7 +36,7 @@ inline fun Backdrop2.addListener(
         crossinline onExpanded: () -> Unit = {},
         crossinline onCollapsed: () -> Unit = {},
         crossinline onDestroy: () -> Unit = {}
-        ): Backdrop2 {
+): Backdrop2 {
 
     val listener = object : BackdropListener {
         override fun onCollapse() = collapse()

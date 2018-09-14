@@ -11,14 +11,13 @@ import android.view.animation.Interpolator
 import android.widget.FrameLayout
 import androidx.core.animation.doOnEnd
 import com.isidroid.utils.R
-import com.isidroid.utils.utils.views.YViewUtils
 
 const val STATE_EXPANDED = "STATE_EXPANDED"
 const val STATE_COLLAPSED = "STATE_COLLAPSED"
 const val STATE_TO_COLLAPSE = "STATE_TO_COLLAPSE"
 const val STATE_TO_EXPAND = "STATE_TO_EXPAND"
-const val STATE_EXPANDING = "STATE_EXPANDING"
-const val STATE_COLLAPSING = "STATE_COLLAPSING"
+const val STATE_EXPAND_STARTED = "STATE_EXPAND_STARTED"
+const val STATE_COLLAPSE_STARTED = "STATE_COLLAPSE_STARTED"
 
 const val VIEW_TAG = "BackdropView"
 
@@ -26,18 +25,19 @@ class Backdrop2(
         private val frontContainer: View,
         private val backContainer: View) : ViewTreeObserver.OnGlobalLayoutListener {
 
-    private var interpolator: Interpolator = BounceInterpolator()
     private val activity: Activity = frontContainer.context as Activity
     private val height: Int
     private var duration = 500L
+    private var interpolator: Interpolator = BounceInterpolator()
+
     private val listeners = mutableListOf<BackdropListener>()
     private var state = STATE_COLLAPSED
         set(value) {
             when (value) {
                 STATE_TO_COLLAPSE -> listeners.forEach { it.onCollapse() }
                 STATE_TO_EXPAND -> listeners.forEach { it.onExpand() }
-                STATE_EXPANDING -> listeners.forEach { it.onExpandStarted() }
-                STATE_COLLAPSING -> listeners.forEach { it.onCollapseStarted() }
+                STATE_EXPAND_STARTED -> if (!isExecuting()) listeners.forEach { it.onExpandStarted() }
+                STATE_COLLAPSE_STARTED -> if (!isExecuting()) listeners.forEach { it.onCollapseStarted() }
                 STATE_EXPANDED -> listeners.forEach { it.onExpandDone() }
                 STATE_COLLAPSED -> listeners.forEach { it.onCollapseDone() }
             }
@@ -48,11 +48,11 @@ class Backdrop2(
         val displayMetrics = DisplayMetrics()
         activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
         height = displayMetrics.heightPixels
-        withView(FrameLayout(activity))
+        view(FrameLayout(activity))
     }
 
-    // builder
-    fun withView(view: View) = apply {
+    // builders
+    fun view(view: View) = apply {
         view.tag = VIEW_TAG
 
         (backContainer as? ViewGroup)?.apply {
@@ -62,20 +62,27 @@ class Backdrop2(
         }
     }
 
-    fun withDuration(duration: Long) = apply { this.duration = duration }
-    fun withInterpolator(interpolator: Interpolator) = apply { this.interpolator = interpolator }
+    fun duration(duration: Long) = apply { this.duration = duration }
+    fun interpolator(interpolator: Interpolator) = apply { this.interpolator = interpolator }
+
     fun addListener(listener: BackdropListener) = apply { this.listeners.add(listener) }
+    fun clear() = apply { view(FrameLayout(activity)) }
 
     fun view(): View? = (backContainer as? ViewGroup)?.findViewWithTag(VIEW_TAG)
+    fun isCollapsed() = state == STATE_COLLAPSED
+    fun isExpanded() = state == STATE_EXPANDED
+    fun isExecuting() = state == STATE_COLLAPSE_STARTED || state == STATE_EXPAND_STARTED
 
-    fun expand() {
-        if (!isCollapsed()) return
-        toggle()
+    /**
+     * set clear to true if you want to recreate backdrop content
+     */
+    fun expand(clear: Boolean = false) {
+        if (clear) clear()
+        backContainer.post { if (isCollapsed()) toggle() }
     }
 
     fun collapse() {
-        if (!isExpanded()) return
-        toggle()
+        if (isExpanded()) toggle()
     }
 
     fun toggle() {
@@ -85,7 +92,7 @@ class Backdrop2(
             else -> state
         }
 
-        if (YViewUtils.height(backContainer, true) > 0) onGlobalLayout()
+        if (backContainer.height > 0) onGlobalLayout()
 
         backContainer.viewTreeObserver.apply {
             removeOnGlobalLayoutListener(this@Backdrop2)
@@ -93,35 +100,28 @@ class Backdrop2(
         }
     }
 
-    fun destroy() {
-        if (state != STATE_COLLAPSED) {
-            state = STATE_TO_COLLAPSE
-            animate(0) {
-                (view() as? ViewGroup)?.removeAllViews()
-                listeners.forEach { it.onDestroy() }
-                listeners.clear()
-            }
-        }
-    }
-
-    private fun animate(containerHeight: Int, callback: (() -> Unit)? = null) {
+    private fun animate(containerHeight: Int, isAnimate: Boolean, action: (() -> Unit)? = null) {
         state = when (state) {
-            STATE_TO_EXPAND -> STATE_EXPANDING
-            STATE_TO_COLLAPSE -> STATE_COLLAPSING
+            STATE_TO_EXPAND -> STATE_EXPAND_STARTED
+            STATE_TO_COLLAPSE -> STATE_COLLAPSE_STARTED
             else -> state
         }
 
         ObjectAnimator.ofFloat(frontContainer, "translationY", translateY(containerHeight)).apply {
             duration = this@Backdrop2.duration
             interpolator = this@Backdrop2.interpolator
-            doOnEnd {
-                state = when (state) {
-                    STATE_COLLAPSING -> STATE_COLLAPSED
-                    else -> STATE_EXPANDED
-                }
 
-                callback?.invoke()
+            doOnEnd {
+                if (frontContainer.translationY != translateY(backContainer.height)) animate(backContainer.height, true)
+                else {
+                    state = when (state) {
+                        STATE_COLLAPSE_STARTED -> STATE_COLLAPSED
+                        else -> STATE_EXPANDED
+                    }
+                    action?.invoke()
+                }
             }
+
             start()
         }
     }
@@ -130,20 +130,26 @@ class Backdrop2(
         val translateFullScreen = (height - activity.resources.getDimensionPixelSize(R.dimen.navigation_reveal_height))
         var translateY = containerHeight
         if (translateY == 0 || translateY > translateFullScreen) translateY = translateFullScreen
-        return (if (state == STATE_EXPANDING || state == STATE_EXPANDED) translateY else 0).toFloat()
+        return (if (state == STATE_EXPAND_STARTED || state == STATE_EXPANDED) translateY else 0).toFloat()
     }
 
-    fun isCollapsed() = state == STATE_COLLAPSED
-    fun isExpanded() = state == STATE_EXPANDED
+    fun destroy() {
+        if (!isCollapsed()) {
+            state = STATE_TO_COLLAPSE
+            animate(0, false) {
+                (view() as? ViewGroup)?.removeAllViews()
+                listeners.forEach { it.onDestroy() }
+                listeners.clear()
+            }
+        }
+    }
 
     // ViewTreeObserver.OnGlobalLayoutListener
     override fun onGlobalLayout() {
-        val backHeight = YViewUtils.height(backContainer, true)
+        if (isExecuting()) return
+        val backHeight = backContainer.height
+        val isAnimate = state == STATE_TO_COLLAPSE || state == STATE_TO_EXPAND
 
-        if (state == STATE_TO_COLLAPSE || state == STATE_TO_EXPAND) {
-            animate(backHeight)
-        } else if (isExpanded()) {
-            frontContainer.translationY = translateY(backHeight)
-        }
+        animate(backHeight, isAnimate)
     }
 }
