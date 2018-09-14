@@ -9,7 +9,6 @@ import android.view.ViewTreeObserver
 import android.view.animation.BounceInterpolator
 import android.view.animation.Interpolator
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.core.animation.doOnEnd
 import com.isidroid.utils.R
 import com.isidroid.utils.utils.views.YViewUtils
@@ -18,38 +17,46 @@ const val STATE_EXPANDED = "STATE_EXPANDED"
 const val STATE_COLLAPSED = "STATE_COLLAPSED"
 const val STATE_TO_COLLAPSE = "STATE_TO_COLLAPSE"
 const val STATE_TO_EXPAND = "STATE_TO_EXPAND"
+const val STATE_EXPANDING = "STATE_EXPANDING"
+const val STATE_COLLAPSING = "STATE_COLLAPSING"
+
+const val VIEW_TAG = "BackdropView"
 
 class Backdrop2(
         private val frontContainer: View,
-        private val backContainer: View,
-        view: View? = null) : ViewTreeObserver.OnGlobalLayoutListener {
+        private val backContainer: View) : ViewTreeObserver.OnGlobalLayoutListener {
 
     private var interpolator: Interpolator = BounceInterpolator()
     private val activity: Activity = frontContainer.context as Activity
     private val height: Int
     private var duration = 500L
     private var state = STATE_COLLAPSED
-    private var view: View? = null
 
     init {
         val displayMetrics = DisplayMetrics()
         activity.windowManager.defaultDisplay.getMetrics(displayMetrics)
         height = displayMetrics.heightPixels
-        this.view = view ?: FrameLayout(activity)
-        (backContainer as? ViewGroup)?.addView(this.view)
+        withView(FrameLayout(activity))
     }
 
     // builder
+    fun withView(view: View) = apply {
+        view.tag = VIEW_TAG
+
+        (backContainer as? ViewGroup)?.apply {
+            // let's remove all views then attach only one
+            view()?.let { v -> removeView(v) }
+            addView(view)
+        }
+    }
+
+    fun withDuration(duration: Long) = apply { this.duration = duration }
     fun withInterpolator(interpolator: Interpolator) = apply { this.interpolator = interpolator }
 
-    fun withView(view: View) = apply { this.view = view }
-    fun withDuration(duration: Long) = apply { this.duration = duration }
-
-
-    fun view(): View = view!!
+    fun view(): View? = (backContainer as? ViewGroup)?.findViewWithTag(VIEW_TAG)
 
     fun show() {
-        if (state != STATE_COLLAPSED) return
+        if (!isCollapsed()) return
         state = STATE_TO_EXPAND
 
         toggle()
@@ -79,17 +86,25 @@ class Backdrop2(
     fun destroy() {
         if (state != STATE_COLLAPSED) {
             state = STATE_TO_COLLAPSE
-            animate(0) { (view as? ViewGroup)?.removeAllViews() }
+            animate(0) {
+                (view() as? ViewGroup)?.removeAllViews()
+            }
         }
     }
 
     private fun animate(containerHeight: Int, callback: (() -> Unit)? = null) {
+        state = when (state) {
+            STATE_TO_EXPAND -> STATE_EXPANDING
+            STATE_TO_COLLAPSE -> STATE_COLLAPSING
+            else -> state
+        }
+
         ObjectAnimator.ofFloat(frontContainer, "translationY", translateY(containerHeight)).apply {
             duration = this@Backdrop2.duration
             interpolator = this@Backdrop2.interpolator
             doOnEnd {
                 state = when (state) {
-                    STATE_TO_COLLAPSE -> STATE_COLLAPSED
+                    STATE_COLLAPSING -> STATE_COLLAPSED
                     else -> STATE_EXPANDED
                 }
 
@@ -103,12 +118,21 @@ class Backdrop2(
         val translateFullScreen = (height - activity.resources.getDimensionPixelSize(R.dimen.navigation_reveal_height))
         var translateY = containerHeight
         if (translateY == 0 || translateY > translateFullScreen) translateY = translateFullScreen
-        return (if (state == STATE_TO_EXPAND) translateY else 0).toFloat()
+        return (if (state == STATE_EXPANDING || state == STATE_EXPANDED) translateY else 0).toFloat()
     }
+
+    fun isCollapsed() = state == STATE_COLLAPSED
+    fun isExpanded() = state == STATE_EXPANDED
 
     // ViewTreeObserver.OnGlobalLayoutListener
     override fun onGlobalLayout() {
         val backHeight = YViewUtils.height(backContainer, true)
-        if (state == STATE_TO_COLLAPSE || state == STATE_TO_EXPAND) animate(backHeight)
+
+        if (state == STATE_TO_COLLAPSE || state == STATE_TO_EXPAND) {
+            animate(backHeight)
+        } else if (isExpanded()) {
+            frontContainer.translationY = translateY(backHeight)
+        }
+
     }
 }
