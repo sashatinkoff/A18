@@ -86,6 +86,12 @@ class Backdrop2(
     fun isExpanded() = state == STATE_EXPANDED
     fun isExecuting() = state == STATE_COLLAPSE_STARTED || state == STATE_EXPAND_STARTED || state == STATE_SKIP
 
+    private var decorators = mutableListOf<BackdropDecorator>()
+    fun addDecorator(decorator: BackdropDecorator) {
+        this.decorators.add(decorator)
+        addListener(decorator)
+    }
+
     /**
      * set clear to true if you want to recreate backdrop content
      */
@@ -122,8 +128,11 @@ class Backdrop2(
             else -> state
         }
 
+        val animationDuration = if(isAnimate) duration else 0L
+
+
         ObjectAnimator.ofFloat(frontContainer, "translationY", translateY(containerHeight)).apply {
-            duration = this@Backdrop2.duration
+            duration = animationDuration
             interpolator = this@Backdrop2.interpolator
 
             doOnEnd {
@@ -150,13 +159,16 @@ class Backdrop2(
 
     fun destroy() {
         if (!isCollapsed()) {
-            state = STATE_TO_COLLAPSE
+            state = STATE_COLLAPSE_STARTED
             animate(0, false) {
                 (view() as? ViewGroup)?.removeAllViews()
                 listeners.forEach { it.onDestroy() }
                 listeners.clear()
+
+                decorators.forEach { listeners.add(it) }
             }
         }
+
     }
 
     // ViewTreeObserver.OnGlobalLayoutListener

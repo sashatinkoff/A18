@@ -54,10 +54,15 @@ class MainActivity : BaseActivity() {
                 .onExpandDone { log("onExpandDone") }
                 .onDestroy { log("onDestroy") }
 
-        BackdropActionDecorator(button, backdrop)
+        BackdropActionDecorator(button)
+                .icons(android.R.drawable.ic_delete, android.R.drawable.ic_dialog_alert)
+                .add(backdrop)
+
+        BackdropActionDecorator(imageview)
+                .withAnimation()
                 .icons(R.drawable.vector_cross_to_back_arrow, R.drawable.vector_back_arrow_to_cross)
-//                .icons(android.R.drawable.ic_delete, android.R.drawable.ic_dialog_alert)
-                .create()
+                .add(backdrop)
+
 
         button.setOnClickListener { backdrop.expand(true) }
         colorButton.setOnClickListener { changeColor() }
@@ -81,7 +86,7 @@ class MainActivity : BaseActivity() {
 
     private fun changeColor() {
         val colors = arrayListOf(
-                ContextCompat.getColor(this, R.color.colorAccent),
+                ContextCompat.getColor(this, R.color.colorPrimaryDark),
                 Color.parseColor("#FFFFFF"))
 
 

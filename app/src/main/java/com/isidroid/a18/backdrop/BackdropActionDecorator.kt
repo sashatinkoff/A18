@@ -1,32 +1,45 @@
 package com.isidroid.a18.backdrop
 
 import android.app.Activity
-import android.graphics.drawable.AnimatedVectorDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.button.MaterialButton
+import timber.log.Timber
 
-class BackdropActionDecorator(private val view: View, private val backdrop: Backdrop2) {
-    private val activity: Activity = view.context as Activity
+class BackdropActionDecorator(private val view: View?) : BackdropDecorator() {
+    private val activity: Activity = view?.context as Activity
 
-    private var expandIcon: Drawable? = null
-    private var collapseIcon: Drawable? = null
+    private lateinit var expandIcon: Drawable
+    private lateinit var collapseIcon: Drawable
+    private var isAnimateSupport: Boolean = false
 
+    fun withAnimation() = apply { this.isAnimateSupport = true }
 
-    fun icons(expandIcon: Int?, collapseIcon: Int?) = apply {
-        collapseIcon?.let { this.expandIcon = AnimatedVectorDrawableCompat.create(activity, it) }
-        expandIcon?.let { this.collapseIcon = AnimatedVectorDrawableCompat.create(activity, it) }
+    fun icons(expandIcon: Int, collapseIcon: Int) = apply {
+        if (isAnimateSupport) {
+            this.expandIcon = AnimatedVectorDrawableCompat.create(activity, expandIcon) as Drawable
+            this.collapseIcon = AnimatedVectorDrawableCompat.create(activity, collapseIcon) as Drawable
+        } else {
+            this.expandIcon = ContextCompat.getDrawable(activity, expandIcon)!!
+            this.collapseIcon = ContextCompat.getDrawable(activity, collapseIcon)!!
+        }
     }
 
-    fun create() = apply {
+    override fun onCreate() {
         updateIcon(true, false)
-
-        backdrop.onCollapse { updateIcon(false, true) }
-        backdrop.onExpand { updateIcon(true, true) }
     }
 
+    override fun onCollapse() {
+        Timber.e("onCollapse")
+        updateIcon(true, true)
+    }
+
+    override fun onExpand() {
+        updateIcon(false, true)
+    }
 
     private fun updateIcon(isCollapsed: Boolean, animate: Boolean) {
         when (view) {
@@ -35,24 +48,26 @@ class BackdropActionDecorator(private val view: View, private val backdrop: Back
         }
     }
 
-    private fun drawable(isCollapsed: Boolean): Drawable? {
-        return if (isCollapsed && collapseIcon != null) collapseIcon
-        else if (expandIcon != null) expandIcon
-        else null
-    }
-
     private fun updateImage(view: ImageView, isCollapsed: Boolean, animate: Boolean) {
-        drawable(isCollapsed)?.let {
-            view.setImageDrawable(it)
-            if (animate) (it as? AnimatedVectorDrawableCompat)?.start()
-        }
+        val icon = icon(isCollapsed, animate)
+        view.setImageDrawable(icon)
+        animate(icon, animate)
     }
 
     private fun updateButtonIcon(button: MaterialButton, isCollapsed: Boolean, animate: Boolean) {
-        drawable(isCollapsed)?.let {
-            button.icon = it
-            if (animate) (it as? AnimatedVectorDrawableCompat)?.start()
-        }
+        button.icon = icon(isCollapsed, animate)
+        animate(button.icon, animate)
     }
 
+    private fun animate(icon: Drawable, animate: Boolean) {
+        if (animate && isAnimateSupport)
+            (icon as? AnimatedVectorDrawableCompat)?.start()
+    }
+
+    private fun icon(isCollapsed: Boolean, animate: Boolean): Drawable {
+        return if (isCollapsed && animate && isAnimateSupport) collapseIcon
+        else if (!isCollapsed && animate && isAnimateSupport) expandIcon
+        else if (isCollapsed) expandIcon
+        else collapseIcon
+    }
 }

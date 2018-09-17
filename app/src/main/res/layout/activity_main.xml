@@ -84,6 +84,11 @@
                         android:text="HELLO WORKD"
                         android:textSize="24sp" />
 
+                    <ImageView
+                        android:id="@+id/imageview"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp" />
+
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button"
                         android:layout_width="match_parent"
