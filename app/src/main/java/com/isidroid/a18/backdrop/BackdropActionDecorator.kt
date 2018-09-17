@@ -7,7 +7,6 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.button.MaterialButton
-import timber.log.Timber
 
 class BackdropActionDecorator(private val view: View?) : BackdropDecorator() {
     private val activity: Activity = view?.context as Activity
@@ -29,51 +28,45 @@ class BackdropActionDecorator(private val view: View?) : BackdropDecorator() {
     }
 
     override fun onCreate() {
-        updateIcon(true, false)
+        updateIcon(true)
     }
 
-    private fun updateIcon(isCollapsed: Boolean, animate: Boolean) {
+    private fun updateIcon(isCollapsed: Boolean) {
         when (view) {
-            is ImageView -> updateImage(view, isCollapsed, animate)
-            is MaterialButton -> updateButtonIcon(view, isCollapsed, animate)
+            is ImageView -> updateImage(view, isCollapsed)
+            is MaterialButton -> updateButtonIcon(view, isCollapsed)
         }
     }
 
-    private fun updateImage(view: ImageView, isCollapsed: Boolean, animate: Boolean) {
-        val icon = icon(isCollapsed, animate)
+    private fun updateImage(view: ImageView, isCollapsed: Boolean) {
+        val icon = icon(isCollapsed)
         view.setImageDrawable(icon)
-        animate(icon, animate)
+        animate(icon)
     }
 
-    private fun updateButtonIcon(button: MaterialButton, isCollapsed: Boolean, animate: Boolean) {
-        button.icon = icon(isCollapsed, animate)
-        animate(button.icon, animate)
+    private fun updateButtonIcon(button: MaterialButton, isCollapsed: Boolean) {
+        button.icon = icon(isCollapsed)
+        animate(button.icon)
     }
 
-    private fun animate(icon: Drawable, animate: Boolean) {
-        if (animate && isAnimateSupport)
+    private fun animate(icon: Drawable) {
+        if (isAnimateSupport)
             (icon as? AnimatedVectorDrawableCompat)?.start()
     }
 
-    private fun icon(isCollapsed: Boolean, animate: Boolean): Drawable {
-        return if (isCollapsed && animate && isAnimateSupport) collapseIcon
-        else if (!isCollapsed && animate && isAnimateSupport) expandIcon
+    private fun icon(isCollapsed: Boolean): Drawable {
+        return if (isCollapsed && isAnimateSupport) collapseIcon
+        else if (!isCollapsed && isAnimateSupport) expandIcon
         else if (isCollapsed) expandIcon
         else collapseIcon
     }
 
     override fun onCollapse() {
-        if (!isDestroying)
-            updateIcon(true, true)
+        updateIcon(true)
     }
 
     override fun onExpand() {
-        if (!isDestroying)
-            updateIcon(false, true)
+        updateIcon(false)
     }
 
-    override fun onDestroyStarted() {
-        super.onDestroyStarted()
-        updateIcon(true, false)
-    }
 }

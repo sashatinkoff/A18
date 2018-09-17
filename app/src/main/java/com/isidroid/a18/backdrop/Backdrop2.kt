@@ -165,6 +165,7 @@ class Backdrop2(
     fun destroy() {
         isDetroying = true
         state = STATE_TO_DESTROY
+
         val destroyAction: () -> Unit = {
             (view() as? ViewGroup)?.removeAllViews()
             listeners.forEach { it.onDestroy() }

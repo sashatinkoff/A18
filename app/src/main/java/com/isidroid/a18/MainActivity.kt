@@ -52,6 +52,7 @@ class MainActivity : BaseActivity() {
                 .onExpandStarted { log("onExpandStarted") }
                 .onCollapseDone { log("onCollapseDone") }
                 .onExpandDone { log("onExpandDone") }
+                .onDestroyStarted { log("onDestroyStarted") }
                 .onDestroy { log("onDestroy") }
 
         BackdropActionDecorator(button)

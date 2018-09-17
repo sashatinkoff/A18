@@ -1,7 +1,5 @@
 package com.isidroid.a18.backdrop
 
-import android.animation.Animator
-
 interface BackdropListener {
     fun onCollapse()
     fun onExpand()
