@@ -43,8 +43,8 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         backdrop = Backdrop2(container, backdropContainer)
-                .duration(850L)
-                .interpolator(interpolatorsList[0])
+                .duration(300L)
+                .interpolator(interpolatorsList[2])
 
                 .onCollapse { log("onCollapse") }
                 .onExpand { log("onExpand") }
@@ -53,6 +53,11 @@ class MainActivity : BaseActivity() {
                 .onCollapseDone { log("onCollapseDone") }
                 .onExpandDone { log("onExpandDone") }
                 .onDestroy { log("onDestroy") }
+
+        BackdropActionDecorator(button, backdrop)
+                .icons(R.drawable.vector_cross_to_back_arrow, R.drawable.vector_back_arrow_to_cross)
+//                .icons(android.R.drawable.ic_delete, android.R.drawable.ic_dialog_alert)
+                .create()
 
         button.setOnClickListener { backdrop.expand(true) }
         colorButton.setOnClickListener { changeColor() }

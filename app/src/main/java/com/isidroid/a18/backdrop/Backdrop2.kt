@@ -18,6 +18,8 @@ const val STATE_TO_COLLAPSE = "STATE_TO_COLLAPSE"
 const val STATE_TO_EXPAND = "STATE_TO_EXPAND"
 const val STATE_EXPAND_STARTED = "STATE_EXPAND_STARTED"
 const val STATE_COLLAPSE_STARTED = "STATE_COLLAPSE_STARTED"
+const val STATE_SKIP = "STATE_SKIP"
+
 
 const val VIEW_TAG = "BackdropView"
 
@@ -66,19 +68,32 @@ class Backdrop2(
     fun interpolator(interpolator: Interpolator) = apply { this.interpolator = interpolator }
 
     fun addListener(listener: BackdropListener) = apply { this.listeners.add(listener) }
-    fun clear() = apply { view(FrameLayout(activity)) }
+    fun clear() = apply {
+        state = STATE_SKIP
+        val view = FrameLayout(activity)
+        view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                state = STATE_COLLAPSED
+            }
+
+        })
+        view(view)
+    }
 
     fun view(): View? = (backContainer as? ViewGroup)?.findViewWithTag(VIEW_TAG)
     fun isCollapsed() = state == STATE_COLLAPSED
     fun isExpanded() = state == STATE_EXPANDED
-    fun isExecuting() = state == STATE_COLLAPSE_STARTED || state == STATE_EXPAND_STARTED
+    fun isExecuting() = state == STATE_COLLAPSE_STARTED || state == STATE_EXPAND_STARTED || state == STATE_SKIP
 
     /**
      * set clear to true if you want to recreate backdrop content
      */
     fun expand(clear: Boolean = false) {
         if (clear) clear()
-        backContainer.post { if (isCollapsed()) toggle() }
+        backContainer.post {
+            if (isCollapsed()) toggle()
+        }
     }
 
     fun collapse() {

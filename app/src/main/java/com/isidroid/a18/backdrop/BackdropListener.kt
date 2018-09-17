@@ -12,6 +12,10 @@ interface BackdropListener {
     fun onDestroy()
 }
 
+//open class SimpleBackdropListener : BackdropListener {
+//
+//}
+
 open class BackdropAnimatorListener : Animator.AnimatorListener {
     override fun onAnimationRepeat(p0: Animator?) {}
     override fun onAnimationEnd(p0: Animator?) {}
