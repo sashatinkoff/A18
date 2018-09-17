@@ -11,6 +11,7 @@ import android.view.animation.Interpolator
 import android.widget.FrameLayout
 import androidx.core.animation.doOnEnd
 import com.isidroid.utils.R
+import timber.log.Timber
 
 const val STATE_EXPANDED = "STATE_EXPANDED"
 const val STATE_COLLAPSED = "STATE_COLLAPSED"
@@ -19,6 +20,7 @@ const val STATE_TO_EXPAND = "STATE_TO_EXPAND"
 const val STATE_EXPAND_STARTED = "STATE_EXPAND_STARTED"
 const val STATE_COLLAPSE_STARTED = "STATE_COLLAPSE_STARTED"
 const val STATE_SKIP = "STATE_SKIP"
+const val STATE_TO_DESTROY = "STATE_TO_DESTROY"
 
 
 const val VIEW_TAG = "BackdropView"
@@ -31,6 +33,7 @@ class Backdrop2(
     private val height: Int
     private var duration = 500L
     private var interpolator: Interpolator = BounceInterpolator()
+    private var isDetroying = false
 
     private val listeners = mutableListOf<BackdropListener>()
     private var state = STATE_COLLAPSED
@@ -42,6 +45,7 @@ class Backdrop2(
                 STATE_COLLAPSE_STARTED -> if (!isExecuting()) listeners.forEach { it.onCollapseStarted() }
                 STATE_EXPANDED -> listeners.forEach { it.onExpandDone() }
                 STATE_COLLAPSED -> listeners.forEach { it.onCollapseDone() }
+                STATE_TO_DESTROY -> listeners.forEach { it.onDestroyStarted() }
             }
             field = value
         }
@@ -125,11 +129,11 @@ class Backdrop2(
         state = when (state) {
             STATE_TO_EXPAND -> STATE_EXPAND_STARTED
             STATE_TO_COLLAPSE -> STATE_COLLAPSE_STARTED
+            STATE_COLLAPSED -> return
             else -> state
         }
 
-        val animationDuration = if(isAnimate) duration else 0L
-
+        val animationDuration = if (isAnimate) duration else 0L
 
         ObjectAnimator.ofFloat(frontContainer, "translationY", translateY(containerHeight)).apply {
             duration = animationDuration
@@ -142,6 +146,7 @@ class Backdrop2(
                         STATE_COLLAPSE_STARTED -> STATE_COLLAPSED
                         else -> STATE_EXPANDED
                     }
+
                     action?.invoke()
                 }
             }
@@ -158,22 +163,29 @@ class Backdrop2(
     }
 
     fun destroy() {
-        if (!isCollapsed()) {
-            state = STATE_COLLAPSE_STARTED
-            animate(0, false) {
-                (view() as? ViewGroup)?.removeAllViews()
-                listeners.forEach { it.onDestroy() }
-                listeners.clear()
+        isDetroying = true
+        state = STATE_TO_DESTROY
+        val destroyAction: () -> Unit = {
+            (view() as? ViewGroup)?.removeAllViews()
+            listeners.forEach { it.onDestroy() }
+            listeners.clear()
 
-                decorators.forEach { listeners.add(it) }
-            }
+            decorators.forEach { listeners.add(it) }
+            isDetroying = false
+        }
+
+        if (!isCollapsed()) {
+            state = STATE_TO_COLLAPSE
+            animate(0, false, destroyAction)
+        } else {
+            destroyAction()
         }
 
     }
 
     // ViewTreeObserver.OnGlobalLayoutListener
     override fun onGlobalLayout() {
-        if (isExecuting()) return
+        if (isExecuting() || isDetroying) return
         val backHeight = backContainer.height
         val isAnimate = state == STATE_TO_COLLAPSE || state == STATE_TO_EXPAND
 

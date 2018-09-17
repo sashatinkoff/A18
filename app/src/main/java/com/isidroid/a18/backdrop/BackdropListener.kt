@@ -10,19 +10,8 @@ interface BackdropListener {
     fun onExpandDone()
     fun onCollapseDone()
     fun onDestroy()
+    fun onDestroyStarted()
 }
-
-//open class SimpleBackdropListener : BackdropListener {
-//
-//}
-
-open class BackdropAnimatorListener : Animator.AnimatorListener {
-    override fun onAnimationRepeat(p0: Animator?) {}
-    override fun onAnimationEnd(p0: Animator?) {}
-    override fun onAnimationCancel(p0: Animator?) {}
-    override fun onAnimationStart(p0: Animator?) {}
-}
-
 
 inline fun Backdrop2.onCollapse(crossinline action: () -> Unit) = addListener(collapse = action)
 inline fun Backdrop2.onExpand(crossinline action: () -> Unit) = addListener(expand = action)
@@ -31,6 +20,7 @@ inline fun Backdrop2.onCollapseStarted(crossinline action: () -> Unit) = addList
 inline fun Backdrop2.onExpandDone(crossinline action: () -> Unit) = addListener(onExpanded = action)
 inline fun Backdrop2.onCollapseDone(crossinline action: () -> Unit) = addListener(onCollapsed = action)
 inline fun Backdrop2.onDestroy(crossinline action: () -> Unit) = addListener(onDestroy = action)
+inline fun Backdrop2.onDestroyStarted(crossinline action: () -> Unit) = addListener(onDestroyStarted = action)
 
 inline fun Backdrop2.addListener(
         crossinline collapse: () -> Unit = {},
@@ -39,7 +29,8 @@ inline fun Backdrop2.addListener(
         crossinline onCollapsing: () -> Unit = {},
         crossinline onExpanded: () -> Unit = {},
         crossinline onCollapsed: () -> Unit = {},
-        crossinline onDestroy: () -> Unit = {}
+        crossinline onDestroy: () -> Unit = {},
+        crossinline onDestroyStarted: () -> Unit = {}
 ): Backdrop2 {
 
     val listener = object : BackdropListener {
@@ -50,6 +41,7 @@ inline fun Backdrop2.addListener(
         override fun onExpandDone() = onExpanded()
         override fun onCollapseDone() = onCollapsed()
         override fun onDestroy() = onDestroy()
+        override fun onDestroyStarted() = onDestroyStarted()
     }
 
     addListener(listener)

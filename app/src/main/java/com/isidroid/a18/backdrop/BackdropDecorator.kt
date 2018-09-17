@@ -1,9 +1,11 @@
 package com.isidroid.a18.backdrop
 
+import androidx.annotation.CallSuper
 import java.util.*
 
 abstract class BackdropDecorator : BackdropListener {
     private var guid = UUID.randomUUID().toString()
+    protected var isDestroying = false
 
     fun add(backdrop: Backdrop2) = apply {
         backdrop.addDecorator(this)
@@ -18,7 +20,15 @@ abstract class BackdropDecorator : BackdropListener {
     override fun onCollapseStarted() {}
     override fun onExpandDone() {}
     override fun onCollapseDone() {}
-    override fun onDestroy() {}
+    @CallSuper
+    override fun onDestroy() {
+        isDestroying = false
+    }
+
+    @CallSuper
+    override fun onDestroyStarted() {
+        isDestroying = true
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

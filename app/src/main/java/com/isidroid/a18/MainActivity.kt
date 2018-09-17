@@ -129,6 +129,7 @@ class MainActivity : BaseActivity() {
 
 
     override fun onBackPressed() {
+        Timber.i("Backdrop.Activity onBack isExpanded=${backdrop.isExpanded()}")
         if (backdrop.isExpanded()) {
             backdrop.collapse()
         } else super.onBackPressed()
@@ -140,6 +141,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun log(msg: String) {
-        Timber.tag("Backdrop").i(msg)
+//        Timber.tag("Backdrop").i(msg)
     }
 }

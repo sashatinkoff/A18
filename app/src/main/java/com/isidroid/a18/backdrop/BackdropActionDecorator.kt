@@ -32,15 +32,6 @@ class BackdropActionDecorator(private val view: View?) : BackdropDecorator() {
         updateIcon(true, false)
     }
 
-    override fun onCollapse() {
-        Timber.e("onCollapse")
-        updateIcon(true, true)
-    }
-
-    override fun onExpand() {
-        updateIcon(false, true)
-    }
-
     private fun updateIcon(isCollapsed: Boolean, animate: Boolean) {
         when (view) {
             is ImageView -> updateImage(view, isCollapsed, animate)
@@ -69,5 +60,20 @@ class BackdropActionDecorator(private val view: View?) : BackdropDecorator() {
         else if (!isCollapsed && animate && isAnimateSupport) expandIcon
         else if (isCollapsed) expandIcon
         else collapseIcon
+    }
+
+    override fun onCollapse() {
+        if (!isDestroying)
+            updateIcon(true, true)
+    }
+
+    override fun onExpand() {
+        if (!isDestroying)
+            updateIcon(false, true)
+    }
+
+    override fun onDestroyStarted() {
+        super.onDestroyStarted()
+        updateIcon(true, false)
     }
 }
