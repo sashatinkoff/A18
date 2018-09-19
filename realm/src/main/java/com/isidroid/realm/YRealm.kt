@@ -6,6 +6,7 @@ import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import io.realm.Realm
+import io.realm.RealmModel
 import java.io.File
 import java.lang.reflect.Type
 
@@ -17,7 +18,6 @@ object YRealm {
                 .create()
     }
 
-
     fun realmExe(execute: (realm: Realm) -> Unit) {
         Realm.getDefaultInstance().apply {
             val transaction = isInTransaction
@@ -27,7 +27,7 @@ object YRealm {
         }
     }
 
-    fun backup(activity: Activity?) {
+    fun backup(activity: Activity? = null) {
         try {
             val destination = File(Environment.getExternalStorageDirectory(), "default.realm")
             if (destination.exists()) destination.delete()
@@ -40,6 +40,18 @@ object YRealm {
             e.printStackTrace()
         }
     }
+
+    fun update(list: List<RealmModel>, gson: Gson? = null) {
+        if (list.isEmpty()) return
+        val cls = list.first().javaClass
+        val gsonHandler = gson ?: GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .create()
+
+        val json = gsonHandler.toJson(list)
+        realmExe { it.createOrUpdateAllFromJson(cls, json) }
+    }
+
 
     fun toJson(item: Any): String {
         return gson.toJson(item)
