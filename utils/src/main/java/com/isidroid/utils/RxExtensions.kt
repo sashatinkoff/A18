@@ -11,14 +11,14 @@ fun Disposable.addTo(compositeDisposable: CompositeDisposable): Disposable {
     return this
 }
 
-fun <T> Flowable<T>.uiSubscribe(): Flowable<T> {
-    return subscribeBack().subscribeUi()
+fun <T> Flowable<T>.subscribeIoMain(): Flowable<T> {
+    return subscribeIo().subscribeMain()
 }
 
-fun <T> Flowable<T>.subscribeBack(): Flowable<T> {
+fun <T> Flowable<T>.subscribeIo(): Flowable<T> {
     return subscribeOn(Schedulers.io())
 }
 
-fun <T> Flowable<T>.subscribeUi(): Flowable<T> {
+fun <T> Flowable<T>.subscribeMain(): Flowable<T> {
     return observeOn(AndroidSchedulers.mainThread())
 }
