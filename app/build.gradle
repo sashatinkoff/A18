@@ -127,6 +127,7 @@ dependencies {
 // Stuff
     implementation "com.google.code.gson:gson:${versions.gson}"
     implementation "com.karumi:dexter:${versions.dexter}"
+
 // cores
     implementation project(':utils')
     implementation project(':logger')

@@ -30,6 +30,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
 // support
     implementation "com.google.android.material:material:${versions.material}"
+    implementation "androidx.appcompat:appcompat:${versions.androidx}"
 // Stuff
     implementation "com.google.code.gson:gson:${versions.gson}"
     implementation "androidx.annotation:annotation:${versions.androidx}"
