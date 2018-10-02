@@ -15,6 +15,7 @@
         android:background="#000"
         android:gravity="center"
         android:padding="6dp"
+        android:textSize="20sp"
         android:text="@{name}"
         android:textColor="#FFF" />
 

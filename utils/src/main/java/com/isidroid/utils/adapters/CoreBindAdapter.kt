@@ -130,6 +130,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
 
     // Open and abstract functions
     open fun createLoadingHolder(view: View): CoreLoadingHolder = CoreLoadingHolder(view)
+
     abstract fun onUpdateHolder(binding: ViewDataBinding, item: T)
 
     open fun onCreate() {}
@@ -140,14 +141,14 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
 
 
     abstract fun resource(viewType: Int): Int
-    abstract fun createHolder(binding: ViewDataBinding, viewType: Int): CoreHolder
+    fun createHolder(binding: ViewDataBinding, viewType: Int): CoreHolder = Holder<T>(binding)
 
     companion object {
         const val VIEW_TYPE_NORMAL = 0
         const val VIEW_TYPE_LOADING = 1
     }
 
-    class Holder<T, ViewDataBinding : androidx.databinding.ViewDataBinding>(b: ViewDataBinding) : CoreBindHolder<T, ViewDataBinding>(b) {
+    class Holder<T>(b: ViewDataBinding) : CoreBindHolder<T, ViewDataBinding>(b) {
         override fun onBind(item: T) {}
     }
 }

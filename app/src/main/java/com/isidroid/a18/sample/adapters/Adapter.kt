@@ -23,18 +23,24 @@ class Adapter : CoreBindAdapter<String>() {
     }
 
     override fun onUpdateHolder(binding: ViewDataBinding, item: String) {
-        if (binding is ItemSamplePersonBinding) binding.name = item
-        else if (binding is ItemSampleCarBinding) binding.model = item
+        when (binding) {
+            is ItemSamplePersonBinding -> binding.name = item
+            is ItemSampleCarBinding -> binding.model = item
+        }
     }
 
     override fun resource(viewType: Int): Int {
         return if (viewType == TYPE_PERSON) R.layout.item_sample_person
         else R.layout.item_sample_car
     }
-
-    override fun createHolder(binding: ViewDataBinding, viewType: Int): CoreHolder {
-        return if (viewType == TYPE_PERSON) Holder<String, ItemSamplePersonBinding>(binding as ItemSamplePersonBinding)
-        else Holder<String, ItemSampleCarBinding>(binding as ItemSampleCarBinding)
-    }
+//
+//    override fun createHolder(binding: ViewDataBinding, viewType: Int): CoreHolder {
+//        return when(viewType){
+//            TYPE_PERSON ->
+//        }
+//
+//        return if (viewType == TYPE_PERSON) Holder<String>(binding)
+//        else Holder<String>(binding)
+//    }
 }
 
