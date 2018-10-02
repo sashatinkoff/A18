@@ -44,8 +44,6 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
         return DataBindingUtil.inflate(inflater, resource(viewType), parent, false)
     }
 
-    open fun onDataBindingCreate() {}
-
     @Suppress("UNCHECKED_CAST")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoreHolder {
         return when (viewType) {
@@ -54,11 +52,21 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
         }
     }
 
-    override fun onBindViewHolder(holder: CoreHolder, position: Int) {
+    final override fun onBindViewHolder(holder: CoreHolder, position: Int) {
         when (getItemViewType(position)) {
             VIEW_TYPE_LOADING -> updateLoadingViewHolder(holder as CoreLoadingHolder, position)
             else -> updateViewHolder(holder, position)
         }
+
+
+        val item = try {
+            items[position]
+        } catch (e: Exception) {
+            null
+        }
+
+        if (item != null)
+            (holder as? CoreBindHolder<*, *>)?.let { onUpdateHolder(it.binding, item) }
     }
 
     private fun updateLoadingViewHolder(holder: CoreLoadingHolder, position: Int) {
@@ -122,6 +130,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
 
     // Open and abstract functions
     open fun createLoadingHolder(view: View): CoreLoadingHolder = CoreLoadingHolder(view)
+    abstract fun onUpdateHolder(binding: ViewDataBinding, item: T)
 
     open fun onCreate() {}
     open fun onReset() {}
@@ -136,5 +145,9 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     companion object {
         const val VIEW_TYPE_NORMAL = 0
         const val VIEW_TYPE_LOADING = 1
+    }
+
+    class Holder<T, ViewDataBinding : androidx.databinding.ViewDataBinding>(b: ViewDataBinding) : CoreBindHolder<T, ViewDataBinding>(b) {
+        override fun onBind(item: T) {}
     }
 }
