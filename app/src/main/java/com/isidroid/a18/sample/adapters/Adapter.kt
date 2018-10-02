@@ -14,29 +14,31 @@ const val TYPE_CUSTOM = 300
 
 
 class Adapter : CoreBindAdapter<String>() {
+    override fun onUpdateHolder(binding: ViewDataBinding, position: Int) {
+        val item = items[position]
+        when (binding) {
+            is ItemSamplePersonBinding -> binding.name = item
+            is ItemSampleCarBinding -> binding.model = item
+            is ItemSampleCustomBinding -> binding.value = item
+        }
+    }
+
     override fun onReset() {
-        add("@Sasha", "Vaz", "Toyota", "hyunday")
-        add("#BREAK IT")
-        add("@Dima", "Hyundai", "UAZ", "15")
+//        add("@Sasha", "Vaz", "Toyota", "hyunday")
+//        add("#BREAK IT")
+//        add("@Dima", "Hyundai", "UAZ", "15")
         add("#BREAK IT222")
 
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return when {
-            items[position].startsWith("@") -> TYPE_PERSON
-            items[position].startsWith("#") -> TYPE_CUSTOM
-            else -> TYPE_CAR
-        }
-    }
+//    override fun getItemViewType(position: Int): Int {
+//        return when {
+//            items[position].startsWith("@") -> TYPE_PERSON
+//            items[position].startsWith("#") -> TYPE_CUSTOM
+//            else -> TYPE_CAR
+//        }
+//    }
 
-    override fun onUpdateHolder(binding: ViewDataBinding, item: String) {
-        when (binding) {
-            is ItemSamplePersonBinding -> binding.name = item
-            is ItemSampleCarBinding -> binding.model = item
-//            is ItemSampleCustomBinding -> binding.value = item
-        }
-    }
 
     override fun resource(viewType: Int): Int {
         return when (viewType) {

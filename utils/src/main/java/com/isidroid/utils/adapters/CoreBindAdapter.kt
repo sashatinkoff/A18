@@ -1,7 +1,6 @@
 package com.isidroid.utils.adapters
 
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,15 +61,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
             else -> updateViewHolder(holder, position)
         }
 
-
-        val item = try {
-            items[position]
-        } catch (e: Exception) {
-            null
-        }
-
-        if (item != null)
-            (holder as? CoreBindHolder<*, *>)?.let { onUpdateHolder(it.binding, item) }
+        (holder as? CoreBindHolder<*, *>)?.let { onUpdateHolder(it.binding, position) }
     }
 
     private fun updateLoadingViewHolder(holder: CoreLoadingHolder, position: Int) {
@@ -135,7 +126,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     // Open and abstract functions
     open fun createLoadingHolder(view: View): CoreLoadingHolder = CoreLoadingHolder(view)
 
-    abstract fun onUpdateHolder(binding: ViewDataBinding, item: T)
+    abstract fun onUpdateHolder(binding: ViewDataBinding, position: Int)
 
     open fun onCreate() {}
     open fun onReset() {}
