@@ -52,6 +52,10 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
         }
     }
 
+    open fun createHolder(binding: ViewDataBinding, viewType: Int): CoreHolder {
+        return Holder<T>(binding)
+    }
+
     final override fun onBindViewHolder(holder: CoreHolder, position: Int) {
         when (getItemViewType(position)) {
             VIEW_TYPE_LOADING -> updateLoadingViewHolder(holder as CoreLoadingHolder, position)
@@ -76,7 +80,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
 
     private fun updateViewHolder(holder: CoreHolder, position: Int) {
         try {
-            (holder as? CoreBindHolder<T, out ViewDataBinding>)?.bind(items[position])
+            (holder as? CoreBindHolder<T, ViewDataBinding>)?.bind(items[position])
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -139,9 +143,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     open fun onUpdate(item: T) {}
     open fun onRemove(item: T) {}
 
-
     abstract fun resource(viewType: Int): Int
-    fun createHolder(binding: ViewDataBinding, viewType: Int): CoreHolder = Holder<T>(binding)
 
     companion object {
         const val VIEW_TYPE_NORMAL = 0
