@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager.widget.ViewPager
 
 object YViewUtils {
     fun hideSoftKeyboard(activity: AppCompatActivity?) {
@@ -20,4 +21,37 @@ object YViewUtils {
         val params = view.layoutParams as ViewGroup.MarginLayoutParams
         return params.topMargin + params.bottomMargin + view.paddingTop + view.paddingBottom + view.height
     }
+
+    fun findViewsByTag(root: View, tag: String?, callback: ((view: View) -> Unit)? = null): ArrayList<View> {
+        val views = ArrayList<View>()
+        if (root !is ViewGroup) return views
+
+        val childCount = root.childCount
+        for (i in 0 until childCount) {
+            val child = root.getChildAt(i)
+            if (child is ViewGroup)
+                views.addAll(findViewsByTag(child, tag, callback))
+
+            val tagObj = child.tag
+            if (tagObj != null && tagObj == tag) {
+                callback?.invoke(child)
+                views.add(child)
+            }
+        }
+
+        return views
+    }
+}
+
+inline fun ViewPager.onSelected(crossinline action: (position: Int) -> Unit) = addListener(onSelected = action)
+inline fun ViewPager.addListener(crossinline onSelected: (position: Int) -> Unit = {}): ViewPager {
+
+    val listener = object : ViewPager.OnPageChangeListener {
+        override fun onPageScrollStateChanged(state: Int) {}
+        override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+        override fun onPageSelected(position: Int) = onSelected(position)
+    }
+
+    addOnPageChangeListener(listener)
+    return this
 }

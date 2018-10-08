@@ -79,6 +79,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
 
     fun update(item: T) {
         findPosition(item) {
+            items[it] = item
             onUpdate(item)
             notifyItemChanged(it)
         }
