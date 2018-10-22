@@ -15,10 +15,13 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     protected open val loadingResource: Int = R.layout.item_loading
     protected open val hasInitialLoading = false
 
-    val items = mutableListOf<T>()
+    var items = mutableListOf<T>()
 
     fun onLoadMore(callback: (() -> Unit)) = apply { this.loadMoreCallback = callback }
-    fun add(vararg items: T) = apply { this.items.addAll(items) }
+    fun add(vararg items: T) = apply {
+        insert(items.asList())
+        notifyDataSetChanged()
+    }
 
     fun create() = apply {
         hasMore = hasInitialLoading
@@ -98,9 +101,19 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
         if (position >= 0) callback.invoke(position)
     }
 
-    fun insert(items: List<T>, hasMore: Boolean) {
+    fun insert(items: List<T>, hasMore: Boolean = false) {
         this.hasMore = hasMore
-        this.items.addAll(items)
+
+        items.intersect(this.items).forEach {
+            val position = this.items.indexOf(it)
+            this.items[position] = it
+        }
+
+        val all = mutableListOf<T>()
+        all.addAll(this.items)
+        all.addAll(items)
+
+        this.items = all.distinct().toMutableList()
         notifyDataSetChanged()
     }
 
@@ -127,6 +140,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     // Open and abstract functions
     open fun createLoadingHolder(view: View): CoreLoadingHolder = CoreLoadingHolder(view)
 
+    abstract fun resource(viewType: Int): Int
     abstract fun onUpdateHolder(binding: ViewDataBinding, position: Int)
 
     open fun onCreate() {}
@@ -135,7 +149,6 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     open fun onUpdate(item: T) {}
     open fun onRemove(item: T) {}
 
-    abstract fun resource(viewType: Int): Int
 
     companion object {
         const val VIEW_TYPE_NORMAL = 0
