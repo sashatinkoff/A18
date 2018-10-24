@@ -34,6 +34,6 @@ abstract class BasePage<D : ViewDataBinding> : Fragment(), LifecycleObserver {
         return dataBinding.root
     }
 
-    abstract fun onDataBindingCreated(dataBinding: ViewDataBinding)
+    abstract fun onDataBindingCreated(dataBinding: D)
     abstract fun onCreateViewModel()
 }
