@@ -16,6 +16,12 @@ abstract class BasePage<D : ViewDataBinding> : Fragment(), LifecycleObserver {
     protected lateinit var dataBinding: D
 
     @CallSuper
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        onCreateViewModel()
+    }
+
+    @CallSuper
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         lifecycle.addObserver(this)
@@ -24,6 +30,10 @@ abstract class BasePage<D : ViewDataBinding> : Fragment(), LifecycleObserver {
     @CallSuper
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         dataBinding = DataBindingUtil.inflate(inflater, resource, container, false)
+        onDataBindingCreated(dataBinding)
         return dataBinding.root
     }
+
+    abstract fun onDataBindingCreated(dataBinding: ViewDataBinding)
+    abstract fun onCreateViewModel()
 }
