@@ -136,6 +136,7 @@ dependencies {
     implementation project(':utils')
     implementation project(':logger')
     implementation project(':realm')
+    implementation project(':pics')
 }
 
 //apply plugin: 'com.google.gms.google-services'

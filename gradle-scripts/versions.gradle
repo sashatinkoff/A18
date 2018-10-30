@@ -16,7 +16,7 @@ ext {
             'lifecycle'               : '2.0.0',
             'material'                : '1.0.0',
             'worker'                  : '1.0.0-alpha08',
-            'navigation'              : '1.0.0-alpha06',
+            'navigation'              : '1.0.0-alpha07',
 
             // libraries
             'crashlytics'             : "2.9.4",
