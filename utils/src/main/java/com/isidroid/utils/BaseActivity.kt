@@ -21,6 +21,6 @@ abstract class BaseActivity : AppCompatActivity(), LifecycleObserver {
         YViewUtils.hideSoftKeyboard(this)
     }
 
-    abstract fun onCreateBinding()
+    open fun onCreateBinding() {}
     abstract fun onCreateViewModel()
 }

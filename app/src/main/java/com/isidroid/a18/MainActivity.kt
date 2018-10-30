@@ -5,6 +5,8 @@ import com.isidroid.utils.BaseActivity
 
 
 class MainActivity : BaseActivity() {
+    override fun onCreateViewModel() {}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

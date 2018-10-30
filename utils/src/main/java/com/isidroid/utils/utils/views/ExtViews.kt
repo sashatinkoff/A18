@@ -22,12 +22,12 @@ inline fun AppCompatEditText.onAfterChanged(crossinline action: (Editable?) -> U
 inline fun AppCompatEditText.onBeforeChange(crossinline action: (CharSequence?, Int, Int, Int) -> Unit) = addTextWatcherListener(before = action)
 inline fun AppCompatEditText.onTextChanged(crossinline action: (CharSequence?, Int, Int, Int) -> Unit) = addTextWatcherListener(onChanged = action)
 inline fun AppCompatEditText.addTextWatcherListener(
-        crossinline after: (editable: Editable?) -> Unit = {},
-        crossinline before: (text: CharSequence?, start: Int, count: Int, after: Int) -> Unit = { _, _, _, _ -> },
-        crossinline onChanged: (text: CharSequence?, start: Int, count: Int, after: Int) -> Unit = { _, _, _, _ -> }
+        crossinline after: (Editable?) -> Unit = {},
+        crossinline before: (CharSequence?, Int, Int, Int) -> Unit = { _, _, _, _ -> },
+        crossinline onChanged: (CharSequence?, Int, Int, Int) -> Unit = { _, _, _, _ -> }
 ) {
     val listener = object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) = after(s)
+        override fun afterTextChanged(e: Editable?) = after(e)
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = before(s, start, count, after)
         override fun onTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = onChanged(s, start, count, after)
     }
