@@ -49,6 +49,7 @@ open class TakePictureViewModel : ViewModel() {
     fun onResult(requestCode: Int, intent: Intent?) {
         val callback: (Result?, Throwable?) -> Unit = { r, t ->
             imageInfo.postValue(ImageInfo(r, t))
+            if(r?.localPath != null) onImageReady(r)
         }
 
         if (intent?.data != null && requestCode == PictureConfig.get().codePickPicture)
@@ -56,6 +57,8 @@ open class TakePictureViewModel : ViewModel() {
         else if (requestCode == PictureConfig.get().codeTakePicture && takePictureRequest != null)
             repository.processPhoto(takePictureRequest, callback)
     }
+
+    protected open fun onImageReady(result: Result) {}
 
     override fun onCleared() {
         super.onCleared()
