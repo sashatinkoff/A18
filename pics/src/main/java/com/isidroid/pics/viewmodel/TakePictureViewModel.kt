@@ -15,8 +15,11 @@ open class TakePictureViewModel : ViewModel() {
     private val repository = TakePictureRepository(compositeDisposable)
     private var takePictureRequest: TakePictureRequest? = null
     val imageInfo = MutableLiveData<ImageInfo>()
+    var data: HashMap<String, String>? = null
 
-    fun takePicture(caller: Any, scale: Float? = null, maxSize: Int? = null) {
+    fun takePicture(caller: Any, data: HashMap<String, String>? = null,
+                    scale: Float? = null, maxSize: Int? = null) {
+        this.data = data
         val activity = caller as? Activity ?: (caller as Fragment).activity
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         try {
@@ -31,7 +34,8 @@ open class TakePictureViewModel : ViewModel() {
         }
     }
 
-    fun pickGallery(caller: Any) {
+    fun pickGallery(caller: Any, data: HashMap<String, String>? = null) {
+        this.data = data
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = "image/*"
@@ -48,8 +52,8 @@ open class TakePictureViewModel : ViewModel() {
 
     fun onResult(requestCode: Int, intent: Intent?) {
         val callback: (Result?, Throwable?) -> Unit = { r, t ->
-            imageInfo.postValue(ImageInfo(r, t))
-            if(r?.localPath != null) onImageReady(r)
+            if (r?.localPath != null) onImageReady(r, data)
+            imageInfo.postValue(ImageInfo(r, t, data))
         }
 
         if (intent?.data != null && requestCode == PictureConfig.get().codePickPicture)
@@ -58,7 +62,7 @@ open class TakePictureViewModel : ViewModel() {
             repository.processPhoto(takePictureRequest, callback)
     }
 
-    protected open fun onImageReady(result: Result) {}
+    protected open fun onImageReady(result: Result, data: HashMap<String, String>?) {}
 
     override fun onCleared() {
         super.onCleared()
@@ -66,5 +70,5 @@ open class TakePictureViewModel : ViewModel() {
     }
 
     data class TakePictureRequest(val file: File, val scale: Float? = null, val maxSize: Int? = null)
-    data class ImageInfo(val result: Result?, val throwable: Throwable? = null)
+    data class ImageInfo(val result: Result?, val throwable: Throwable? = null, val data: HashMap<String, String>?)
 }
