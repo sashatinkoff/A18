@@ -2,6 +2,8 @@ package com.isidroid.realm
 
 import android.app.Activity
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -25,6 +27,11 @@ object YRealm {
             execute(this)
             if (!transaction) commitTransaction()
         }
+    }
+
+    fun realmExeMain(execute: (realm: Realm) -> Unit) {
+        Handler(Looper.getMainLooper())
+                .run { realmExe(execute) }
     }
 
     fun backup(activity: Activity? = null) {
