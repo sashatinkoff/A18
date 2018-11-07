@@ -1,6 +1,5 @@
 package com.isidroid.utils.utils.views
 
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import com.isidroid.utils.R
@@ -21,10 +20,11 @@ object YToolbarUtils {
         return subtitleView
     }
 
-    fun subtitleDropdown(toolbar: Toolbar, onClick: ((View) -> Unit)? = null) {
-        subtitle(toolbar)?.let { view ->
+    fun subtitleDropdown(toolbar: Toolbar, onClick: ((TextView) -> Unit)? = null): TextView? {
+        return subtitle(toolbar)?.let { view ->
             view.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_down, 0)
-            view.setOnClickListener { onClick?.invoke(it) }
+            view.setOnClickListener { onClick?.invoke(it as TextView) }
+            view
         }
     }
 }
