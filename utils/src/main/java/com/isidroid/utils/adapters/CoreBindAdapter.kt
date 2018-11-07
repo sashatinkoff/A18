@@ -28,6 +28,11 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
         onCreate()
     }
 
+    fun more(more: Boolean = true) = apply {
+        this.hasMore = more
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int {
         var size = items.size
         if (hasMore) size++
