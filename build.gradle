@@ -1,5 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply from: 'gradle-scripts/versions.gradle'
+apply from: 'versions.gradle'
 
 // global variables are stored in gradle.properties
 

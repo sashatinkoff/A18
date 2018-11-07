@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
-apply from: '../gradle-scripts/tasks.gradle'
+apply from: '../tasks.gradle'
 
 android {
     compileSdkVersion versions.compileSdk

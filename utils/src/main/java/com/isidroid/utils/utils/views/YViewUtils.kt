@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager.widget.ViewPager
 
 object YViewUtils {
     fun hideSoftKeyboard(activity: AppCompatActivity?) {
@@ -41,5 +40,7 @@ object YViewUtils {
 
         return views
     }
+
+
 }
 
