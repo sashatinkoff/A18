@@ -4,6 +4,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
@@ -106,7 +107,8 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
         if (position >= 0) callback.invoke(position)
     }
 
-    fun insert(items: List<T>, hasMore: Boolean = false) {
+    @CallSuper
+    open fun insert(items: List<T>, hasMore: Boolean = false) {
         this.hasMore = hasMore
 
         items.intersect(this.items).forEach {
