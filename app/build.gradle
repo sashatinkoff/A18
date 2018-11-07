@@ -69,7 +69,9 @@ android {
     }
 
     dexOptions {
-        preDexLibraries = false
+        preDexLibraries = true
+        incremental true
+        javaMaxHeapSize "4g"
     }
 
     task aPublishAll(type: Copy, dependsOn: "assembleRelease") {

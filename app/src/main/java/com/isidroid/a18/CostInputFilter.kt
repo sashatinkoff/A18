@@ -1,9 +1,10 @@
-package com.isidroid.utils.utils.views
+package com.isidroid.a18
 
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import androidx.appcompat.widget.AppCompatEditText
+import timber.log.Timber
 
 class CostInputFilter(private var editText: AppCompatEditText) : TextWatcher {
     private var delimiter = "."
@@ -21,15 +22,18 @@ class CostInputFilter(private var editText: AppCompatEditText) : TextWatcher {
         editText.setRawInputType(InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL)
         editText.addTextChangedListener(this)
 
+        Timber.i("textSelected")
         if (textSelected) {
             editText.isFocusable = true
             editText.setOnFocusChangeListener { _, hasFocus ->
+                Timber.i("onFocus hasFocus=$hasFocus, hasAlreadyFocused=$hasAlreadyFocused, " +
+                        "length=${editText.text?.length}")
+
                 if (hasFocus && !hasAlreadyFocused) {
                     editText.setSelection(0, editText.text?.length ?: 0)
                     hasAlreadyFocused = true
                 }
             }
-
         }
     }
 
