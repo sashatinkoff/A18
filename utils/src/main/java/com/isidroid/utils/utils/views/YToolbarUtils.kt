@@ -2,27 +2,17 @@ package com.isidroid.utils.utils.views
 
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
-import com.isidroid.utils.R
 
 object YToolbarUtils {
     fun subtitle(toolbar: Toolbar): TextView? {
-        var subtitleView: TextView? = null
-        toolbar.post {
-            (0..toolbar.childCount).reversed().forEach lit@{ pos ->
-                val view = toolbar.getChildAt(pos)
-
-                if (view is TextView) {
-                    subtitleView = view
-                    return@lit
-                }
-            }
-        }
-        return subtitleView
+        val textviews = mutableListOf<TextView>()
+        (0..toolbar.childCount).forEach { pos -> (toolbar.getChildAt(pos) as? TextView)?.let { textviews.add(it) } }
+        return if (textviews.size == 2) textviews.last() else null
     }
 
     fun subtitleDropdown(toolbar: Toolbar, onClick: ((TextView) -> Unit)? = null): TextView? {
         return subtitle(toolbar)?.let { view ->
-            view.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_drop_down, 0)
+            view.setCompoundDrawablesWithIntrinsicBounds(0, 0, com.isidroid.utils.R.drawable.ic_arrow_drop_down, 0)
             view.setOnClickListener { onClick?.invoke(it as TextView) }
             view
         }
