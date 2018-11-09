@@ -37,9 +37,7 @@ ext.autoIncrementBuildNumber = {
 // Hook to check if the release/debug task is among the tasks to be executed.
 //Let's make use of it
 gradle.taskGraph.whenReady { taskGraph ->
-    if (taskGraph.hasTask(assembleDebug)) {
-//        autoIncrementBuildNumber()
-    } else if (taskGraph.hasTask("release")) {
-        autoIncrementBuildNumber()
+    taskGraph.allTasks.iterator().forEachRemaining { t ->
+        if (t.name > "release") autoIncrementBuildNumber()
     }
 }
