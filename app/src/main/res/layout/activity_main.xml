@@ -14,8 +14,6 @@
             app:elevation="14dp">
 
             <LinearLayout
-                android:background="#ADADAD"
-                android:paddingTop="100dp"
                 android:id="@+id/backdropContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -42,6 +40,7 @@
 
 
         <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:elevation="0dp"
@@ -50,8 +49,8 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
                 android:background="?attr/bgColor"
+                android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:title="Toolbar title" />
 

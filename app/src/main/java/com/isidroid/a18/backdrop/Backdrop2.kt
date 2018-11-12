@@ -31,10 +31,11 @@ class Backdrop2(
 
     private val activity: Activity = frontContainer.context as Activity
     private val height: Int
-    private var duration = 500L
     private var interpolator: Interpolator = BounceInterpolator()
     private var isDetroying = false
     private var frontLayerMinHeight = 0
+    var duration = 500L
+
 
     private val listeners = mutableListOf<BackdropListener>()
     private var state = STATE_COLLAPSED
@@ -159,6 +160,8 @@ class Backdrop2(
     }
 
     private fun translateY(containerHeight: Int): Float {
+        Timber.i("containerHeight=$containerHeight")
+
         val translateFullScreen = (height - activity.resources.getDimensionPixelSize(R.dimen.navigation_reveal_height))
         var translateY = containerHeight
         if (translateY == 0 || translateY > translateFullScreen) translateY = translateFullScreen

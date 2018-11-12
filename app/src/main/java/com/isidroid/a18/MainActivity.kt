@@ -28,7 +28,7 @@ import java.util.*
 
 
 class MainActivity : BaseActivity() {
-    override fun onCreateViewModel() {  }
+    override fun onCreateViewModel() {}
 
     private val compositeDisposable = CompositeDisposable()
     private lateinit var backdrop: Backdrop2
@@ -52,8 +52,22 @@ class MainActivity : BaseActivity() {
 
                 .onCollapse { log("onCollapse") }
                 .onExpand { log("onExpand") }
-                .onCollapseStarted { log("onCollapseStarted") }
-                .onExpandStarted { log("onExpandStarted") }
+                .onCollapseStarted {
+                    log("onCollapseStarted")
+                    appbarLayout.animate()
+                            .alpha(1f)
+                            .setDuration(backdrop.duration)
+                            .start()
+
+                    appbarLayout.visibility = View.VISIBLE
+                }
+                .onExpandStarted {
+                    log("onExpandStarted")
+                    appbarLayout.animate()
+                            .alpha(0f)
+                            .setDuration(backdrop.duration)
+                            .start()
+                }
                 .onCollapseDone { log("onCollapseDone") }
                 .onExpandDone { log("onExpandDone") }
                 .onDestroyStarted { log("onDestroyStarted") }
@@ -69,7 +83,7 @@ class MainActivity : BaseActivity() {
                 .add(backdrop)
 
 
-        button.setOnClickListener { backdrop.expand(true) }
+        button.setOnClickListener { backdrop.expand(false) }
         colorButton.setOnClickListener { changeColor() }
         loadContentButton.setOnClickListener { loadContent() }
         interpolators.setOnClickListener { changeInterpolator() }
