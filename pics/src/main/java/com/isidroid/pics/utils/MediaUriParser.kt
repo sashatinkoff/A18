@@ -36,8 +36,7 @@ class MediaUriParser {
 
     @Throws(IOException::class)
     private fun googlePhotos(uri: Uri): Cursor? {
-        var inputStream: InputStream? = null
-        inputStream = context.contentResolver.openInputStream(uri)
+        var inputStream = context.contentResolver.openInputStream(uri)
         result = Result()
         //            result.bitmap = BitmapUtils.INSTANCE.decodeStream(is);
 
@@ -138,7 +137,7 @@ class MediaUriParser {
                 context.cacheDir      /* directory */
         )
 
-        var out: FileOutputStream? = null
+        var out: FileOutputStream?
         out = FileOutputStream(temp.absolutePath)
         result?.bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, out)
         result?.localPath = temp.absolutePath

@@ -45,7 +45,7 @@ object BitmapUtils {
             return Math.max(maximumTextureSize, IMAGE_MAX_BITMAP_DIMENSION)
         }
 
-    fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
+    fun calculateInSampleSize(options: BitmapFactory.Options, reqHeight: Int): Int {
         // Raw height and width of image
         val height = options.outHeight
         val width = options.outWidth
@@ -73,7 +73,7 @@ object BitmapUtils {
 
         if (options.outWidth == -1 || options.outHeight == -1) return null
         val maxAllowed = maxTextureSize
-        options.inSampleSize = calculateInSampleSize(options, maxAllowed, maxAllowed)
+        options.inSampleSize = calculateInSampleSize(options, maxAllowed)
         options.inJustDecodeBounds = false
 
         return BitmapFactory.decodeFile(path, options)
