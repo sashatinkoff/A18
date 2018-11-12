@@ -19,8 +19,14 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     var items = mutableListOf<T>()
 
     fun onLoadMore(callback: (() -> Unit)) = apply { this.loadMoreCallback = callback }
-    fun add(vararg items: T) = apply {
+
+    @CallSuper open fun add(vararg items: T) = apply {
         insert(items.asList())
+        notifyDataSetChanged()
+    }
+
+    @CallSuper open fun remove(vararg items: T) = apply {
+        items.forEach { this.items.remove(it) }
         notifyDataSetChanged()
     }
 
@@ -40,12 +46,10 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
         return size
     }
 
-
     override fun getItemViewType(position: Int): Int {
         return if (position == items.size && hasMore) VIEW_TYPE_LOADING
         else VIEW_TYPE_NORMAL
     }
-
 
     fun <T : ViewDataBinding> bindType(parent: ViewGroup, viewType: Int): T {
         val inflater = LayoutInflater.from(parent.context)
