@@ -16,6 +16,7 @@ import com.isidroid.a18.backdrop.*
 import com.isidroid.a18.databinding.SampleBackdropBinding
 import com.isidroid.utils.BaseActivity
 import com.isidroid.utils.addTo
+import com.isidroid.utils.utils.ScreenUtils
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -27,6 +28,8 @@ import java.util.*
 
 
 class MainActivity : BaseActivity() {
+    override fun onCreateViewModel() {  }
+
     private val compositeDisposable = CompositeDisposable()
     private lateinit var backdrop: Backdrop2
     private var colorPosition = 0
@@ -43,8 +46,9 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(toolbar)
 
         backdrop = Backdrop2(container, backdropContainer)
-                .duration(300L)
-                .interpolator(interpolatorsList[2])
+                .withDuration(300L)
+                .withInterpolator(interpolatorsList[2])
+                .withFrontLayerMinHeight(ScreenUtils.dpToPx(56))
 
                 .onCollapse { log("onCollapse") }
                 .onExpand { log("onExpand") }
@@ -81,8 +85,8 @@ class MainActivity : BaseActivity() {
             interpolatorsList[interpolatorPosition]
         }
 
-        backdrop.interpolator(interpolator)
-        Toast.makeText(this, "Switched interpolator to ${interpolator.javaClass}", Toast.LENGTH_LONG).show()
+        backdrop.withInterpolator(interpolator)
+        Toast.makeText(this, "Switched withInterpolator to ${interpolator.javaClass}", Toast.LENGTH_LONG).show()
     }
 
     private fun changeColor() {

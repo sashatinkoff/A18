@@ -34,6 +34,7 @@ class Backdrop2(
     private var duration = 500L
     private var interpolator: Interpolator = BounceInterpolator()
     private var isDetroying = false
+    private var frontLayerMinHeight = 0
 
     private val listeners = mutableListOf<BackdropListener>()
     private var state = STATE_COLLAPSED
@@ -68,8 +69,9 @@ class Backdrop2(
         }
     }
 
-    fun duration(duration: Long) = apply { this.duration = duration }
-    fun interpolator(interpolator: Interpolator) = apply { this.interpolator = interpolator }
+    fun withDuration(duration: Long) = apply { this.duration = duration }
+    fun withFrontLayerMinHeight(height: Int) = apply { this.frontLayerMinHeight = height }
+    fun withInterpolator(interpolator: Interpolator) = apply { this.interpolator = interpolator }
 
     fun addListener(listener: BackdropListener) = apply { this.listeners.add(listener) }
     fun clear() = apply {
@@ -140,7 +142,8 @@ class Backdrop2(
             interpolator = this@Backdrop2.interpolator
 
             doOnEnd {
-                if (frontContainer.translationY != translateY(backContainer.height)) animate(backContainer.height, true)
+                if (frontContainer.translationY != translateY(backContainer.height)
+                        && frontLayerMinHeight == 0) animate(backContainer.height, true)
                 else {
                     state = when (state) {
                         STATE_COLLAPSE_STARTED -> STATE_COLLAPSED
@@ -187,7 +190,7 @@ class Backdrop2(
     // ViewTreeObserver.OnGlobalLayoutListener
     override fun onGlobalLayout() {
         if (isExecuting() || isDetroying) return
-        val backHeight = backContainer.height
+        val backHeight = if (frontLayerMinHeight > 0) height - frontLayerMinHeight else backContainer.height
         val isAnimate = state == STATE_TO_COLLAPSE || state == STATE_TO_EXPAND
 
         animate(backHeight, isAnimate)

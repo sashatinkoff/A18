@@ -4,25 +4,34 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.isidroid.utils.R
 
-abstract class CoreBindAdapter<T, B : ViewDataBinding> : RecyclerView.Adapter<CoreHolder>() {
+abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     private var loadMoreCallback: (() -> Unit)? = null
     private var hasMore = false
     protected open val loadingResource: Int = R.layout.item_loading
     protected open val hasInitialLoading = false
 
-    val items = mutableListOf<T>()
+    var items = mutableListOf<T>()
 
     fun onLoadMore(callback: (() -> Unit)) = apply { this.loadMoreCallback = callback }
-    fun add(vararg items: T) = apply { this.items.addAll(items) }
+    fun add(vararg items: T) = apply {
+        insert(items.asList())
+        notifyDataSetChanged()
+    }
 
     fun create() = apply {
         hasMore = hasInitialLoading
         onCreate()
+    }
+
+    fun more(more: Boolean = true) = apply {
+        this.hasMore = more
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
@@ -31,28 +40,37 @@ abstract class CoreBindAdapter<T, B : ViewDataBinding> : RecyclerView.Adapter<Co
         return size
     }
 
+
     override fun getItemViewType(position: Int): Int {
         return if (position == items.size && hasMore) VIEW_TYPE_LOADING
         else VIEW_TYPE_NORMAL
+    }
+
+
+    fun <T : ViewDataBinding> bindType(parent: ViewGroup, viewType: Int): T {
+        val inflater = LayoutInflater.from(parent.context)
+        return DataBindingUtil.inflate(inflater, resource(viewType), parent, false)
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoreHolder {
         return when (viewType) {
             VIEW_TYPE_LOADING -> createLoadingHolder(loadingView(parent))
-            else -> {
-                val inflater = LayoutInflater.from(parent.context)
-                val binding: B = DataBindingUtil.inflate(inflater, resource(viewType), parent, false)
-                createHolder(binding, viewType)
-            }
+            else -> createHolder(bindType(parent, viewType), viewType)
         }
     }
 
-    override fun onBindViewHolder(holder: CoreHolder, position: Int) {
+    open fun createHolder(binding: ViewDataBinding, viewType: Int): CoreHolder {
+        return Holder<T>(binding)
+    }
+
+    final override fun onBindViewHolder(holder: CoreHolder, position: Int) {
         when (getItemViewType(position)) {
-            VIEW_TYPE_NORMAL -> updateViewHolder(holder, position)
             VIEW_TYPE_LOADING -> updateLoadingViewHolder(holder as CoreLoadingHolder, position)
+            else -> updateViewHolder(holder, position)
         }
+
+        (holder as? CoreBindHolder<*, *>)?.let { onUpdateHolder(it.binding, position) }
     }
 
     private fun updateLoadingViewHolder(holder: CoreLoadingHolder, position: Int) {
@@ -62,13 +80,15 @@ abstract class CoreBindAdapter<T, B : ViewDataBinding> : RecyclerView.Adapter<Co
 
     private fun updateViewHolder(holder: CoreHolder, position: Int) {
         try {
-            (holder as? CoreBindHolder<T, B>)?.bind(items[position])
+            (holder as? CoreBindHolder<T, ViewDataBinding>)?.bind(items[position])
         } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     fun update(item: T) {
         findPosition(item) {
+            items[it] = item
             onUpdate(item)
             notifyItemChanged(it)
         }
@@ -87,9 +107,20 @@ abstract class CoreBindAdapter<T, B : ViewDataBinding> : RecyclerView.Adapter<Co
         if (position >= 0) callback.invoke(position)
     }
 
-    fun insert(items: List<T>, hasMore: Boolean) {
+    @CallSuper
+    open fun insert(items: List<T>, hasMore: Boolean = false) {
         this.hasMore = hasMore
-        this.items.addAll(items)
+
+        items.intersect(this.items).forEach {
+            val position = this.items.indexOf(it)
+            this.items[position] = it
+        }
+
+        val all = mutableListOf<T>()
+        all.addAll(this.items)
+        all.addAll(items)
+
+        this.items = all.distinct().toMutableList()
         notifyDataSetChanged()
     }
 
@@ -116,6 +147,9 @@ abstract class CoreBindAdapter<T, B : ViewDataBinding> : RecyclerView.Adapter<Co
     // Open and abstract functions
     open fun createLoadingHolder(view: View): CoreLoadingHolder = CoreLoadingHolder(view)
 
+    abstract fun resource(viewType: Int): Int
+    abstract fun onUpdateHolder(binding: ViewDataBinding, position: Int)
+
     open fun onCreate() {}
     open fun onReset() {}
 
@@ -123,11 +157,12 @@ abstract class CoreBindAdapter<T, B : ViewDataBinding> : RecyclerView.Adapter<Co
     open fun onRemove(item: T) {}
 
 
-    abstract fun resource(viewType: Int): Int
-    abstract fun createHolder(binding: B, viewType: Int): CoreHolder
-
     companion object {
         const val VIEW_TYPE_NORMAL = 0
         const val VIEW_TYPE_LOADING = 1
+    }
+
+    class Holder<T>(b: ViewDataBinding) : CoreBindHolder<T, ViewDataBinding>(b) {
+        override fun onBind(item: T) {}
     }
 }

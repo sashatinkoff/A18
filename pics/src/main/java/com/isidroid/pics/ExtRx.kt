@@ -1,4 +1,4 @@
-package com.isidroid.utils
+package com.isidroid.pics
 
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers

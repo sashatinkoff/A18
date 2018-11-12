@@ -14,6 +14,7 @@
             app:elevation="14dp">
 
             <LinearLayout
+                android:background="#ADADAD"
                 android:paddingTop="100dp"
                 android:id="@+id/backdropContainer"
                 android:layout_width="match_parent"

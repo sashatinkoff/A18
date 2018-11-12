@@ -31,6 +31,7 @@ dependencies {
 // support
     implementation "com.google.android.material:material:${versions.material}"
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
+// Stuff
     implementation "androidx.annotation:annotation:${versions.annotationsX}"
 // rx
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"

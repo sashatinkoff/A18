@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'realm-android'
 apply plugin: 'kotlin-kapt'
 
-apply from: '../gradle-scripts/tasks.gradle'
+apply from: '../tasks.gradle'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -28,5 +28,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
 // Stuff
     implementation "com.google.code.gson:gson:${versions.gson}"
-    implementation "androidx.annotation:annotation:${versions.androidx}"
+    implementation "androidx.annotation:annotation:${versions.annotationsX}"
 }

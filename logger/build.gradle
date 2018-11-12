@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'io.fabric'
 
-apply from: '../gradle-scripts/tasks.gradle'
+apply from: '../tasks.gradle'
 
 
 repositories {
@@ -47,7 +47,7 @@ dependencies {
     }
 
     // must be removed in the project's build.gradle
-    implementation "androidx.core:core-ktx:${versions.androidx}"
+    implementation "androidx.core:core-ktx:${versions.corektx}"
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
 }

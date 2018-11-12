@@ -21,4 +21,27 @@ object YViewUtils {
         val offsets = params.topMargin + params.bottomMargin + view.paddingTop + view.paddingBottom
         return view.height + if (onlyHeight) 0 else offsets
     }
+
+    fun findViewsByTag(root: View, tag: String?, callback: ((view: View) -> Unit)? = null): ArrayList<View> {
+        val views = ArrayList<View>()
+        if (root !is ViewGroup) return views
+
+        val childCount = root.childCount
+        for (i in 0 until childCount) {
+            val child = root.getChildAt(i)
+            if (child is ViewGroup)
+                views.addAll(findViewsByTag(child, tag, callback))
+
+            val tagObj = child.tag
+            if (tagObj != null && tagObj == tag) {
+                callback?.invoke(child)
+                views.add(child)
+            }
+        }
+
+        return views
+    }
+
+
 }
+
