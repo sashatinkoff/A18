@@ -70,7 +70,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
             else -> updateViewHolder(holder, position)
         }
 
-        (holder as? CoreBindHolder<*, *>)?.let { onUpdateHolder(it.binding, position) }
+        (holder as? CoreBindHolder<*, *>)?.let { onBindHolder(it.binding, position) }
     }
 
     private fun updateLoadingViewHolder(holder: CoreLoadingHolder, position: Int) {
@@ -80,7 +80,9 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
 
     private fun updateViewHolder(holder: CoreHolder, position: Int) {
         try {
-            (holder as? CoreBindHolder<T, ViewDataBinding>)?.bind(items[position])
+            val item = items[position]
+            (holder as? CoreBindHolder<T, ViewDataBinding>)?.bind(item)
+            onUpdateHolder(holder, item)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -148,7 +150,9 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     open fun createLoadingHolder(view: View): CoreLoadingHolder = CoreLoadingHolder(view)
 
     abstract fun resource(viewType: Int): Int
-    abstract fun onUpdateHolder(binding: ViewDataBinding, position: Int)
+    abstract fun onBindHolder(binding: ViewDataBinding, position: Int)
+    open fun onUpdateHolder(holder: CoreHolder, item: T) {}
+
 
     open fun onCreate() {}
     open fun onReset() {}
