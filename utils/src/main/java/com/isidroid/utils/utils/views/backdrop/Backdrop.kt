@@ -1,4 +1,4 @@
-package com.isidroid.a18.backdrop
+package com.isidroid.utils.utils.views.backdrop
 
 import android.animation.ObjectAnimator
 import android.app.Activity
@@ -10,7 +10,6 @@ import android.view.animation.BounceInterpolator
 import android.view.animation.Interpolator
 import android.widget.FrameLayout
 import androidx.core.animation.doOnEnd
-import timber.log.Timber
 
 const val STATE_EXPANDED = "STATE_EXPANDED"
 const val STATE_COLLAPSED = "STATE_COLLAPSED"
@@ -20,7 +19,6 @@ const val STATE_EXPAND_STARTED = "STATE_EXPAND_STARTED"
 const val STATE_COLLAPSE_STARTED = "STATE_COLLAPSE_STARTED"
 const val STATE_SKIP = "STATE_SKIP"
 const val STATE_TO_DESTROY = "STATE_TO_DESTROY"
-
 
 const val VIEW_TAG = "BackdropView"
 
@@ -34,7 +32,6 @@ class Backdrop(
     private var isDetroying = false
     private var frontLayerMinHeight = 0
     var duration = 500L
-
 
     private val listeners = mutableListOf<BackdropListener>()
     private var state = STATE_COLLAPSED
@@ -161,8 +158,6 @@ class Backdrop(
     private fun translateY(containerHeight: Int): Float {
         val translateFullScreen = if (frontLayerMinHeight > 0) height - frontLayerMinHeight - frontContainer.top
         else containerHeight
-
-        Timber.i("height=$height, minHeight=$frontLayerMinHeight, top=${frontContainer.top}, y=$translateFullScreen")
         return (if (state == STATE_EXPAND_STARTED || state == STATE_EXPANDED) translateFullScreen else 0).toFloat()
     }
 

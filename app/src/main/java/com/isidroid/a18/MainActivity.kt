@@ -12,7 +12,7 @@ import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.isidroid.a18.backdrop.*
+import com.isidroid.utils.utils.views.backdrop.*
 import com.isidroid.a18.databinding.SampleBackdropBinding
 import com.isidroid.utils.BaseActivity
 import com.isidroid.utils.addTo
