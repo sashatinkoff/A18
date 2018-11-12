@@ -10,7 +10,6 @@ import android.view.animation.BounceInterpolator
 import android.view.animation.Interpolator
 import android.widget.FrameLayout
 import androidx.core.animation.doOnEnd
-import com.isidroid.utils.R
 import timber.log.Timber
 
 const val STATE_EXPANDED = "STATE_EXPANDED"
@@ -25,7 +24,7 @@ const val STATE_TO_DESTROY = "STATE_TO_DESTROY"
 
 const val VIEW_TAG = "BackdropView"
 
-class Backdrop2(
+class Backdrop(
         private val frontContainer: View,
         private val backContainer: View) : ViewTreeObserver.OnGlobalLayoutListener {
 
@@ -123,8 +122,8 @@ class Backdrop2(
         if (backContainer.height > 0) onGlobalLayout()
 
         backContainer.viewTreeObserver.apply {
-            removeOnGlobalLayoutListener(this@Backdrop2)
-            addOnGlobalLayoutListener(this@Backdrop2)
+            removeOnGlobalLayoutListener(this@Backdrop)
+            addOnGlobalLayoutListener(this@Backdrop)
         }
     }
 
@@ -140,7 +139,7 @@ class Backdrop2(
 
         ObjectAnimator.ofFloat(frontContainer, "translationY", translateY(containerHeight)).apply {
             duration = animationDuration
-            interpolator = this@Backdrop2.interpolator
+            interpolator = this@Backdrop.interpolator
 
             doOnEnd {
                 if (frontContainer.translationY != translateY(backContainer.height)
@@ -160,12 +159,11 @@ class Backdrop2(
     }
 
     private fun translateY(containerHeight: Int): Float {
-        Timber.i("containerHeight=$containerHeight")
+        val translateFullScreen = if (frontLayerMinHeight > 0) height - frontLayerMinHeight - frontContainer.top
+        else containerHeight
 
-        val translateFullScreen = (height - activity.resources.getDimensionPixelSize(R.dimen.navigation_reveal_height))
-        var translateY = containerHeight
-        if (translateY == 0 || translateY > translateFullScreen) translateY = translateFullScreen
-        return (if (state == STATE_EXPAND_STARTED || state == STATE_EXPANDED) translateY else 0).toFloat()
+        Timber.i("height=$height, minHeight=$frontLayerMinHeight, top=${frontContainer.top}, y=$translateFullScreen")
+        return (if (state == STATE_EXPAND_STARTED || state == STATE_EXPANDED) translateFullScreen else 0).toFloat()
     }
 
     fun destroy() {

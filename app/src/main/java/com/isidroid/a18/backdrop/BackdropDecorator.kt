@@ -5,7 +5,7 @@ import java.util.*
 abstract class BackdropDecorator : BackdropListener {
     private var guid = UUID.randomUUID().toString()
 
-    fun add(backdrop: Backdrop2) = apply {
+    fun add(backdrop: Backdrop) = apply {
         backdrop.addDecorator(this)
         onCreate()
     }

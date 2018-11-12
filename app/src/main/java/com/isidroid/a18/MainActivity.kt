@@ -31,7 +31,7 @@ class MainActivity : BaseActivity() {
     override fun onCreateViewModel() {}
 
     private val compositeDisposable = CompositeDisposable()
-    private lateinit var backdrop: Backdrop2
+    private lateinit var backdrop: Backdrop
     private var colorPosition = 0
     private var interpolatorPosition = 0
     private val interpolatorsList = arrayListOf<Interpolator>(
@@ -45,10 +45,12 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        backdrop = Backdrop2(container, backdropContainer)
+
+
+        backdrop = Backdrop(container, backdropContainer)
                 .withDuration(300L)
                 .withInterpolator(interpolatorsList[2])
-                .withFrontLayerMinHeight(ScreenUtils.dpToPx(56))
+                .withFrontLayerMinHeight(ScreenUtils.dpToPx(64))
 
                 .onCollapse { log("onCollapse") }
                 .onExpand { log("onExpand") }
@@ -160,6 +162,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun log(msg: String) {
-//        Timber.tag("Backdrop").i(msg)
+        Timber.tag("Backdrop").i(msg)
     }
 }
