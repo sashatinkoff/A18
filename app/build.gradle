@@ -99,9 +99,6 @@ android {
             println("delete compiled data")
         }
     }
-
-
-
 }
 
 dependencies {

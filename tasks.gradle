@@ -38,6 +38,9 @@ ext.autoIncrementBuildNumber = {
 //Let's make use of it
 gradle.taskGraph.whenReady { taskGraph ->
     taskGraph.allTasks.iterator().forEachRemaining { t ->
-        if (t.name > "release") autoIncrementBuildNumber()
+        def isAssemble = t.name.toLowerCase().contains("assemble")
+        def isRelease = t.name.toLowerCase().contains("release")
+
+        if (isAssemble && isRelease) autoIncrementBuildNumber()
     }
 }
