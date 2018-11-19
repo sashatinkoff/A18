@@ -130,9 +130,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
         notifyDataSetChanged()
     }
 
-    private fun loadingView(parent: ViewGroup): View {
-        return LayoutInflater.from(parent.context).inflate(loadingResource, parent, false)
-    }
+    private fun loadingView(parent: ViewGroup) = LayoutInflater.from(parent.context).inflate(loadingResource, parent, false)
 
     fun loadMore() {
         synchronized(this) {
@@ -154,16 +152,14 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     open fun createLoadingHolder(view: View): CoreLoadingHolder = CoreLoadingHolder(view)
 
     abstract fun resource(viewType: Int): Int
-    abstract fun onBindHolder(binding: ViewDataBinding, position: Int)
+    open fun onBindHolder(binding: ViewDataBinding, position: Int) {}
     open fun onUpdateHolder(holder: CoreHolder, item: T) {}
-
 
     open fun onCreate() {}
     open fun onReset() {}
 
     open fun onUpdate(item: T) {}
     open fun onRemove(item: T) {}
-
 
     companion object {
         const val VIEW_TYPE_NORMAL = 0

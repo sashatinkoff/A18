@@ -29,7 +29,6 @@ class CostInputFilter(private var editText: AppCompatEditText) : TextWatcher {
                     hasAlreadyFocused = true
                 }
             }
-
         }
     }
 
