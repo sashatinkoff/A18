@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleObserver
 import com.isidroid.utils.utils.views.YViewUtils
 
+
+/**
+ * Need to call onCreateBinding() onCreateViewModel()
+ */
 abstract class BaseActivity : AppCompatActivity(), LifecycleObserver {
 
     @CallSuper
@@ -22,5 +26,5 @@ abstract class BaseActivity : AppCompatActivity(), LifecycleObserver {
     }
 
     open fun onCreateBinding() {}
-    abstract fun onCreateViewModel()
+    open fun onCreateViewModel() {}
 }
