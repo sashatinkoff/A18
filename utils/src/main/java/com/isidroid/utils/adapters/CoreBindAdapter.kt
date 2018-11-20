@@ -9,11 +9,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.isidroid.utils.R
+import java.lang.IllegalStateException
 
 abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     private var loadMoreCallback: (() -> Unit)? = null
     private var hasMore = false
+    protected open val hasEmpty = false
     protected open val loadingResource: Int = R.layout.item_loading
+    protected open val emptyResource: Int = R.layout.item_empty
     protected open val hasInitialLoading = false
 
     var items = mutableListOf<T>()
@@ -41,36 +44,49 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     }
 
     override fun getItemCount(): Int {
-        var size = items.size
-        if (hasMore) size++
-        return size
+        return if (items.size == 0 && !hasMore && hasEmpty) 1
+        else {
+            var size = items.size
+            if (hasMore) size++
+            size
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == items.size && hasMore) VIEW_TYPE_LOADING
-        else VIEW_TYPE_NORMAL
+        return when {
+            position == items.size && hasMore -> VIEW_TYPE_LOADING
+            position == 0 && items.size == 0 && hasEmpty -> VIEW_TYPE_EMPTY
+            else -> VIEW_TYPE_NORMAL
+        }
+    }
+
+    private fun getResource(viewType: Int): Int {
+        return when (viewType) {
+            VIEW_TYPE_LOADING -> loadingResource
+            VIEW_TYPE_EMPTY -> emptyResource
+            else -> resource(viewType)
+        }
     }
 
     fun <T : ViewDataBinding> bindType(parent: ViewGroup, viewType: Int): T {
         val inflater = LayoutInflater.from(parent.context)
-        return DataBindingUtil.inflate(inflater, resource(viewType), parent, false)
+        return DataBindingUtil.inflate(inflater, getResource(viewType), parent, false)
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoreHolder {
         return when (viewType) {
-            VIEW_TYPE_LOADING -> createLoadingHolder(loadingView(parent))
+            VIEW_TYPE_LOADING -> createLoadingHolder(bindType(parent, viewType))
+            VIEW_TYPE_EMPTY -> createEmptyHolder(bindType(parent, viewType))
             else -> createHolder(bindType(parent, viewType), viewType)
         }
-    }
-
-    open fun createHolder(binding: ViewDataBinding, viewType: Int): CoreHolder {
-        return Holder<T>(binding)
     }
 
     final override fun onBindViewHolder(holder: CoreHolder, position: Int) {
         when (getItemViewType(position)) {
             VIEW_TYPE_LOADING -> updateLoadingViewHolder(holder as CoreLoadingHolder, position)
+            VIEW_TYPE_EMPTY -> {
+            }
             else -> updateViewHolder(holder, position)
         }
 
@@ -130,8 +146,6 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
         notifyDataSetChanged()
     }
 
-    private fun loadingView(parent: ViewGroup) = LayoutInflater.from(parent.context).inflate(loadingResource, parent, false)
-
     fun loadMore() {
         synchronized(this) {
             Handler().postDelayed({ loadMoreCallback?.invoke() }, 500)
@@ -149,9 +163,12 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     }
 
     // Open and abstract functions
-    open fun createLoadingHolder(view: View): CoreLoadingHolder = CoreLoadingHolder(view)
-
     abstract fun resource(viewType: Int): Int
+
+    open fun createLoadingHolder(binding: ViewDataBinding): CoreHolder = CoreLoadingHolder(binding)
+    open fun createEmptyHolder(binding: ViewDataBinding): CoreHolder = CoreEmptyHolder(binding)
+    open fun createHolder(binding: ViewDataBinding, viewType: Int): CoreHolder = Holder<T>(binding)
+
     open fun onBindHolder(binding: ViewDataBinding, position: Int) {}
     open fun onUpdateHolder(holder: CoreHolder, item: T) {}
 
@@ -164,9 +181,18 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     companion object {
         const val VIEW_TYPE_NORMAL = 0
         const val VIEW_TYPE_LOADING = 1
+        const val VIEW_TYPE_EMPTY = 2
     }
 
-    class Holder<T>(b: ViewDataBinding) : CoreBindHolder<T, ViewDataBinding>(b) {
+    open class Holder<T>(b: ViewDataBinding) : CoreBindHolder<T, ViewDataBinding>(b) {
         override fun onBind(item: T) {}
+    }
+
+    open class CoreLoadingHolder(b: ViewDataBinding) : CoreBindHolder<Int, ViewDataBinding>(b) {
+        override fun onBind(item: Int) {}
+    }
+
+    open class CoreEmptyHolder(b: ViewDataBinding) : CoreBindHolder<String, ViewDataBinding>(b) {
+        override fun onBind(item: String) {}
     }
 }
