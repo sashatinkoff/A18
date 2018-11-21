@@ -1,6 +1,7 @@
 package com.isidroid.utils
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleObserver
@@ -16,7 +17,6 @@ abstract class BaseActivity : AppCompatActivity(), LifecycleObserver {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycle.addObserver(this)
-        onCreateBinding()
         onCreateViewModel()
     }
 
@@ -25,6 +25,5 @@ abstract class BaseActivity : AppCompatActivity(), LifecycleObserver {
         YViewUtils.hideSoftKeyboard(this)
     }
 
-    open fun onCreateBinding() {}
     open fun onCreateViewModel() {}
 }
