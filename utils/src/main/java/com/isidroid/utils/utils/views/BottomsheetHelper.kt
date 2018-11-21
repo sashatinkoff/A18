@@ -8,17 +8,17 @@ open class BottomsheetHelper(private val view: View) {
     lateinit var behavior: BottomSheetBehavior<View>
     private var onSlide: ((BottomsheetHelper, View, Float) -> Unit)? = null
     private var onStateChanged: ((BottomsheetHelper, View, Int) -> Unit)? = null
-    private var onCollapsed: ((BottomsheetHelper, View, Int) -> Unit)? = null
-    private var onExpanded: ((BottomsheetHelper, View, Int) -> Unit)? = null
-    private var onHidden: ((BottomsheetHelper, View, Int) -> Unit)? = null
-    private var onHalfExpanded: ((BottomsheetHelper, View, Int) -> Unit)? = null
+    private var onCollapsed: ((BottomsheetHelper, View) -> Unit)? = null
+    private var onExpanded: ((BottomsheetHelper, View) -> Unit)? = null
+    private var onHidden: ((BottomsheetHelper, View) -> Unit)? = null
+    private var onHalfExpanded: ((BottomsheetHelper, View) -> Unit)? = null
 
     fun onSlide(callback: (helper: BottomsheetHelper, view: View, offset: Float) -> Unit) = apply { this.onSlide = callback }
     fun onStateChanged(callback: (helper: BottomsheetHelper, view: View, state: Int) -> Unit) = apply { this.onStateChanged = callback }
-    fun onCollapsed(callback: (helper: BottomsheetHelper, view: View, state: Int) -> Unit) = apply { this.onCollapsed = callback }
-    fun onExpanded(callback: (helper: BottomsheetHelper, view: View, state: Int) -> Unit) = apply { this.onExpanded = callback }
-    fun onHidden(callback: (helper: BottomsheetHelper, view: View, state: Int) -> Unit) = apply { this.onHidden = callback }
-    fun onHalfExpanded(callback: (helper: BottomsheetHelper, view: View, state: Int) -> Unit) = apply { this.onHalfExpanded = callback }
+    fun onCollapsed(callback: (helper: BottomsheetHelper, view: View) -> Unit) = apply { this.onCollapsed = callback }
+    fun onExpanded(callback: (helper: BottomsheetHelper, view: View) -> Unit) = apply { this.onExpanded = callback }
+    fun onHidden(callback: (helper: BottomsheetHelper, view: View) -> Unit) = apply { this.onHidden = callback }
+    fun onHalfExpanded(callback: (helper: BottomsheetHelper, view: View) -> Unit) = apply { this.onHalfExpanded = callback }
 
     private val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
         override fun onSlide(view: View, offset: Float) {
@@ -28,11 +28,12 @@ open class BottomsheetHelper(private val view: View) {
         override fun onStateChanged(view: View, state: Int) {
             onStateChanged?.invoke(this@BottomsheetHelper, view, state)
             when (state) {
-                STATE_COLLAPSED -> onCollapsed?.invoke(this@BottomsheetHelper, view, state)
-                STATE_EXPANDED -> onExpanded?.invoke(this@BottomsheetHelper, view, state)
-                STATE_HIDDEN -> onHidden?.invoke(this@BottomsheetHelper, view, state)
-                STATE_HALF_EXPANDED -> onHalfExpanded?.invoke(this@BottomsheetHelper, view, state)
-                else -> { }
+                STATE_COLLAPSED -> onCollapsed?.invoke(this@BottomsheetHelper, view)
+                STATE_EXPANDED -> onExpanded?.invoke(this@BottomsheetHelper, view)
+                STATE_HIDDEN -> onHidden?.invoke(this@BottomsheetHelper, view)
+                STATE_HALF_EXPANDED -> onHalfExpanded?.invoke(this@BottomsheetHelper, view)
+                else -> {
+                }
             }
         }
     }
