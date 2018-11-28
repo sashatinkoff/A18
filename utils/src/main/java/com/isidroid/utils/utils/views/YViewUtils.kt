@@ -42,6 +42,17 @@ object YViewUtils {
         return views
     }
 
+    fun executeOnViews(root: View, tag: String?, callback: ((view: View) -> Unit)) {
+        if (root !is ViewGroup) return
+        tag ?: return
+
+        val childCount = root.childCount
+        for (i in 0 until childCount) {
+            val child = root.getChildAt(i)
+            if (child.tag == tag) callback.invoke(child)
+            executeOnViews(child, tag, callback)
+        }
+    }
 
 }
 
