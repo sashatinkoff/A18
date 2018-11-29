@@ -23,12 +23,14 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
 
     fun onLoadMore(callback: (() -> Unit)) = apply { this.loadMoreCallback = callback }
 
-    @CallSuper open fun add(vararg items: T) = apply {
+    @CallSuper
+    open fun add(vararg items: T) = apply {
         insert(items.asList())
         notifyDataSetChanged()
     }
 
-    @CallSuper open fun remove(vararg items: T) = apply {
+    @CallSuper
+    open fun remove(vararg items: T) = apply {
         items.forEach { this.items.remove(it) }
         notifyDataSetChanged()
     }
@@ -152,7 +154,8 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
         }
     }
 
-    fun reset() {
+    fun clear() = apply { items.clear() }
+    fun reset() = apply {
         hasMore = hasInitialLoading
         items.clear()
 
