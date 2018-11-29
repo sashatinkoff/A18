@@ -14,8 +14,9 @@ open class TakePictureViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     private val repository = TakePictureRepository(compositeDisposable)
     private var takePictureRequest: TakePictureRequest? = null
-    val imageInfo = MutableLiveData<ImageInfo>()
     var data: HashMap<String, String>? = null
+    val imageInfo = MutableLiveData<ImageInfo>()
+    val error = MutableLiveData<Throwable>()
 
     fun takePicture(caller: Any, data: HashMap<String, String>? = null,
                     scale: Float? = null, maxSize: Int? = null) {
@@ -52,8 +53,10 @@ open class TakePictureViewModel : ViewModel() {
 
     fun onResult(requestCode: Int, intent: Intent?) {
         val callback: (Result?, Throwable?) -> Unit = { r, t ->
+            if (t != null) error.postValue(t)
+            else imageInfo.postValue(ImageInfo(r, data))
+
             if (r?.localPath != null) onImageReady(r, data)
-            imageInfo.postValue(ImageInfo(r, t, data))
         }
 
         if (intent?.data != null && requestCode == PictureConfig.get().codePickPicture)
@@ -70,5 +73,5 @@ open class TakePictureViewModel : ViewModel() {
     }
 
     data class TakePictureRequest(val file: File, val scale: Float? = null, val maxSize: Int? = null)
-    data class ImageInfo(val result: Result?, val throwable: Throwable? = null, val data: HashMap<String, String>?)
+    data class ImageInfo(val result: Result?, val data: HashMap<String, String>?)
 }
