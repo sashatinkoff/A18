@@ -3,8 +3,6 @@ package com.isidroid.a18.core
 import android.app.Application
 import com.bumptech.glide.Glide
 import com.isidroid.a18.BuildConfig
-import com.isidroid.a18.Db
-import com.isidroid.a18.data.DbMigration
 import com.isidroid.logger.DiagnosticsConfig
 import com.isidroid.realm.RealmConfig
 import com.isidroid.utils.DataBindingConfig
@@ -19,8 +17,8 @@ object AppInit {
                 .create()
 
         RealmConfig(app)
-                .version(Db.version())
-                .migration(DbMigration())
+                .version(1L)
+                .migration(null)
                 .create()
 
         ScreenUtils.create(app)
