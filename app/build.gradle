@@ -147,6 +147,12 @@ dependencies {
     implementation project(':logger')
     implementation project(':realm')
     implementation project(':pics')
+
+    // include modules as aars
+//    implementation(name: "logger.${versions.isidroid}", ext: 'aar')
+//    implementation(name: "utils.${versions.isidroid}", ext: 'aar')
+//    implementation(name: "realm.${versions.isidroid}", ext: 'aar')
+//    implementation(name: "pics.${versions.isidroid}", ext: 'aar')
 }
 
 //apply plugin: 'com.google.gms.google-services'
