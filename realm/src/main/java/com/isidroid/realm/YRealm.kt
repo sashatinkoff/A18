@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Environment
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -20,8 +21,10 @@ object YRealm {
                 .create()
     }
 
+    fun get() = Realm.getDefaultInstance()
+
     fun realmExe(execute: (realm: Realm) -> Unit) {
-        Realm.getDefaultInstance().apply {
+        get().apply {
             val transaction = isInTransaction
             if (!transaction) beginTransaction()
             execute(this)
@@ -30,22 +33,7 @@ object YRealm {
     }
 
     fun realmExeMain(execute: (realm: Realm) -> Unit) {
-        Handler(Looper.getMainLooper())
-                .run { realmExe(execute) }
-    }
-
-    fun backup(activity: Activity? = null) {
-        try {
-            val destination = File(Environment.getExternalStorageDirectory(), "default.realm")
-            if (destination.exists()) destination.delete()
-            Realm.getDefaultInstance().writeCopyTo(destination)
-
-            activity?.let { a ->
-                a.runOnUiThread { Toast.makeText(a, "Realm copied", Toast.LENGTH_SHORT).show() }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        Handler(Looper.getMainLooper()).run { realmExe(execute) }
     }
 
     fun update(list: List<RealmModel>, gson: Gson? = null) {
@@ -72,5 +60,33 @@ object YRealm {
         return gson.fromJson<T>(json, cl)
     }
 
+    fun backup(activity: Activity? = null, directory: File = Environment.getExternalStorageDirectory()): Boolean {
+        return try {
+            val destination = File(directory, get().configuration.realmFileName)
+            if (destination.exists()) destination.delete()
+            get().writeCopyTo(destination)
+
+            activity?.let { a ->
+                a.runOnUiThread { Toast.makeText(a, "Realm copied", Toast.LENGTH_SHORT).show() }
+            }
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    fun restore(directory: File = Environment.getExternalStorageDirectory()): Boolean {
+        return try {
+            val dbname = get().configuration.realmFileName
+            val restoredFile = File(directory, dbname)
+            val targetFile = File(get().configuration.realmDirectory, dbname)
+            restoredFile.copyTo(targetFile, true)
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
 
 }
