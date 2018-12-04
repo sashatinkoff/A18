@@ -9,23 +9,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRestore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Restore from file" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBackup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Make backup" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRestart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Restart" />
 
     </LinearLayout>
 
