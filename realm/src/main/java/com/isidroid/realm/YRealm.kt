@@ -71,4 +71,6 @@ object YRealm {
     fun <T> fromJson(json: String, cl: Class<T>): T {
         return gson.fromJson<T>(json, cl)
     }
+
+
 }

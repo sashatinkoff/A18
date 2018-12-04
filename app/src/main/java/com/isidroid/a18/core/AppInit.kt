@@ -3,6 +3,8 @@ package com.isidroid.a18.core
 import android.app.Application
 import com.bumptech.glide.Glide
 import com.isidroid.a18.BuildConfig
+import com.isidroid.a18.Db
+import com.isidroid.a18.data.DbMigration
 import com.isidroid.logger.DiagnosticsConfig
 import com.isidroid.realm.RealmConfig
 import com.isidroid.utils.DataBindingConfig
@@ -11,14 +13,14 @@ import com.isidroid.utils.utils.UpgradeHelper
 
 object AppInit {
     fun create(app: Application) {
-        RealmConfig(app)
-                .version(1L)
-                .migration(null)
-                .create()
-
         DiagnosticsConfig(app)
                 .appname(BuildConfig.APPLICATION_ID)
                 .disableCrashlytics(BuildConfig.DEBUG)
+                .create()
+
+        RealmConfig(app)
+                .version(Db.version())
+                .migration(DbMigration())
                 .create()
 
         ScreenUtils.create(app)
