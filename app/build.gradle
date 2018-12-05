@@ -115,6 +115,7 @@ dependencies {
     implementation "com.google.android.material:material:${versions.material}"
     implementation "android.arch.navigation:navigation-fragment-ktx:${versions.navigation}"
     implementation "android.arch.navigation:navigation-ui-ktx:${versions.navigation}"
+    implementation "android.arch.work:work-runtime:${versions.worker}"
 
 // livedata
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
