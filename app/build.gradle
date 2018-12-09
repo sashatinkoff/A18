@@ -113,9 +113,8 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
     implementation "com.google.android.material:material:${versions.material}"
-    implementation "android.arch.navigation:navigation-fragment-ktx:${versions.navigation}"
-    implementation "android.arch.navigation:navigation-ui-ktx:${versions.navigation}"
     implementation "android.arch.work:work-runtime:${versions.worker}"
+    implementation "com.google.android.gms:play-services-location:${versions.playServicesLocation}"
 
 // livedata
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"

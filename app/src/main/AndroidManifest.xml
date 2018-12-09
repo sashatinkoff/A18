@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.isidroid.a18">
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -49,6 +50,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+
+        <service android:name=".YService" />
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="838fb419d5dd966c34fbf0f6e6dbd5e6c6e6be72" />

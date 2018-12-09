@@ -9,6 +9,10 @@ ext {
             'compileSdk'              : 28,
             'minSdk'                  : 21,
 
+            // playservices / firebase
+            'playServicesVersion'     : '16.0.3',
+            'playServicesLocation'    : '16.0.0',
+
             // Android components
             'androidx'                : '1.0.2',
             'corektx'                 : '1.0.1',
