@@ -10,13 +10,13 @@ interface DataModel : RealmModel {
     @CallSuper
     fun save() {
         if (onSave())
-            YRealm.realmExe { it.insertOrUpdate(this) }
+            YRealm.realmExeMain { it.insertOrUpdate(this) }
     }
 
 
     @CallSuper
     fun delete() {
-        YRealm.realmExe {
+        YRealm.realmExeMain {
             if (onDelete()) {
                 var item2 = this
                 if (!isManaged()) item2 = Realm.getDefaultInstance().copyToRealmOrUpdate(item2)
