@@ -1,4 +1,4 @@
-package com.isidroid.a18.pics.utils
+package com.isidroid.pics.utils
 
 import android.net.Uri
 

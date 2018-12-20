@@ -1,4 +1,4 @@
-package com.isidroid.a18.pics.utils
+package com.isidroid.pics.utils
 
 import android.content.ContentUris
 import android.database.Cursor
@@ -14,7 +14,6 @@ import com.isidroid.pics.Result
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.io.InputStream
 import java.util.*
 
 class MediaUriParser {

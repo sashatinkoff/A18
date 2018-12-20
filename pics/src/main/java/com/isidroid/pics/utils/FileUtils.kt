@@ -37,30 +37,6 @@ object FileUtils {
      */
     internal val TAG = "FileUtils"
     private val DEBUG = false // Set to true to enable logging
-    /**
-     * File and folder comparator. TODO Expose sorting option method
-     */
-    var sComparator: Comparator<File> = Comparator { f1, f2 ->
-        // Sort alphabetically by lower case, which is much cleaner
-        f1.name.toLowerCase().compareTo(
-                f2.name.toLowerCase())
-    }
-    /**
-     * File (not directories) filter.
-     */
-    var sFileFilter: FileFilter = FileFilter { file ->
-        val fileName = file.name
-        // Return files only (not directories) and skip hidden files
-        file.isFile && !fileName.startsWith(HIDDEN_PREFIX)
-    }
-    /**
-     * Folder (directories) filter.
-     */
-    var sDirFilter: FileFilter = FileFilter { file ->
-        val fileName = file.name
-        // Return directories only and skip hidden directories
-        file.isDirectory && !fileName.startsWith(HIDDEN_PREFIX)
-    }
 
     val downloadsDir: File
         get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)

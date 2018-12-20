@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
-import com.isidroid.a18.pics.utils.BitmapUtils
-import com.isidroid.a18.pics.utils.MediaUriParser
+import com.isidroid.pics.utils.BitmapUtils
+import com.isidroid.pics.utils.MediaUriParser
 import com.isidroid.pics.utils.ImageHeaderParser
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
