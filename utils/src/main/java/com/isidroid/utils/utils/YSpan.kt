@@ -1,16 +1,14 @@
-package com.isidroid.a18
+package com.isidroid.utils.utils
 
 import android.content.Context
 import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.text.method.LinkMovementMethod
 import android.text.style.DynamicDrawableSpan.ALIGN_BASELINE
 import android.text.style.ImageSpan
 import android.text.style.URLSpan
 import android.view.View
-import android.widget.TextView
 
-class YSpan(private val context: Context? = null) {
+open class YSpan(private val context: Context? = null) {
     private val builder = SpannableStringBuilder()
     private var start = 0
 
