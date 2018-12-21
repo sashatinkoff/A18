@@ -4,16 +4,14 @@ import io.reactivex.Flowable
 import okhttp3.ResponseBody
 import retrofit2.http.GET
 
+private const val ENDPOINT = "https://jsonplaceholder.typicode.com/"
+
 interface ApiTest {
 
     @GET("posts")
     fun posts(): Flowable<ResponseBody>
 
-    object Factory {
-        fun create(): ApiTest {
-            val endPoint = "https://jsonplaceholder.typicode.com/"
-            return Api(ApiTest::class.java, endPoint)
-                    .build()
-        }
+    companion object {
+        fun create(): ApiTest = Api(ApiTest::class.java, ENDPOINT).build()
     }
 }
