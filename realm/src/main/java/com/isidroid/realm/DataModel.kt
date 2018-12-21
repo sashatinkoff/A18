@@ -1,5 +1,6 @@
 package com.isidroid.realm
 
+import android.util.Log
 import androidx.annotation.CallSuper
 import io.realm.Realm
 import io.realm.RealmModel
@@ -10,7 +11,10 @@ interface DataModel : RealmModel {
     @CallSuper
     fun save() = apply {
         if (onSave())
-            YRealm.realmExeMain { it.insertOrUpdate(this) }
+            YRealm.realmExeMain {
+                Log.e("workflow", "save ${Thread.currentThread().name}")
+                it.insertOrUpdate(this)
+            }
     }
 
 
@@ -32,6 +36,8 @@ interface DataModel : RealmModel {
             it.createOrUpdateAllFromJson(javaClass, json)
         }
     }
+
+    fun refresh() = apply { YRealm.refresh() }
 
     /**
      * Executes before saving the object

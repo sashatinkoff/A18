@@ -15,13 +15,15 @@ import java.lang.reflect.Type
 
 
 object YRealm {
+    private const val GSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ"
     val gson: Gson by lazy {
         GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .setDateFormat(GSON_DATE_FORMAT)
                 .create()
     }
 
     fun get() = Realm.getDefaultInstance()
+    fun refresh() = get().apply { refresh() }
 
     fun realmExe(execute: (realm: Realm) -> Unit) {
         get().apply {
@@ -40,7 +42,7 @@ object YRealm {
         if (list.isEmpty()) return
         val cls = list.first().javaClass
         val gsonHandler = gson ?: GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .setDateFormat(GSON_DATE_FORMAT)
                 .create()
 
         val json = gsonHandler.toJson(list)
