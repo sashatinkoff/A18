@@ -8,20 +8,28 @@ import io.realm.kotlin.isManaged
 
 interface DataModel : RealmModel {
     @CallSuper
-    fun save() {
+    fun save() = apply {
         if (onSave())
             YRealm.realmExeMain { it.insertOrUpdate(this) }
     }
 
 
     @CallSuper
-    fun delete() {
+    fun delete() = apply {
         YRealm.realmExeMain {
             if (onDelete()) {
                 var item2 = this
-                if (!isManaged()) item2 = Realm.getDefaultInstance().copyToRealmOrUpdate(item2)
+                if (!isManaged()) item2 = it.copyToRealmOrUpdate(item2)
                 item2.deleteFromRealm()
             }
+        }
+    }
+
+    @CallSuper
+    fun update() = apply {
+        val json = YRealm.gson.toJson(arrayListOf((this)))
+        YRealm.realmExeMain {
+            it.createOrUpdateAllFromJson(javaClass, json)
         }
     }
 
@@ -38,6 +46,16 @@ interface DataModel : RealmModel {
      * @return if true then the object will be deleted
      */
     fun onDelete(): Boolean {
+        return true
+    }
+
+    /**
+     * Executes before updating the object
+     * if some fields are null (or empty) in the UPDATING object they won't be updated in the object
+     * that is already is database
+     * @return if true then the object will be updated
+     */
+    fun onUpdate(): Boolean {
         return true
     }
 }

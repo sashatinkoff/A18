@@ -17,7 +17,7 @@ import java.lang.reflect.Type
 object YRealm {
     val gson: Gson by lazy {
         GsonBuilder()
-                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
                 .create()
     }
 
