@@ -11,10 +11,7 @@ interface DataModel : RealmModel {
     @CallSuper
     fun save() = apply {
         if (onSave())
-            YRealm.realmExeMain {
-                Log.e("workflow", "save ${Thread.currentThread().name}")
-                it.insertOrUpdate(this)
-            }
+            YRealm.realmExeMain { it.insertOrUpdate(this) }
     }
 
 
@@ -32,11 +29,10 @@ interface DataModel : RealmModel {
     @CallSuper
     fun update() = apply {
         val json = YRealm.gson.toJson(arrayListOf((this)))
-        YRealm.realmExeMain {
-            it.createOrUpdateAllFromJson(javaClass, json)
-        }
+        YRealm.realmExeMain { it.createOrUpdateAllFromJson(javaClass, json) }
     }
 
+    @CallSuper
     fun refresh() = apply { YRealm.refresh() }
 
     /**
