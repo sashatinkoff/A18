@@ -47,7 +47,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return if (items.size == 0 && !hasMore && hasEmpty && !isInserted) 1
+        return if (items.size == 0 && !hasMore && hasEmpty && isInserted) 1
         else {
             var size = items.size
             if (hasMore) size++
