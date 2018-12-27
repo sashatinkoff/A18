@@ -18,6 +18,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     protected open val loadingResource: Int = R.layout.item_loading
     protected open val emptyResource: Int = R.layout.item_empty
     protected open val hasInitialLoading = false
+    private var isInserted = false
 
     var items = mutableListOf<T>()
 
@@ -46,7 +47,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return if (items.size == 0 && !hasMore && hasEmpty) 1
+        return if (items.size == 0 && !hasMore && hasEmpty && !isInserted) 1
         else {
             var size = items.size
             if (hasMore) size++
@@ -134,6 +135,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     @CallSuper
     open fun insert(items: List<T>, hasMore: Boolean = false) {
         this.hasMore = hasMore
+        this.isInserted = true
 
         items.intersect(this.items).forEach {
             val position = this.items.indexOf(it)
