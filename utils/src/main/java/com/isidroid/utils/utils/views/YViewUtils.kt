@@ -5,6 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+
+
 
 object YViewUtils {
     fun hideSoftKeyboard(activity: AppCompatActivity?) {
@@ -14,6 +17,11 @@ object YViewUtils {
             val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
+    }
+
+    fun hideSoftKeyboard(view: View) {
+        val imm = view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun height(view: View, onlyHeight: Boolean): Int {
