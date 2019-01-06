@@ -82,7 +82,7 @@
             android:textSize="18sp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRead"
+            android:id="@+id/btnSubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -92,27 +92,13 @@
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCar"
-            android:enabled="false"
+            android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:text="delete" />
-
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnVisit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="Visit" />
-
-
+            android:text="cancel" />
     </LinearLayout>
 
 </layout>
