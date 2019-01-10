@@ -7,7 +7,7 @@ internal const val STATE_COMPLETED = "STATE_COMPLETED"
 internal const val STATE_RETRY = "STATE_RETRY"
 internal const val STATE_FAILED = "STATE_FAILED"
 
-open class QueueItem {
+open class QueueItem<T>(var data: T, var attempts: Int) {
     val uid = UUID.randomUUID().toString().substring(0, 5)
     var createdAt = Date()
     var updatedAt: Date? = null
