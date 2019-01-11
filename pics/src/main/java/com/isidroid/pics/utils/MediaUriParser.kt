@@ -119,7 +119,7 @@ class MediaUriParser {
 
     private fun getData(uri: Uri, id: String?, projection: Array<String>): Cursor? {
         val selection = "_id=?"
-        val selectionArgs = arrayOf<String>(id ?: "")
+        val selectionArgs = arrayOf(id ?: "")
 
         return context.contentResolver.query(uri, projection, selection, selectionArgs, null)
     }

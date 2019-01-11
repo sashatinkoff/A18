@@ -1,10 +1,17 @@
-package com.isidroid.pics
+package com.isidroid.pics.viewmodel
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
+import android.util.Log
+import com.isidroid.pics.PictureConfig
+import com.isidroid.pics.Result
+import com.isidroid.pics.addTo
+import com.isidroid.pics.subscribeIoMain
 import com.isidroid.pics.utils.BitmapUtils
+import com.isidroid.pics.utils.FileUtils
 import com.isidroid.pics.utils.MediaUriParser
 import com.isidroid.pics.utils.ImageHeaderParser
 import io.reactivex.Flowable
@@ -21,8 +28,20 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
         }
 
         Flowable.just(uri)
-                .map { u -> MediaUriParser().parse(u) }
+                .map { u ->
+                    try {
+                        MediaUriParser().parse(u)
+                    } catch (e: Exception) {
+                        val file = File(FileUtils.getPath(PictureConfig.get().context, uri))
+
+                        Result().apply {
+                            localPath = file.absolutePath
+                            bitmap = if(file.exists()) BitmapFactory.decodeFile(localPath) else null
+                        }
+                    }
+                }
                 .doOnNext { result -> rotate(result) }
+                .subscribeIoMain()
                 .subscribe(
                         { callback(it, null) },
                         { callback(null, it) }

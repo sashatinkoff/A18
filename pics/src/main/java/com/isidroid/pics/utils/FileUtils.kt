@@ -1,5 +1,6 @@
 package com.isidroid.pics.utils
 
+import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
@@ -36,7 +37,7 @@ object FileUtils {
      * TAG for log messages.
      */
     internal val TAG = "FileUtils"
-    private val DEBUG = false // Set to true to enable logging
+    private val DEBUG = true // Set to true to enable logging
 
     val downloadsDir: File
         get() = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
@@ -66,9 +67,7 @@ object FileUtils {
      * @return Whether the URI is a local one.
      */
     fun isLocal(url: String?): Boolean {
-        return if (url != null && !url.startsWith("http://") && !url.startsWith("https://")) {
-            true
-        } else false
+        return url != null && !url.startsWith("http://") && !url.startsWith("https://")
     }
 
     /**
@@ -195,7 +194,7 @@ object FileUtils {
         val projection = arrayOf(column)
 
         try {
-            cursor = context.contentResolver.query(uri!!, projection, selection, selectionArgs, null)
+            cursor = context.contentResolver.query(uri, projection, selection, selectionArgs, null)
             if (cursor != null && cursor.moveToFirst()) {
                 if (DEBUG)
                     DatabaseUtils.dumpCursor(cursor)
@@ -222,6 +221,7 @@ object FileUtils {
      * @see .isLocal
      * @see .getFile
      */
+    @SuppressLint("ObsoleteSdkInt")
     fun getPath(context: Context, uri: Uri): String? {
 
         if (DEBUG)
@@ -270,7 +270,6 @@ object FileUtils {
                         }
                     } catch (e: Exception) {
                     }
-
                 }
 
                 // path could not be retrieved using ContentResolver, therefore copy file to accessible cache using streams
@@ -290,12 +289,10 @@ object FileUtils {
                 val type = split[0]
 
                 var contentUri: Uri? = null
-                if ("image" == type) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                } else if ("video" == type) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-                } else if ("audio" == type) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+                when (type) {
+                    "image" -> contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                    "video" -> contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                    "audio" -> contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
                 }
 
                 val selection = "_id=?"
@@ -355,9 +352,9 @@ object FileUtils {
         if (size > BYTES_IN_KILOBYTES) {
             fileSize = (size / BYTES_IN_KILOBYTES).toFloat()
             if (fileSize > BYTES_IN_KILOBYTES) {
-                fileSize = fileSize / BYTES_IN_KILOBYTES
+                fileSize /= BYTES_IN_KILOBYTES
                 if (fileSize > BYTES_IN_KILOBYTES) {
-                    fileSize = fileSize / BYTES_IN_KILOBYTES
+                    fileSize /= BYTES_IN_KILOBYTES
                     suffix = GIGABYTES
                 } else {
                     suffix = MEGABYTES
@@ -561,13 +558,13 @@ object FileUtils {
         val mimeType = context.contentResolver.getType(uri)
         var filename: String? = null
 
-        if (mimeType == null && context != null) {
+        if (mimeType == null) {
             val path = getPath(context, uri)
-            if (path == null) {
-                filename = getName(uri.toString())
+            filename = if (path == null) {
+                getName(uri.toString())
             } else {
                 val file = File(path)
-                filename = file.name
+                file.name
             }
         } else {
             val returnCursor = context.contentResolver.query(uri, null, null, null, null)

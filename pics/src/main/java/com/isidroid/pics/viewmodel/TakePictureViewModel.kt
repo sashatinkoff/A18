@@ -1,4 +1,4 @@
-package com.isidroid.pics
+package com.isidroid.pics.viewmodel
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,8 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.isidroid.pics.PictureConfig
+import com.isidroid.pics.Result
 import io.reactivex.disposables.CompositeDisposable
 import java.io.File
 
