@@ -4,6 +4,7 @@ import android.app.Application
 import com.bumptech.glide.Glide
 import com.isidroid.a18.BuildConfig
 import com.isidroid.logger.DiagnosticsConfig
+import com.isidroid.pics.PictureConfig
 import com.isidroid.realm.RealmConfig
 import com.isidroid.utils.DataBindingConfig
 import com.isidroid.utils.utils.ScreenUtils
@@ -27,6 +28,7 @@ object AppInit {
         DataBindingConfig.create()
                 .withImageLoader { imageView, url -> Glide.with(imageView).load(url).into(imageView) }
 
+        PictureConfig.get().withContext(app).withPackage(BuildConfig.APPLICATION_ID)
         NotificationsChannels()
     }
 }
