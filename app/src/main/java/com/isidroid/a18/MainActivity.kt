@@ -42,6 +42,4 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
         if (resultCode != RESULT_OK) return
         takepictureViewModel.onResult(requestCode, data)
     }
-
-
 }
