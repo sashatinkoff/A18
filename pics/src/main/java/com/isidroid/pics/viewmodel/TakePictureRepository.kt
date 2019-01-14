@@ -18,6 +18,7 @@ import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.ref.WeakReference
 import java.util.*
 
 class TakePictureRepository(private val compositeDisposable: CompositeDisposable) {
@@ -36,11 +37,17 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
 
                         Result().apply {
                             localPath = file.absolutePath
-                            bitmap = if(file.exists()) BitmapFactory.decodeFile(localPath) else null
+                            bitmap = if (file.exists()) BitmapFactory.decodeFile(localPath) else null
                         }
                     }
                 }
-                .doOnNext { result -> rotate(result) }
+                .doOnNext { result ->
+                    val exif = ExifInterface(result?.localPath)
+                    val ori0 = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1)
+                    rotate(result)
+
+                    Log.e("nativeHeapSize", "orient=$ori0, or2=${result?.orientation}")
+                }
                 .subscribeIoMain()
                 .subscribe(
                         { callback(it, null) },
@@ -94,12 +101,14 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
                 else -> 0
             }
 
-            val orientationMatrix = Matrix()
-            orientationMatrix.postRotate(result.orientation.toFloat())
-            result.bitmap = Bitmap.createBitmap(result.bitmap, 0, 0,
-                    result.bitmap?.width ?: 0, result.bitmap?.height ?: 0, orientationMatrix, false)
-
             try {
+                val orientationMatrix = Matrix()
+                orientationMatrix.postRotate(result.orientation.toFloat())
+
+                result.bitmap = Bitmap.createBitmap(result.bitmap, 0, 0,
+                        result.bitmap?.width ?: 0, result.bitmap?.height
+                        ?: 0, orientationMatrix, false)
+
                 val out = FileOutputStream(file)
                 result.bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, out)
                 out.close()
