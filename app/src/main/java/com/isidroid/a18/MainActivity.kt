@@ -27,32 +27,9 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
 
         Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(CompositePermissionListener()).check()
-
-        btnSubmit.setOnClickListener {
-            //            takepictureViewModel.pickGallery(this)
-//            memory()
-
-            createBottomsheet(profilesSheet)
-                    .withDim(null)
-                    .create()
-                    .expand()
-        }
+        takepictureViewModel.pickGallery(this)
     }
 
-    override fun onBackPressed() {
-        if (bottomsheetHelper?.isExpanded() == true) bottomsheetHelper?.collapse()
-        else super.onBackPressed()
-    }
-
-    private fun memory() {
-        val nativeHeapSize = Debug.getNativeHeapSize() / (1024)
-        val nativeHeapFreeSize = Debug.getNativeHeapFreeSize() / (1024)
-        val usedMem = nativeHeapSize - nativeHeapFreeSize
-        val usedMemInPercentage = usedMem * 100 / nativeHeapSize
-
-        Timber.i("nativeHeapSize=$nativeHeapSize, nativeHeapFreeSize=$nativeHeapFreeSize, " +
-                "usedMem=$usedMem, usedMemInPercentage=$usedMemInPercentage")
-    }
 
     override fun onCreateViewModel() {
         takepictureViewModel = ViewModelProviders.of(this).get(TakePictureViewModel::class.java)
@@ -60,9 +37,7 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
             Timber.e(it)
         })
         takepictureViewModel.imageInfo.observe(this, Observer {
-            //            Glide.with(this).load(it.result?.localPath ?: "").into(imageview)
-
-            memory()
+            Glide.with(this).load(it.result?.localPath ?: "").into(imageview)
             Timber.i("${it.result}")
         })
     }

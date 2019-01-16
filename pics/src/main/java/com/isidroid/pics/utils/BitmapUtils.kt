@@ -80,21 +80,21 @@ object BitmapUtils {
     }
 
     fun scalePhoto(bitmap: Bitmap, scale: Float): Bitmap {
-        var width = (bitmap.width * scale).toInt()
-        var height = (bitmap.height * scale).toInt()
+        val width = (bitmap.width * scale).toInt()
+        val height = (bitmap.height * scale).toInt()
 
         val matrix = Matrix()
         matrix.postScale(scale, scale)
-        var result = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false)
+        val result = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, false)
         bitmap.recycle()
         return result
     }
 
     fun scalePhoto(bitmap: Bitmap, size: Int): Bitmap {
-        var scale = size.toFloat() / Math.max(bitmap.width, bitmap.height).toFloat()
+        val scale = size.toFloat() / Math.max(bitmap.width, bitmap.height).toFloat()
         val matrix = Matrix()
         matrix.postScale(scale, scale)
-        var result = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, false)
+        val result = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, false)
         bitmap.recycle()
         return result
     }

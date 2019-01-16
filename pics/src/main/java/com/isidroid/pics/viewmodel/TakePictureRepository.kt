@@ -5,20 +5,17 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
-import android.util.Log
 import com.isidroid.pics.PictureConfig
 import com.isidroid.pics.Result
 import com.isidroid.pics.addTo
 import com.isidroid.pics.subscribeIoMain
-import com.isidroid.pics.utils.BitmapUtils
 import com.isidroid.pics.utils.FileUtils
-import com.isidroid.pics.utils.MediaUriParser
 import com.isidroid.pics.utils.ImageHeaderParser
+import com.isidroid.pics.utils.MediaUriParser
 import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.ref.WeakReference
 import java.util.*
 
 class TakePictureRepository(private val compositeDisposable: CompositeDisposable) {
@@ -34,20 +31,10 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
                         MediaUriParser().parse(u)
                     } catch (e: Exception) {
                         val file = File(FileUtils.getPath(PictureConfig.get().context, uri))
-
-                        Result().apply {
-                            localPath = file.absolutePath
-                            bitmap = if (file.exists()) BitmapFactory.decodeFile(localPath) else null
-                        }
+                        Result().apply { localPath = file.absolutePath }
                     }
                 }
-                .doOnNext { result ->
-                    val exif = ExifInterface(result?.localPath)
-                    val ori0 = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, -1)
-                    rotate(result)
-
-                    Log.e("nativeHeapSize", "orient=$ori0, or2=${result?.orientation}")
-                }
+                .doOnNext { result -> rotate(result) }
                 .subscribeIoMain()
                 .subscribe(
                         { callback(it, null) },
@@ -65,17 +52,6 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
         Flowable.just(request)
                 .map {
                     val result = Result()
-                    result.bitmap = BitmapUtils.decodeFile(it.file.absolutePath)
-                    val scale = it.scale ?: 0f
-                    val maxSize = it.maxSize ?: 0
-                    val bitmap = result.bitmap!!
-
-                    // let's scale it
-                    if (scale > 0f && scale < 1f)
-                        result.bitmap = BitmapUtils.scalePhoto(bitmap, scale)
-                    else if (maxSize > 0 && maxSize < Math.max(bitmap.width, bitmap.height))
-                        result.bitmap = BitmapUtils.scalePhoto(bitmap, maxSize)
-
                     result.localPath = request.file.absolutePath
                     result.dateTaken = Date()
 
@@ -90,7 +66,8 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
     }
 
     private fun rotate(result: Result?) {
-        if (result?.bitmap == null) return
+        if (result?.localPath == null) return
+
         val file = File(result.localPath)
         if (file.exists()) {
             val orientation = ImageHeaderParser(file.inputStream()).orientation
@@ -101,17 +78,19 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
                 else -> 0
             }
 
+            var bitmap: Bitmap? = null
+            var fileOutputStream: FileOutputStream? = null
+
+
             try {
                 val orientationMatrix = Matrix()
                 orientationMatrix.postRotate(result.orientation.toFloat())
 
-                result.bitmap = Bitmap.createBitmap(result.bitmap, 0, 0,
-                        result.bitmap?.width ?: 0, result.bitmap?.height
-                        ?: 0, orientationMatrix, false)
+                bitmap = BitmapFactory.decodeFile(result.localPath)
 
-                val out = FileOutputStream(file)
-                result.bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, out)
-                out.close()
+                fileOutputStream = FileOutputStream(file)
+                bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+                fileOutputStream.close()
             } catch (e: Exception) {
             }
         }
