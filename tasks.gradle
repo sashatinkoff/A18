@@ -20,6 +20,24 @@ task aPublishLibrary(type: Copy, dependsOn: "assembleRelease") {
     }
 }
 
+task aPublishAll(type: Copy, dependsOn: "assembleRelease") {
+    println("Copy the complete apk from $buildDir/outputs/apk/release")
+    from("$buildDir/outputs/apk/release") {
+        include "*.apk"
+    }
+    into '../apks'
+
+    rename { String fileName ->
+        fileName.replace(fileName, "${defaultConfig.applicationId}.${defaultConfig.versionName}.apk")
+    }
+
+    doLast {
+        delete "$buildDir/outputs"
+        delete "$buildDir/tmp"
+        println("delete compiled data")
+    }
+}
+
 /*Wrapping inside a method avoids auto incrementing on every gradle task run. Now it runs only when we build apk*/
 ext.autoIncrementBuildNumber = {
     def versionBuild = 1

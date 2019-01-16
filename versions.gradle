@@ -3,7 +3,7 @@ ext {
             // specific for project
 
             // common
-            "isidroid"                : "1.1.58",
+            "isidroid"                : "1.1.59",
 
             // sdk
             'compileSdk'              : 28,
@@ -20,7 +20,7 @@ ext {
             'constraint'              : '1.1.3',
             'lifecycle'               : '2.0.0',
             'material'                : '1.0.0',
-            'worker'                  : '1.0.0-beta01',
+            'worker'                  : '1.0.0-beta02',
             'navigation'              : '1.0.0-alpha07',
             'androidx_annotations'    : '1.0.0-beta01',
 
@@ -30,11 +30,11 @@ ext {
             'dexter'                  : '5.0.0',
             'gson'                    : '2.8.5',
             'glide'                   : '4.8.0',
-            'okhttp'                  : '3.10.0',
+            'okhttp'                  : '3.12.1',
             'okhttp_logging_intercept': '3.9.0',
-            'retrofit'                : '2.4.0',
-            'rxJava'                  : '2.1.7',
-            'rxAndroid'               : '2.0.2',
+            'retrofit'                : '2.5.0',
+            'rxJava'                  : '2.2.5',
+            'rxAndroid'               : '2.1.0',
             'timber'                  : '4.7.1',
 
             // tests

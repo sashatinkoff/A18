@@ -40,11 +40,6 @@ android {
         setProperty("archivesBaseName", applicationId + "." + versionName)
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     signingConfigs {
         release {
             storeFile file(System.getenv("ISIDROID_KEYSTORE"))
@@ -87,22 +82,9 @@ android {
         javaMaxHeapSize "4g"
     }
 
-    task aPublishAll(type: Copy, dependsOn: "assembleRelease") {
-        println("Copy the complete apk from $buildDir/outputs/apk/release")
-        from("$buildDir/outputs/apk/release") {
-            include "*.apk"
-        }
-        into '../apks'
-
-        rename { String fileName ->
-            fileName.replace(fileName, "${defaultConfig.applicationId}.${defaultConfig.versionName}.apk")
-        }
-
-        doLast {
-            delete "$buildDir/outputs"
-            delete "$buildDir/tmp"
-            println("delete compiled data")
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
