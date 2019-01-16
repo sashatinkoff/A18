@@ -1,6 +1,7 @@
 package com.isidroid.pics.utils
 
 import android.content.ContentUris
+import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.os.Environment
@@ -13,10 +14,8 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.*
 
-class MediaUriParser {
+class MediaUriParser(private val context: Context) {
     private var result: Result? = null
-    private val context = PictureConfig.get().context
-
     private fun getColumn(cursor: Cursor, name: String) = cursor.getColumnIndex(name)
 
     fun parse(uri: Uri): Result? {
@@ -28,6 +27,8 @@ class MediaUriParser {
             MediaHelper.isExternalStorageDocument(uri) -> externalStorage(uri)
             MediaHelper.isMediaDocument(uri) -> cursor = media(uri)
         }
+
+        if (result == null) getLocal(uri)
 
         cursor?.close()
         return result
@@ -140,4 +141,7 @@ class MediaUriParser {
         return context.contentResolver.query(uri, projection, selection, selectionArgs, null)
     }
 
+    private fun getLocal(uri: Uri) {
+        val file = File(FileUtils.getPath(PictureConfig.get().context, uri))
+    }
 }

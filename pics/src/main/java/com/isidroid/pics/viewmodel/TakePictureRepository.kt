@@ -28,10 +28,8 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
         Flowable.just(uri)
                 .map { u ->
                     try {
-                        MediaUriParser().parse(u)
+                        MediaUriParser(PictureConfig.get().context).parse(u)
                     } catch (e: Exception) {
-                        val file = File(FileUtils.getPath(PictureConfig.get().context, uri))
-                        Result().apply { localPath = file.absolutePath }
                     }
                 }
                 .doOnNext { result -> rotate(result) }
