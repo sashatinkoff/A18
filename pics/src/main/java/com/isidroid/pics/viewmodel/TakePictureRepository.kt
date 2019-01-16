@@ -26,13 +26,8 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
         }
 
         Flowable.just(uri)
-                .map { u ->
-                    try {
-                        MediaUriParser(PictureConfig.get().context).parse(u)
-                    } catch (e: Exception) {
-                    }
-                }
-                .doOnNext { result -> rotate(result) }
+                .map { u -> MediaUriParser(PictureConfig.get().context).parse(u) }
+                .doOnNext { rotate(it) }
                 .subscribeIoMain()
                 .subscribe(
                         { callback(it, null) },
