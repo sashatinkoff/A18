@@ -9,7 +9,6 @@ import com.isidroid.pics.PictureConfig
 import com.isidroid.pics.Result
 import com.isidroid.pics.addTo
 import com.isidroid.pics.subscribeIoMain
-import com.isidroid.pics.utils.FileUtils
 import com.isidroid.pics.utils.ImageHeaderParser
 import com.isidroid.pics.utils.MediaUriParser
 import io.reactivex.Flowable
@@ -74,17 +73,21 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
             var bitmap: Bitmap? = null
             var fileOutputStream: FileOutputStream? = null
 
-
             try {
                 val orientationMatrix = Matrix()
                 orientationMatrix.postRotate(result.orientation.toFloat())
 
                 bitmap = BitmapFactory.decodeFile(result.localPath)
-
                 fileOutputStream = FileOutputStream(file)
                 bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
-                fileOutputStream.close()
+
             } catch (e: Exception) {
+                bitmap?.recycle()
+                try {
+                    fileOutputStream?.close()
+                } catch (e: Exception) {
+
+                }
             }
         }
     }
