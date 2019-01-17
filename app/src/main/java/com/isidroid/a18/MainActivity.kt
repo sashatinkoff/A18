@@ -1,6 +1,7 @@
 package com.isidroid.a18
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.media.ExifInterface
@@ -19,6 +20,7 @@ import com.karumi.dexter.Dexter
 import com.karumi.dexter.listener.single.CompositePermissionListener
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
+import java.io.File
 
 
 class MainActivity : BindActivity<ActivityMainBinding>() {
@@ -29,10 +31,20 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
 
         Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(CompositePermissionListener()).check()
-        btnSubmit.setOnClickListener {
-//            takepictureViewModel.pick(this, "application/pdf")
-            takepictureViewModel.pickGallery(this)
-        }
+
+        start()
+        btnSubmit.setOnClickListener { start() }
+    }
+
+    private fun start() {
+        AlertDialog.Builder(this)
+                .setItems(arrayOf("Pick image", "Pick pdf")) { _, pos ->
+                    when (pos) {
+                        0 -> takepictureViewModel.pickGallery(this)
+                        1 -> takepictureViewModel.pick(this, "application/pdf")
+                    }
+                }
+                .show()
     }
 
     override fun onCreateViewModel() {
@@ -41,8 +53,9 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
             Timber.tag("pickresults").e(it)
         })
         takepictureViewModel.imageInfo.observe(this, Observer {
-            Glide.with(this).load(it.result?.localPath ?: "").into(imageview)
-            Timber.tag("pickresults").i("${it.result}")
+//            Glide.with(this).load(it.result?.localPath ?: "").into(imageview)
+            val file = File(it.result?.localPath)
+            Timber.tag("pickresults").i("exists=${file.exists()}, path=${file.absolutePath}")
         })
     }
 

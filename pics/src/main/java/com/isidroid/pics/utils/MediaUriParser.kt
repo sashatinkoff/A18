@@ -31,10 +31,8 @@ class MediaUriParser(private val context: Context) {
             MediaHelper.isMediaDocument(uri) -> cursor = media(uri)
         }
 
-        if (result == null) getLocal(uri)
-
         cursor?.close()
-        return result
+        return result ?: getLocal(uri)
     }
 
     @Throws(IOException::class)
@@ -149,10 +147,8 @@ class MediaUriParser(private val context: Context) {
         return context.contentResolver.query(uri, projection, selection, selectionArgs, null)
     }
 
-    private fun getLocal(uri: Uri) {
+    private fun getLocal(uri: Uri): Result? {
         val file = File(FileUtils.getPath(PictureConfig.get().context, uri))
-        if (file.exists()) {
-            result = Result().apply { localPath = file.absolutePath }
-        }
+        return if (file.exists()) Result().apply { localPath = file.absolutePath } else null
     }
 }

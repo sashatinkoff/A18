@@ -26,7 +26,9 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
 
         Flowable.just(uri)
                 .map { u -> MediaUriParser(PictureConfig.get().context).parse(u) }
-                .doOnNext { rotate(it) }
+                .doOnNext {
+                    if (it?.isImage() == true) rotate(it)
+                }
                 .subscribeIoMain()
                 .subscribe(
                         { callback(it, null) },
