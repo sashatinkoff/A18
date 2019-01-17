@@ -7,8 +7,11 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.webkit.MimeTypeMap
+import androidx.core.content.MimeTypeFilter
 import com.isidroid.pics.PictureConfig
 import com.isidroid.pics.Result
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -45,23 +48,28 @@ class MediaUriParser(private val context: Context) {
         val projection = arrayOf(
                 MediaStore.Images.ImageColumns.DISPLAY_NAME,
                 MediaStore.Images.ImageColumns.DATE_TAKEN,
-                MediaStore.Images.ImageColumns.DATA
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Files.FileColumns.MIME_TYPE
         )
-
 
         val cursor = getData(uri, null, projection)
         var filename = UUID.randomUUID().toString().substring(0, 5)
 
         if (cursor?.moveToFirst() == true) {
-            filename = cursor.getString(getColumn(cursor, projection[0]))
             result.dateTaken = Date(cursor.getLong(getColumn(cursor, projection[1])))
             result.localPath = cursor.getString(getColumn(cursor, projection[2]))
+
+            val mimeType = cursor.getString(getColumn(cursor, projection[3]))
+            val ext = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
+
+            filename = cursor.getString(getColumn(cursor, projection[0]))
+            if (!ext.isNullOrEmpty()) filename += ".$ext"
         }
 
         // the file is not stored locally, then download it to the device
         if (result.localPath == null) {
             try {
-                val file = File(context.cacheDir, "$filename.jpg")
+                val file = File(context.cacheDir, filename)
                 inputStream.use { input -> file.outputStream().use { input.copyTo(it) } }
                 result.localPath = file.absolutePath
 
@@ -143,5 +151,8 @@ class MediaUriParser(private val context: Context) {
 
     private fun getLocal(uri: Uri) {
         val file = File(FileUtils.getPath(PictureConfig.get().context, uri))
+        if (file.exists()) {
+            result = Result().apply { localPath = file.absolutePath }
+        }
     }
 }

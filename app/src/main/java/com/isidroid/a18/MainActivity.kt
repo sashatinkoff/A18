@@ -6,6 +6,8 @@ import android.graphics.Color
 import android.media.ExifInterface
 import android.os.Bundle
 import android.os.Debug
+import android.webkit.MimeTypeMap
+import androidx.core.content.MimeTypeFilter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
@@ -27,18 +29,20 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
 
         Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(CompositePermissionListener()).check()
-        takepictureViewModel.pickGallery(this)
+        btnSubmit.setOnClickListener {
+//            takepictureViewModel.pick(this, "application/pdf")
+            takepictureViewModel.pickGallery(this)
+        }
     }
-
 
     override fun onCreateViewModel() {
         takepictureViewModel = ViewModelProviders.of(this).get(TakePictureViewModel::class.java)
         takepictureViewModel.error.observe(this, Observer {
-            Timber.e(it)
+            Timber.tag("pickresults").e(it)
         })
         takepictureViewModel.imageInfo.observe(this, Observer {
             Glide.with(this).load(it.result?.localPath ?: "").into(imageview)
-            Timber.i("${it.result}")
+            Timber.tag("pickresults").i("${it.result}")
         })
     }
 

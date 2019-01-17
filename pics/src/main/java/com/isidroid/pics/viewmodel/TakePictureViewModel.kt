@@ -37,31 +37,33 @@ open class TakePictureViewModel : ViewModel() {
         }
     }
 
-    fun pickGallery(caller: Any, data: HashMap<String, String>? = null) {
+    fun pick(caller: Any, type: String, data: HashMap<String, String>? = null) {
         this.data = data
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "image/*"
+        intent.type = type
 
         try {
             when (caller) {
-                is Activity -> caller.startActivityForResult(intent, PictureConfig.get().codePickPicture)
-                is Fragment -> caller.startActivityForResult(intent, PictureConfig.get().codePickPicture)
+                is Activity -> caller.startActivityForResult(intent, PictureConfig.get().codePick)
+                is Fragment -> caller.startActivityForResult(intent, PictureConfig.get().codePick)
                 else -> throw Exception("Can't pickGallery with this caller")
             }
         } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
+
+    fun pickGallery(caller: Any, data: HashMap<String, String>? = null) = pick(caller, "image/*", data)
 
     fun onResult(requestCode: Int, intent: Intent?) {
         val callback: (Result?, Throwable?) -> Unit = { r, t ->
             if (t != null) error.postValue(t)
             else imageInfo.postValue(ImageInfo(r, data))
-
             if (r?.localPath != null) onImageReady(r, data)
         }
 
-        if (intent?.data != null && requestCode == PictureConfig.get().codePickPicture)
+        if (intent?.data != null && requestCode == PictureConfig.get().codePick)
             repository.getFromGallery(intent.data, callback)
         else if (requestCode == PictureConfig.get().codeTakePicture && takePictureRequest != null)
             repository.processPhoto(takePictureRequest, callback)
