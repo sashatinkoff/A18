@@ -551,7 +551,7 @@ object FileUtils {
     fun createTempImageFile(context: Context, fileName: String): File {
         // Create an image file name
         val storageDir = File(context.cacheDir, DOCUMENTS_DIR)
-        return File.createTempFile(fileName, ".jpg", storageDir)
+        return File.createTempFile(fileName, "", storageDir)
     }
 
     fun getFileName(context: Context, uri: Uri): String? {

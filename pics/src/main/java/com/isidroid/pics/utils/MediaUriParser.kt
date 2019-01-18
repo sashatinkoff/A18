@@ -23,12 +23,16 @@ class MediaUriParser(private val context: Context) {
 
     fun parse(uri: Uri): Result? {
         var cursor: Cursor? = null
-        when {
-            MediaHelper.isGooglePhotosUri(uri) -> googlePhotos(uri)
-            MediaHelper.isGoogleDrive(uri) -> googleDrive(uri)
-            MediaHelper.isDownloadsDocument(uri) -> cursor = downloadsDocument(uri)
-            MediaHelper.isExternalStorageDocument(uri) -> externalStorage(uri)
-            MediaHelper.isMediaDocument(uri) -> cursor = media(uri)
+        try {
+            when {
+                MediaHelper.isGooglePhotosUri(uri) -> googlePhotos(uri)
+                MediaHelper.isGoogleDrive(uri) -> googleDrive(uri)
+                MediaHelper.isDownloadsDocument(uri) -> cursor = downloadsDocument(uri)
+                MediaHelper.isExternalStorageDocument(uri) -> externalStorage(uri)
+                MediaHelper.isMediaDocument(uri) -> cursor = media(uri)
+            }
+
+        } catch (e: Exception) {
         }
 
         cursor?.close()
