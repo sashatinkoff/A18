@@ -3,24 +3,23 @@ package com.isidroid.a18
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
-import android.media.ExifInterface
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Debug
-import android.webkit.MimeTypeMap
-import androidx.core.content.MimeTypeFilter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
 import com.isidroid.a18.databinding.ActivityMainBinding
 import com.isidroid.pics.viewmodel.TakePictureViewModel
 import com.isidroid.utils.BindActivity
-import com.isidroid.utils.utils.views.BottomsheetHelper
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.listener.single.CompositePermissionListener
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import java.io.File
+import javax.microedition.khronos.egl.EGL10
+import javax.microedition.khronos.egl.EGLConfig
+import javax.microedition.khronos.egl.EGLContext
 
 
 class MainActivity : BindActivity<ActivityMainBinding>() {
@@ -32,8 +31,38 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
 
         Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(CompositePermissionListener()).check()
 
-        start()
-        btnSubmit.setOnClickListener { start() }
+        bitmap()
+        btnSubmit.setOnClickListener { bitmap() }
+    }
+
+    private fun bitmap() {
+        val width = 22000
+        val height = 22000
+        val bitmap = createBitmap(width, height)
+        Timber.i("size=[${bitmap?.width}, ${bitmap?.height}]")
+    }
+
+    private fun createBitmap(width: Int, height: Int): Bitmap? {
+        var success: Boolean
+        var sampleSize = 0
+        var result: Bitmap? = null
+
+        System.gc()
+
+        do {
+            try {
+                sampleSize++
+                val bWidth = width / sampleSize
+                val bHeight = height / sampleSize
+
+                result = Bitmap.createBitmap(bWidth, bHeight, Bitmap.Config.ARGB_8888)
+                success = true
+            } catch (e: java.lang.OutOfMemoryError) {
+                success = false
+            }
+        } while (!success)
+
+        return result
     }
 
     private fun start() {
@@ -53,7 +82,7 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
             Timber.tag("pickresults").e(it)
         })
         takepictureViewModel.imageInfo.observe(this, Observer {
-//            Glide.with(this).load(it.result?.localPath ?: "").into(imageview)
+            //            Glide.with(this).load(it.result?.localPath ?: "").into(imageview)
             val file = File(it.result?.localPath)
             Timber.tag("pickresults").i("exists=${file.exists()}, path=${file.absolutePath}")
         })
