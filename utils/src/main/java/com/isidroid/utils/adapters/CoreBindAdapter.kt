@@ -58,7 +58,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     override fun getItemViewType(position: Int): Int {
         return when {
             position == items.size && hasMore -> VIEW_TYPE_LOADING
-            position == 0 && items.size == 0 && hasEmpty -> VIEW_TYPE_EMPTY
+            position == 0 && items.size == 0 && hasEmpty && isInserted -> VIEW_TYPE_EMPTY
             else -> VIEW_TYPE_NORMAL
         }
     }
