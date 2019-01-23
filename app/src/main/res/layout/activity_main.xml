@@ -16,7 +16,6 @@
             style="@style/YTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="adadasd"
             android:hint="Please enter your name"
             app:hintTextAppearance="@style/TextInputHintTextAppearance">
 
