@@ -65,7 +65,7 @@ class MediaUriParser(private val context: Context) {
             val ext = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
 
             filename = cursor.getString(getColumn(cursor, projection[0]))
-            if (!ext.isNullOrEmpty()) filename += ".$ext"
+//            if (!ext.isNullOrEmpty()) filename += ".$ext"
         }
 
         // the file is not stored locally, then download it to the device
