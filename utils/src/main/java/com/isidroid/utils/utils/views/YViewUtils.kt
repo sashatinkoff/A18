@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.app.Activity
 
 
-
 object YViewUtils {
     fun hideSoftKeyboard(activity: AppCompatActivity?) {
         if (activity == null || activity.isFinishing) return
@@ -49,6 +48,19 @@ object YViewUtils {
 
         return views
     }
+
+    fun findChildren(root: View?): ArrayList<View> {
+        val views = ArrayList<View>()
+        if (root !is ViewGroup) return views
+        val childCount = root.childCount
+        for (i in 0 until childCount) {
+            val child = root.getChildAt(i)
+            if (child is ViewGroup) views.addAll(findChildren(child))
+        }
+
+        return views
+    }
+
 
     fun executeOnViews(root: View, tag: String?, callback: ((view: View) -> Unit)) {
         if (root !is ViewGroup) return

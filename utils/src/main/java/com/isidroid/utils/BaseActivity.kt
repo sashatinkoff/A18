@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.LifecycleObserver
 import com.isidroid.utils.utils.views.BottomsheetHelper
 import com.isidroid.utils.utils.views.YViewUtils
@@ -27,6 +28,19 @@ abstract class BaseActivity : AppCompatActivity(), LifecycleObserver {
         YViewUtils.hideSoftKeyboard(this)
     }
 
+    protected fun createBottomsheet(view: View,
+                                    content: CoordinatorLayout? = null) =
+            BottomsheetHelper(view).withDim(content).create().apply { bottomsheetHelper = this }
+
+    protected fun createBottomsheet(view: View, config: (BottomsheetHelper) -> Unit) =
+            BottomsheetHelper(view).apply {
+                config(this)
+                bottomsheetHelper = this
+            }
+
     open fun onCreateViewModel() {}
-    protected fun createBottomsheet(view: View): BottomsheetHelper = BottomsheetHelper(view).create().apply { bottomsheetHelper = this }
+    override fun onBackPressed() {
+        if (bottomsheetHelper?.isExpanded() == true) bottomsheetHelper?.collapse()
+        else super.onBackPressed()
+    }
 }

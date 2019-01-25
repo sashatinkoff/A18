@@ -1,10 +1,18 @@
 package com.isidroid.utils.utils.views
 
+import android.animation.Animator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.Animation
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
 
@@ -25,7 +33,7 @@ open class BottomsheetHelper(private val view: View) {
     fun onHidden(callback: (helper: BottomsheetHelper, view: View) -> Unit) = apply { this.onHidden = callback }
     fun onHalfExpanded(callback: (helper: BottomsheetHelper, view: View) -> Unit) = apply { this.onHalfExpanded = callback }
     fun withDim(dim: Dim) = apply { this.dim = dim }
-    fun withDim(view: View?) = apply { this.dim = Dim(view).create() }
+    fun withDim(view: CoordinatorLayout?) = apply { this.dim = Dim(view).attach(this).create() }
 
     private val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
         override fun onSlide(view: View, offset: Float) {
@@ -52,6 +60,7 @@ open class BottomsheetHelper(private val view: View) {
     fun create() = apply {
         behavior = BottomSheetBehavior.from(view)
         behavior.setBottomSheetCallback(bottomSheetCallback)
+        ViewCompat.setElevation(view, 255f)
     }
 
     open fun onStateChanged(view: View, state: Int) {}
@@ -74,37 +83,57 @@ open class BottomsheetHelper(private val view: View) {
         }
     }
 
-    class Dim(private var parent: View?) {
-        private lateinit var dim: ColorDrawable
+    class Dim(private var parent: CoordinatorLayout?) {
         internal var color = Color.BLACK
         private var dimAmount = .7f
+        private var bottom: BottomsheetHelper? = null
+        private var overlay: View? = null
         private var isActive = false
+            set(value) {
+                field = value
+                onChange()
+            }
 
         fun color(color: Int) = apply { this.color = color }
         fun dimAmount(dimAmount: Float) = apply { this.dimAmount = dimAmount }
 
-        fun create() = apply {
-            parent ?: return@apply
-            dim = ColorDrawable(color)
-            dim.setBounds(0, 0, parent!!.width, parent!!.height)
-            dim.alpha = (255 * dimAmount).toInt()
-        }
+        internal fun attach(bottomsheetHelper: BottomsheetHelper) = apply { this.bottom = bottomsheetHelper }
+        fun create() = apply { createOverlay() }
 
-        fun show() = apply {
-            parent ?: return@apply
-            if (!isActive) {
-                isActive = true
-                val overlay = parent!!.overlay
-                overlay.add(dim)
+        private fun createOverlay() {
+            (parent as? ViewGroup)?.let {
+                overlay = LinearLayout(it.context).apply {
+                    layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                    alpha = 0f
+                    setBackgroundColor(color)
+                    setOnClickListener {
+                        this@Dim.bottom?.collapse()
+                    }
+                    it.addView(this)
+                }
             }
         }
 
-        fun hide() = apply {
-            parent ?: return@apply
-            val overlay = parent!!.overlay
-            overlay.clear()
-            isActive = false
-        }
+        fun show() = apply { isActive = true }
+        fun hide() = apply { isActive = false }
 
+        fun onChange() {
+            val alpha = if (isActive) dimAmount else 0f
+
+            overlay?.animate()?.alpha(alpha)
+                    ?.setListener(object : Animator.AnimatorListener {
+                        override fun onAnimationRepeat(animation: Animator?) {}
+                        override fun onAnimationCancel(animation: Animator?) {}
+
+                        override fun onAnimationEnd(animation: Animator?) {
+                            overlay?.visibility = if (isActive) View.VISIBLE else View.GONE
+                        }
+
+                        override fun onAnimationStart(animation: Animator?) {
+                            overlay?.visibility = if (isActive) View.VISIBLE else View.GONE
+                        }
+
+                    })
+        }
     }
 }
