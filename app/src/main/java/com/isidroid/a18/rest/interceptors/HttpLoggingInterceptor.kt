@@ -1,23 +1,17 @@
-package com.isidroid.a18.sample.rest
+package com.isidroid.a18.rest.interceptors
 
+import com.isidroid.a18.rest.Api
 import java.io.EOFException
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.concurrent.TimeUnit
 
-import okhttp3.Connection
 import okhttp3.Headers
 import okhttp3.Interceptor
-import okhttp3.MediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody
 import okhttp3.Response
-import okhttp3.ResponseBody
 import okhttp3.internal.http.HttpHeaders
 import okhttp3.internal.platform.Platform
 import okio.Buffer
-import okio.BufferedSource
 
 import okhttp3.internal.platform.Platform.INFO
 
@@ -34,7 +28,8 @@ class HttpLoggingInterceptor @JvmOverloads constructor(private val logger: Logge
             /**
              * A [Logger] defaults output appropriate for the current platform.
              */
-            val DEFAULT: Logger = object : Logger {
+            val DEFAULT: Logger = object :
+                Logger {
                 override fun log(message: String) {
                     Platform.get().log(INFO, message, null)
                 }
