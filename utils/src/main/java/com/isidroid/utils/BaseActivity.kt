@@ -28,9 +28,23 @@ abstract class BaseActivity : AppCompatActivity(), LifecycleObserver {
         YViewUtils.hideSoftKeyboard(this)
     }
 
+    /**
+     * @param view: View - a view with bottom sheet
+     * @param content: CoordinatorLayout? - a view to be dimmed
+     * @param dimConfig: (BottomsheetHelper.Dim) - a config for dim (alpha / color / interpolator / duration)
+     */
     protected fun createBottomsheet(view: View,
-                                    content: CoordinatorLayout? = null) =
-            BottomsheetHelper(view).withDim(content).create().apply { bottomsheetHelper = this }
+                                    content: CoordinatorLayout? = null,
+                                    dimConfig: ((BottomsheetHelper.Dim?) -> Unit)? = null) =
+            BottomsheetHelper(view)
+                    .withDim(content)
+                    .create().apply {
+                        dimConfig?.invoke(dim)
+                        dim?.create()
+
+                        bottomsheetHelper = this
+
+                    }
 
     protected fun createBottomsheet(view: View, config: (BottomsheetHelper) -> Unit) =
             BottomsheetHelper(view).apply {
