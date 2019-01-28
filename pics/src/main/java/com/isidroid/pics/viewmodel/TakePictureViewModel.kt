@@ -43,6 +43,8 @@ open class TakePictureViewModel : ViewModel() {
         this.data = data
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+
             type = contentType
             flags = FLAG_ACTIVITY_NO_HISTORY or FLAG_GRANT_READ_URI_PERMISSION
         }
@@ -58,7 +60,7 @@ open class TakePictureViewModel : ViewModel() {
         }
     }
 
-    fun pickGallery(caller: Any, data: HashMap<String, String>? = null) = pick(caller, "image/*", data)
+    fun pickGallery(caller: Any, isMultiple: Boolean, data: HashMap<String, String>? = null) = pick(caller, "image/*", data)
 
     fun onResult(requestCode: Int, intent: Intent?) {
         val callback: (Result?, Throwable?) -> Unit = { r, t ->
