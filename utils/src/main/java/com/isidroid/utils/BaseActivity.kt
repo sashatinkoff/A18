@@ -41,9 +41,7 @@ abstract class BaseActivity : AppCompatActivity(), LifecycleObserver {
                     .create().apply {
                         dimConfig?.invoke(dim)
                         dim?.create()
-
                         bottomsheetHelper = this
-
                     }
 
     protected fun createBottomsheet(view: View, config: (BottomsheetHelper) -> Unit) =

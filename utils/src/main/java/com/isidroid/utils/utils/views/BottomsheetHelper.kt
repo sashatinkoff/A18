@@ -78,8 +78,16 @@ open class BottomsheetHelper(private val view: View) {
 
     open fun onStateChanged(view: View, state: Int) {}
 
-    fun expand() = apply { behavior.state = STATE_EXPANDED }
-    fun hide() = apply { behavior.state = STATE_HIDDEN }
+    fun expand() = apply {
+        dim?.show()
+        behavior.state = STATE_EXPANDED
+    }
+
+    fun hide() = apply {
+        dim?.hide()
+        behavior.state = STATE_HIDDEN
+    }
+
     fun collapse() = apply {
         dim?.hide()
         behavior.state = STATE_COLLAPSED
@@ -89,16 +97,6 @@ open class BottomsheetHelper(private val view: View) {
     fun isExpanded() = behavior.state == STATE_EXPANDED
     fun isCollapsed() = behavior.state == STATE_COLLAPSED
     fun isHidden() = behavior.state == STATE_HIDDEN
-
-    fun state(state: Int): String {
-        return when (state) {
-            STATE_COLLAPSED -> "STATE_COLLAPSED"
-            STATE_EXPANDED -> "STATE_EXPANDED"
-            STATE_HIDDEN -> "STATE_HIDDEN"
-            STATE_HALF_EXPANDED -> "STATE_HALF_EXPANDED"
-            else -> ""
-        }
-    }
 
     class Dim(private var parent: CoordinatorLayout?) {
         internal var overlay: View? = null
