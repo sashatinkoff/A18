@@ -15,8 +15,6 @@ buildscript {
         classpath "io.realm:realm-gradle-plugin:$realm"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
         classpath "io.fabric.tools:gradle:$fabric"
-        // NOTE: Do not place your application versions here; they belong
-        // in the individual module build.gradle files
     }
 }
 
