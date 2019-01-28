@@ -14,30 +14,30 @@ ext {
             'playServicesLocation'    : '16.0.0',
 
             // Android components
-            'androidx'                : '1.0.2',
-            'corektx'                 : '1.0.1',
-            'annotationsX'            : '1.0.0',
-            'constraint'              : '1.1.3',
-            'lifecycle'               : '2.0.0',
-            'material'                : '1.0.0',
+            'androidx'                : '1.1.0-alpha01',
+            'corektx'                 : '1.1.0-alpha03',
+            'annotationsX'            : '1.0.1',
+            'constraint'              : '2.0.0-alpha3',
+            'lifecycle'               : '2.1.0-alpha01',
+            'material'                : '1.1.0-alpha02',
             'worker'                  : '1.0.0-beta03',
             'navigation'              : '1.0.0-alpha07',
             'androidx_annotations'    : '1.0.0-beta01',
 
             // libraries
             'crashlytics'             : "2.9.8",
-            'dagger'                  : '2.16',
+            'dagger'                  : '2.21',
             'dexter'                  : '5.0.0',
             'gson'                    : '2.8.5',
             'glide'                   : '4.8.0',
             'okhttp'                  : '3.12.1',
             'retrofit'                : '2.5.0',
-            'rxJava'                  : '2.2.5',
+            'rxJava'                  : '2.2.6',
             'rxAndroid'               : '2.1.0',
             'timber'                  : '4.7.1',
 
             // tests
-            'junit'                   : '4.12',
-            'espresso_core'           : '3.1.0-alpha4'
+            'junit'                   : '4.13-beta-1',
+            'espresso_core'           : '3.1.1'
     ]
 }
