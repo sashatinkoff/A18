@@ -127,6 +127,7 @@ open class BottomsheetHelper(private val view: View) {
                     layoutParams =
                             ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                     alpha = 0f
+                    visibility = View.GONE
                     setBackgroundColor(color)
                     setOnClickListener {
                         this@Dim.bottom?.collapse()
