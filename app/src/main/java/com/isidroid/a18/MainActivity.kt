@@ -14,8 +14,6 @@ import android.R.attr.data
 import android.content.ClipData
 
 
-
-
 class MainActivity : BindActivity<ActivityMainBinding>() {
     private lateinit var viewmodel: TakePictureViewModel
 
@@ -34,7 +32,7 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
                     .expand()
         }
 
-        btnSave.setOnClickListener { viewmodel.pickGallery(this) }
+        btnSave.setOnClickListener { viewmodel.pickGallery(this, true) }
     }
 
     override fun onCreateViewModel() {

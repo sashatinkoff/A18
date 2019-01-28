@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NO_HISTORY
 import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
+import android.net.Uri
 import android.provider.MediaStore
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -19,7 +20,7 @@ open class TakePictureViewModel : ViewModel() {
     private val repository = TakePictureRepository(compositeDisposable)
     private var takePictureRequest: TakePictureRequest? = null
     var data: HashMap<String, String>? = null
-    val imageInfo = MutableLiveData<ImageInfo>()
+    val imageInfo = MutableLiveData<List<ImageInfo>>()
     val error = MutableLiveData<Throwable>()
 
     fun takePicture(caller: Any, data: HashMap<String, String>? = null,
@@ -39,11 +40,11 @@ open class TakePictureViewModel : ViewModel() {
         }
     }
 
-    fun pick(caller: Any, contentType: String, data: HashMap<String, String>? = null) {
+    fun pick(caller: Any, contentType: String, data: HashMap<String, String>? = null, isMultiple: Boolean = false) {
         this.data = data
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, isMultiple)
 
             type = contentType
             flags = FLAG_ACTIVITY_NO_HISTORY or FLAG_GRANT_READ_URI_PERMISSION
@@ -60,22 +61,28 @@ open class TakePictureViewModel : ViewModel() {
         }
     }
 
-    fun pickGallery(caller: Any, isMultiple: Boolean, data: HashMap<String, String>? = null) = pick(caller, "image/*", data)
+    fun pickGallery(caller: Any, isMultiple: Boolean = false, data: HashMap<String, String>? = null) = pick(caller, "image/*", data, isMultiple)
 
     fun onResult(requestCode: Int, intent: Intent?) {
-        val callback: (Result?, Throwable?) -> Unit = { r, t ->
+        val callback: (List<Result>?, Throwable?) -> Unit = { r, t ->
             if (t != null) error.postValue(t)
-            else imageInfo.postValue(ImageInfo(r, data))
-            if (r?.localPath != null) onImageReady(r, data)
+            else {
+                imageInfo.postValue(ImageInfo(r, data))
+            }
         }
 
-        if (intent?.data != null && requestCode == PictureConfig.get().codePick)
-            repository.getFromGallery(intent.data, callback)
-        else if (requestCode == PictureConfig.get().codeTakePicture && takePictureRequest != null)
+        if (requestCode == PictureConfig.get().codePick) {
+            val uris = mutableListOf<Uri>()
+            intent?.data?.let { uris.add(it) }
+
+            val clipDataCount = intent?.clipData?.itemCount ?: 0
+            (0 until clipDataCount).forEach {
+                val uri = intent?.clipData?.getItemAt(it)?.uri
+                if (uri != null) uris.add(uri)
+            }
+        } else if (requestCode == PictureConfig.get().codeTakePicture && takePictureRequest != null)
             repository.processPhoto(takePictureRequest, callback)
     }
-
-    protected open fun onImageReady(result: Result, data: HashMap<String, String>?) {}
 
     override fun onCleared() {
         super.onCleared()
@@ -83,5 +90,5 @@ open class TakePictureViewModel : ViewModel() {
     }
 
     data class TakePictureRequest(val file: File, val scale: Float? = null, val maxSize: Int? = null)
-    data class ImageInfo(val result: Result?, val data: HashMap<String, String>?)
+    data class ImageInfo(val result: List<Result>?, val data: HashMap<String, String>?)
 }

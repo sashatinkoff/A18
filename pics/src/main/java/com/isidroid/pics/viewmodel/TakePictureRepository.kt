@@ -37,7 +37,7 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
                 .addTo(compositeDisposable)
     }
 
-    fun processPhoto(request: TakePictureViewModel.TakePictureRequest?, callback: (Result?, Throwable?) -> Unit) {
+    fun processPhoto(request: TakePictureViewModel.TakePictureRequest?, callback: (List<Result>?, Throwable?) -> Unit) {
         if (request?.file == null) {
             callback(null, Throwable("Uri is null"))
             return
@@ -53,7 +53,7 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
                     result
                 }
                 .subscribe(
-                        { callback(it, null) },
+                        { callback(listOf(it), null) },
                         { callback(null, it) }
                 )
                 .addTo(compositeDisposable)
