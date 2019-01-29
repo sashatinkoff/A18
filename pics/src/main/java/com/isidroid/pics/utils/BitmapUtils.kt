@@ -3,6 +3,9 @@ package com.isidroid.pics.utils
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import javax.microedition.khronos.egl.EGL10
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.egl.EGLContext
@@ -97,5 +100,13 @@ object BitmapUtils {
         val result = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, false)
         bitmap.recycle()
         return result
+    }
+
+    fun isImage(path: String?): Boolean {
+        val picExts = arrayOf("jpg", "png", "gif", "jpeg")
+        picExts.forEach {
+            if (path?.endsWith(it) == true) return true
+        }
+        return false
     }
 }

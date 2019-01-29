@@ -17,7 +17,7 @@ public class ImageHeaderParser {
     /**
      * The format of the image data including whether or not the image may include transparent pixels.
      */
-    public static enum ImageType {
+    public enum ImageType {
         /**
          * GIF type.
          */

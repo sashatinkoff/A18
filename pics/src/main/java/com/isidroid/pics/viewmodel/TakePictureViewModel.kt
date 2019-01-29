@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModel
 import com.isidroid.pics.PictureConfig
 import com.isidroid.pics.Result
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 import java.io.File
 
 open class TakePictureViewModel : ViewModel() {
@@ -20,7 +21,7 @@ open class TakePictureViewModel : ViewModel() {
     private val repository = TakePictureRepository(compositeDisposable)
     private var takePictureRequest: TakePictureRequest? = null
     var data: HashMap<String, String>? = null
-    val imageInfo = MutableLiveData<List<ImageInfo>>()
+    val imageInfo = MutableLiveData<ImageInfo>()
     val error = MutableLiveData<Throwable>()
 
     fun takePicture(caller: Any, data: HashMap<String, String>? = null,
@@ -80,6 +81,9 @@ open class TakePictureViewModel : ViewModel() {
                 val uri = intent?.clipData?.getItemAt(it)?.uri
                 if (uri != null) uris.add(uri)
             }
+
+            repository.getFromGallery(uris, callback)
+
         } else if (requestCode == PictureConfig.get().codeTakePicture && takePictureRequest != null)
             repository.processPhoto(takePictureRequest, callback)
     }

@@ -12,9 +12,7 @@ import androidx.core.content.MimeTypeFilter
 import com.isidroid.pics.PictureConfig
 import com.isidroid.pics.Result
 import timber.log.Timber
-import java.io.File
-import java.io.IOException
-import java.io.InputStream
+import java.io.*
 import java.util.*
 
 class MediaUriParser(private val context: Context) {
@@ -36,7 +34,11 @@ class MediaUriParser(private val context: Context) {
         }
 
         cursor?.close()
-        return result ?: getLocal(uri)
+        val result = result ?: getLocal(uri)
+
+
+
+        return result
     }
 
     @Throws(IOException::class)
