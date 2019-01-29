@@ -1,104 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data />
+    <data/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinator"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#000">
-
-        <LinearLayout
-            android:id="@+id/content"
+            android:id="@+id/coordinator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="36dp">
+            android:background="#000">
+
+        <LinearLayout
+                android:id="@+id/content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="36dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/YTextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Please enter your name"
-                app:hintTextAppearance="@style/TextInputHintTextAppearance">
-
-                <androidx.appcompat.widget.AppCompatEditText
+                    style="@style/YTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#6CA4C5" />
+                    android:hint="Please enter your name"
+                    app:hintTextAppearance="@style/TextInputHintTextAppearance">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#6CA4C5"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/YTextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:hint="Please enter your password">
-
-                <androidx.appcompat.widget.AppCompatEditText
+                    style="@style/YTextInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="#6CA4C5" />
+                    android:layout_marginTop="24dp"
+                    android:hint="Please enter your password">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#6CA4C5"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSave"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Pick image" />
+                    android:id="@+id/btnSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="Pick image"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnPdf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Pick pdf" />
+                    android:id="@+id/btnPdf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="Pick pdf"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCamera"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Take picture with camera" />
+                    android:id="@+id/btnCamera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="Take picture with camera"/>
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+            <ImageView
+                    android:id="@+id/imageview"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnOpen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Show bottom menu" />
+                    android:id="@+id/btnOpen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="Show bottom menu"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/bottomSheet"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="#FF0"
-            android:orientation="vertical"
-            app:behavior_hideable="false"
-            app:behavior_peekHeight="20dp"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+                android:id="@+id/bottomSheet"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="#FF0"
+                android:orientation="vertical"
+                app:behavior_hideable="false"
+                app:behavior_peekHeight="20dp"
+                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnBottomSheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="32dp"
-                android:text="Hello world" />
+                    android:id="@+id/btnBottomSheet"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="32dp"
+                    android:text="Hello world"/>
 
 
         </LinearLayout>

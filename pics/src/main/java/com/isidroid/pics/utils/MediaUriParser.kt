@@ -8,10 +8,8 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
-import androidx.core.content.MimeTypeFilter
 import com.isidroid.pics.PictureConfig
 import com.isidroid.pics.Result
-import timber.log.Timber
 import java.io.*
 import java.util.*
 
@@ -34,11 +32,7 @@ class MediaUriParser(private val context: Context) {
         }
 
         cursor?.close()
-        val result = result ?: getLocal(uri)
-
-
-
-        return result
+        return this.result ?: getLocal(uri)
     }
 
     @Throws(IOException::class)
@@ -50,10 +44,10 @@ class MediaUriParser(private val context: Context) {
         val result = Result()
 
         val projection = arrayOf(
-                MediaStore.Images.ImageColumns.DISPLAY_NAME,
-                MediaStore.Images.ImageColumns.DATE_TAKEN,
-                MediaStore.Images.ImageColumns.DATA,
-                MediaStore.Files.FileColumns.MIME_TYPE
+            MediaStore.Images.ImageColumns.DISPLAY_NAME,
+            MediaStore.Images.ImageColumns.DATE_TAKEN,
+            MediaStore.Images.ImageColumns.DATA,
+            MediaStore.Files.FileColumns.MIME_TYPE
         )
 
         val cursor = getData(uri, null, projection)
@@ -102,7 +96,11 @@ class MediaUriParser(private val context: Context) {
         val split = docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         val type = split[0]
         var contentUri: Uri? = null
-        val projection = arrayOf(MediaStore.Images.ImageColumns.DATA, MediaStore.Images.ImageColumns.DATE_TAKEN, MediaStore.Images.ImageColumns.DISPLAY_NAME)
+        val projection = arrayOf(
+            MediaStore.Images.ImageColumns.DATA,
+            MediaStore.Images.ImageColumns.DATE_TAKEN,
+            MediaStore.Images.ImageColumns.DISPLAY_NAME
+        )
 
         if ("image" == type)
             contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
@@ -126,7 +124,8 @@ class MediaUriParser(private val context: Context) {
         val type = split[0]
 
         if ("primary".equals(type, ignoreCase = true)) {
-            result = Result().apply { localPath = Environment.getExternalStorageDirectory().toString() + "/" + split[1] }
+            result =
+                Result().apply { localPath = Environment.getExternalStorageDirectory().toString() + "/" + split[1] }
         }
     }
 
@@ -134,7 +133,8 @@ class MediaUriParser(private val context: Context) {
         val cursor: Cursor?
 
         val id = DocumentsContract.getDocumentId(uri)
-        val contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id))
+        val contentUri =
+            ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id))
 
         val projection = arrayOf("_data", "lastmod")
         cursor = getData(contentUri, id, projection)

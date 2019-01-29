@@ -77,6 +77,7 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
 
     private fun rotate(result: Result?): String? {
         if (result?.localPath == null) return null
+        if (true) return result.localPath
 
         val file = File(result.localPath)
         var fileStream: FileInputStream? = null
@@ -86,27 +87,27 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
 
         try {
             if (file.exists()) {
-                if (file.exists()) {
-                    fileStream = file.inputStream()
+                fileStream = file.inputStream()
 
-                    val orientation = ImageHeaderParser(fileStream).orientation
-                    result.orientation = when (orientation) {
-                        ExifInterface.ORIENTATION_ROTATE_90 -> 90
-                        ExifInterface.ORIENTATION_ROTATE_180 -> 180
-                        ExifInterface.ORIENTATION_ROTATE_270 -> 270
-                        else -> 0
-                    }
+                val orientation = ImageHeaderParser(fileStream).orientation
+                result.orientation = when (orientation) {
+                    ExifInterface.ORIENTATION_ROTATE_90 -> 90
+                    ExifInterface.ORIENTATION_ROTATE_180 -> 180
+                    1 -> 270
+                    else -> 0
+                }
 
+                if (orientation >= 0) {
                     val orientationMatrix = Matrix()
                     orientationMatrix.postRotate(result.orientation.toFloat())
 
-                    val rotatedFile = File(file.parentFile, UUID.randomUUID().toString().substring(0, 5) + ".jpg")
+                    val rotatedFile = File(context.cacheDir, UUID.randomUUID().toString().substring(0, 5) + ".jpg")
                     bitmap = BitmapFactory.decodeFile(result.localPath)
+                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, orientationMatrix, false)
                     fileOutputStream = FileOutputStream(rotatedFile)
                     bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
 
                     path = rotatedFile.absolutePath
-                    file.delete()
                 }
             }
         } catch (e: Exception) {
@@ -116,6 +117,7 @@ class TakePictureRepository(private val compositeDisposable: CompositeDisposable
             wrapTry { fileStream?.close() }
             wrapTry { fileOutputStream?.close() }
         }
+
 
         return path
     }

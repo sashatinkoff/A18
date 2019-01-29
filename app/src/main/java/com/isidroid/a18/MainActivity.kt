@@ -15,9 +15,11 @@ import android.R.attr.data
 import android.content.ClipData
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import com.isidroid.pics.PictureConfig
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.listener.single.CompositePermissionListener
+import java.io.File
 
 
 class MainActivity : BindActivity<ActivityMainBinding>() {
@@ -48,8 +50,12 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
             Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
         })
         viewmodel.imageInfo.observe(this, Observer { info ->
-            Timber.e("IMAGE INFO OBSERVED ${info.result}")
-            info.result?.forEach { Timber.i(it.localPath) }
+            info.result?.forEach {
+                val file = File(it.localPath)
+                Timber.i("${file.absolutePath}/${file.exists()}")
+
+                Glide.with(imageview).load(it.localPath).into(imageview)
+            }
         })
     }
 
