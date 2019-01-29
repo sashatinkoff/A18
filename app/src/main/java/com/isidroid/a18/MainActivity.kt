@@ -1,5 +1,6 @@
 package com.isidroid.a18
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -12,6 +13,11 @@ import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import android.R.attr.data
 import android.content.ClipData
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import com.isidroid.pics.PictureConfig
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.listener.single.CompositePermissionListener
 
 
 class MainActivity : BindActivity<ActivityMainBinding>() {
@@ -21,29 +27,42 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+        if (intent?.action == Intent.ACTION_SEND || intent?.action == Intent.ACTION_SEND_MULTIPLE) handleSendData(intent)
+        Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            .withListener(CompositePermissionListener()).check()
+
         btnOpen.setOnClickListener {
-            createBottomsheet(bottomSheet, coordinator)
-            { dim ->
-                dim
-                        ?.alpha(.4f)
-                        ?.interpolator(DecelerateInterpolator())
-                        ?.color(Color.RED)
-            }
-                    .expand()
+            createBottomsheet(bottomSheet, coordinator) { it?.alpha(.5f) }.expand()
         }
 
-        btnSave.setOnClickListener { viewmodel.pickGallery(this, true) }
+        btnSave.setOnClickListener { viewmodel.pickGallery(this, false) }
+        btnPdf.setOnClickListener { viewmodel.pick(this, "application/pdf") }
+        btnCamera.setOnClickListener { viewmodel.takePicture(this) }
     }
 
     override fun onCreateViewModel() {
         viewmodel = ViewModelProviders.of(this).get(TakePictureViewModel::class.java)
+        viewmodel.error.observe(this, Observer {
+            Timber.e("IMAGE INFO OBSERVED ERROR ${it.message}")
+            Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+        })
+        viewmodel.imageInfo.observe(this, Observer { info ->
+            Timber.e("IMAGE INFO OBSERVED ${info.result}")
+            info.result?.forEach { Timber.i(it.localPath) }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        val imagesPath = data?.clipData
-        Timber.i("onActivityResult $data, path=$imagesPath")
-
-
         viewmodel.onResult(requestCode, data)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent?.action == Intent.ACTION_SEND || intent?.action == Intent.ACTION_SEND_MULTIPLE) handleSendData(intent)
+    }
+
+    private fun handleSendData(intent: Intent) {
+        viewmodel.onResult(PictureConfig.get().codePick, intent)
     }
 }
