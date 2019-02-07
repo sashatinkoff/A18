@@ -2,23 +2,20 @@ package com.isidroid.a18
 
 import android.Manifest
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.view.animation.DecelerateInterpolator
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.Glide
 import com.isidroid.a18.databinding.ActivityMainBinding
+import com.isidroid.pics.PictureConfig
 import com.isidroid.pics.viewmodel.TakePictureViewModel
 import com.isidroid.utils.BindActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
-import android.R.attr.data
-import android.content.ClipData
-import android.widget.Toast
-import androidx.lifecycle.Observer
-import com.bumptech.glide.Glide
-import com.isidroid.pics.PictureConfig
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.listener.single.CompositePermissionListener
+import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 import java.io.File
 
 
@@ -38,9 +35,50 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
             createBottomsheet(bottomSheet, coordinator) { it?.alpha(.5f) }.expand()
         }
 
-        btnSave.setOnClickListener { viewmodel.pickGallery(this, false) }
-        btnPdf.setOnClickListener { viewmodel.pick(this, "application/pdf") }
-        btnCamera.setOnClickListener { viewmodel.takePicture(this) }
+//        btnSave.setOnClickListener { viewmodel.pickGallery(this, false) }
+//        btnPdf.setOnClickListener { viewmodel.pick(this, "application/pdf") }
+//        btnCamera.setOnClickListener { viewmodel.takePicture(this) }
+
+        btnSave.setOnClickListener {
+            AlertDialog.Builder(this, 0)
+                .setTitle("Greetings to you")
+                .setMessage("Hello, this is just a message with several lines\nWith the best wishes, just me")
+                .setPositiveButton("Positive", null)
+                .setNegativeButton("Negative", null)
+                .setNeutralButton("Neutral", null)
+                .show()
+        }
+
+        btnCamera.setOnClickListener {
+            val items = arrayListOf("First", "Second", "Last").toTypedArray()
+            AlertDialog.Builder(this)
+                .setTitle("Greetings to you")
+                .setMultiChoiceItems(items, null, null)
+                .setPositiveButton("Positive", null)
+                .setNegativeButton("Negative", null)
+                .setNeutralButton("Neutral", null)
+                .show()
+        }
+
+
+        // show simple dialog with text
+        AlertDialog.Builder(this)
+            .setTitle("Greetings to you")
+            .setMessage("Hello, this is just a message with several lines\nWith the best wishes, just me")
+            .setPositiveButton("Positive", null)
+            .setNegativeButton("Negative", null)
+            .setNeutralButton("Neutral", null)
+            .show()
+
+        // show dialog with multiple checkboxes
+        val items = arrayListOf("First", "Second", "Last").toTypedArray()
+        AlertDialog.Builder(this)
+            .setTitle("Greetings to you")
+            .setMultiChoiceItems(items, null, null)
+            .setPositiveButton("Positive", null)
+            .setNegativeButton("Negative", null)
+            .setNeutralButton("Neutral", null)
+            .show()
     }
 
     override fun onCreateViewModel() {

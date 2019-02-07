@@ -6,15 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
-        <!-- In case you  add utils module -->
-        <item name="bgColor">#FFF</item>
+        <item name="android:windowBackground">@color/bg_window</item>
+        <item name="alertDialogTheme">@style/YDialog</item>
     </style>
 
     <style name="YTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/colorAccent</item>
         <item name="boxStrokeWidth">1dp</item>
-        <item name="android:textColorHint">#90FFFFFF</item>
+        <item name="android:textColorHint">@color/text_input_inactive_hint</item>
     </style>
 
     <style name="TextInputHintTextAppearance" parent="TextAppearance.AppCompat">

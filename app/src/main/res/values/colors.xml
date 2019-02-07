@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- A18 colors starts here -->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="bg_window">#000</color>
+    <color name="text_input_inactive_hint">#90FFFFFF</color>
     <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#FFF</color>
+
+
+    <!-- A18 Dialog style starts here -->
+    <color name="dialog_background">#283593</color>
+    <color name="dialog_text">#EEEEEE</color>
+    <color name="dialog_buttons_color">#C62828</color>
+    <color name="dialog_checkbox">#FFF</color>
+    <color name="dialog_checkbox_activated">#FF0000</color>
+    <color name="dialog_list_item">#FFF</color>
+    <color name="dialog_accent_button">#FFF</color>
+    <color name="dialog_button">#77FFFFFF</color>
+    <!-- A18 Dialog style ends here -->
+
+
+    <!-- A18 colors ends here -->
 
 </resources>
