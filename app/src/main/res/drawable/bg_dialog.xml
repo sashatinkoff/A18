@@ -7,8 +7,8 @@
        android:insetBottom="16dp">
 
     <shape android:shape="rectangle">
-        <corners android:radius="4dp"/>
-        <stroke android:color="#86FF0000" android:width="4dp"/>
+        <corners android:radius="1dp"/>
+        <stroke android:color="#5C283593" android:width="4dp"/>
         <solid android:color="@color/dialog_background"/>
     </shape>
 

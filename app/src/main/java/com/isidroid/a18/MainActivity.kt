@@ -40,7 +40,7 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
 //        btnCamera.setOnClickListener { viewmodel.takePicture(this) }
 
         btnSave.setOnClickListener {
-            AlertDialog.Builder(this, 0)
+            AlertDialog.Builder(this)
                 .setTitle("Greetings to you")
                 .setMessage("Hello, this is just a message with several lines\nWith the best wishes, just me")
                 .setPositiveButton("Positive", null)
@@ -62,23 +62,23 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
 
 
         // show simple dialog with text
-        AlertDialog.Builder(this)
-            .setTitle("Greetings to you")
-            .setMessage("Hello, this is just a message with several lines\nWith the best wishes, just me")
-            .setPositiveButton("Positive", null)
-            .setNegativeButton("Negative", null)
-            .setNeutralButton("Neutral", null)
-            .show()
-
-        // show dialog with multiple checkboxes
-        val items = arrayListOf("First", "Second", "Last").toTypedArray()
-        AlertDialog.Builder(this)
-            .setTitle("Greetings to you")
-            .setMultiChoiceItems(items, null, null)
-            .setPositiveButton("Positive", null)
-            .setNegativeButton("Negative", null)
-            .setNeutralButton("Neutral", null)
-            .show()
+//        AlertDialog.Builder(this)
+//            .setTitle("Greetings to you")
+//            .setMessage("Hello, this is just a message with several lines\nWith the best wishes, just me")
+//            .setPositiveButton("Positive", null)
+//            .setNegativeButton("Negative", null)
+//            .setNeutralButton("Neutral", null)
+//            .show()
+//
+//        // show dialog with multiple checkboxes
+//        val items = arrayListOf("First", "Second", "Last").toTypedArray()
+//        AlertDialog.Builder(this)
+//            .setTitle("Greetings to you")
+//            .setMultiChoiceItems(items, null, null)
+//            .setPositiveButton("Positive", null)
+//            .setNegativeButton("Negative", null)
+//            .setNeutralButton("Neutral", null)
+//            .show()
     }
 
     override fun onCreateViewModel() {

@@ -11,7 +11,7 @@
 
     <!-- A18 Dialog style starts here -->
     <color name="dialog_background">#283593</color>
-    <color name="dialog_text">#EEEEEE</color>
+    <color name="dialog_text">#D6D6D6</color>
     <color name="dialog_buttons_color">#C62828</color>
     <color name="dialog_checkbox">#FFF</color>
     <color name="dialog_checkbox_activated">#FF0000</color>

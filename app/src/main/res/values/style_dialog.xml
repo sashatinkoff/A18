@@ -36,7 +36,7 @@
     </style>
 
     <dimen name="dialog_line_spacing">2dp</dimen>
-    <dimen name="dialog_title_size">20sp</dimen>
+    <dimen name="dialog_title_size">22sp</dimen>
     <dimen name="dialog_text_size">16sp</dimen>
     <dimen name="dialog_buttons_size">14sp</dimen>
 </resources>
