@@ -33,7 +33,7 @@ ext {
             'okhttp'                  : '3.13.1',
             'retrofit'                : '2.5.0',
             'rxJava'                  : '2.2.6',
-            'rxAndroid'               : '2.1.0',
+            'rxAndroid'               : '2.1.1',
             'timber'                  : '4.7.1',
 
             // tests
