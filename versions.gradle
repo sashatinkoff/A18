@@ -20,7 +20,7 @@ ext {
             'constraint'              : '2.0.0-alpha3',
             'lifecycle'               : '2.1.0-alpha02',
             'material'                : '1.1.0-alpha03',
-            'worker'                  : '1.0.0-rc01',
+            'worker'                  : '1.0.0-rc02',
             'navigation'              : '1.0.0-alpha07',
             'androidx_annotations'    : '1.0.0-beta01',
 
@@ -32,7 +32,7 @@ ext {
             'glide'                   : '4.9.0',
             'okhttp'                  : '3.13.1',
             'retrofit'                : '2.5.0',
-            'rxJava'                  : '2.2.6',
+            'rxJava'                  : '2.2.7',
             'rxAndroid'               : '2.1.1',
             'timber'                  : '4.7.1',
 
