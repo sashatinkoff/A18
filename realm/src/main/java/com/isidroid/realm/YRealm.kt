@@ -35,7 +35,7 @@ object YRealm {
     }
 
     fun realmExeMain(execute: (realm: Realm) -> Unit) {
-        Handler(Looper.getMainLooper()).post { realmExe(execute) }
+        Handler(Looper.getMainLooper()).run { realmExe(execute) }
     }
 
     fun update(list: List<RealmModel>, gson: Gson? = null) {
