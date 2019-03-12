@@ -3,6 +3,7 @@ package com.isidroid.a18
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
@@ -35,30 +36,36 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
             createBottomsheet(bottomSheet, coordinator) { it?.alpha(.5f) }.expand()
         }
 
-//        btnSave.setOnClickListener { viewmodel.pickGallery(this, false) }
-//        btnPdf.setOnClickListener { viewmodel.pick(this, "application/pdf") }
-//        btnCamera.setOnClickListener { viewmodel.takePicture(this) }
-
-        btnSave.setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("Greetings to you")
-                .setMessage("Hello, this is just a message with several lines\nWith the best wishes, just me")
-                .setPositiveButton("Positive", null)
-                .setNegativeButton("Negative", null)
-                .setNeutralButton("Neutral", null)
-                .show()
-        }
-
+        btnSave.setOnClickListener { viewmodel.pickGallery(this, false) }
+        btnPdf.setOnClickListener { viewmodel.pick(this, "application/pdf") }
         btnCamera.setOnClickListener {
-            val items = arrayListOf("First", "Second", "Last").toTypedArray()
-            AlertDialog.Builder(this)
-                .setTitle("Greetings to you")
-                .setMultiChoiceItems(items, null, null)
-                .setPositiveButton("Positive", null)
-                .setNegativeButton("Negative", null)
-                .setNeutralButton("Neutral", null)
-                .show()
-        }
+            //viewmodel.takePicture(this)
+
+            val selectImageIntent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media
+                .EXTERNAL_CONTENT_URI)
+            startActivityForResult(selectImageIntent, PictureConfig.get().codePick)
+            }
+
+//        btnSave.setOnClickListener {
+//            AlertDialog.Builder(this)
+//                .setTitle("Greetings to you")
+//                .setMessage("Hello, this is just a message with several lines\nWith the best wishes, just me")
+//                .setPositiveButton("Positive", null)
+//                .setNegativeButton("Negative", null)
+//                .setNeutralButton("Neutral", null)
+//                .show()
+//        }
+//
+//        btnCamera.setOnClickListener {
+//            val items = arrayListOf("First", "Second", "Last").toTypedArray()
+//            AlertDialog.Builder(this)
+//                .setTitle("Greetings to you")
+//                .setMultiChoiceItems(items, null, null)
+//                .setPositiveButton("Positive", null)
+//                .setNegativeButton("Negative", null)
+//                .setNeutralButton("Neutral", null)
+//                .show()
+//        }
 
 
         // show simple dialog with text
@@ -90,7 +97,7 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
         viewmodel.imageInfo.observe(this, Observer { info ->
             info.result?.forEach {
                 val file = File(it.localPath)
-                Timber.i("${file.absolutePath}/${file.exists()}")
+                Timber.tag("imageinforesult").i("${file.absolutePath}/${file.exists()}")
 
                 Glide.with(imageview).load(it.localPath).into(imageview)
             }

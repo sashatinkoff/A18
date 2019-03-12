@@ -39,6 +39,8 @@ object MediaHelper {
         return "com.google.android.apps.docs.storage" == uri.authority
     }
 
+    fun isGoogleDriveLegacy(uri: Uri) = "com.google.android.apps.docs.storage.legacy" == uri.authority
+
     private fun isNewGooglePhotosUri(uri: Uri): Boolean {
         return "com.google.android.apps.photos.contentprovider" == uri.authority
     }

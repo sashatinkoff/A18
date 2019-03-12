@@ -44,12 +44,11 @@ open class TakePictureViewModel : ViewModel() {
 
     fun pick(caller: Any, contentType: String, data: HashMap<String, String>? = null, isMultiple: Boolean = false) {
         this.data = data
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+        val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             putExtra(Intent.EXTRA_ALLOW_MULTIPLE, isMultiple)
-
             type = contentType
-            flags = FLAG_ACTIVITY_NO_HISTORY or FLAG_GRANT_READ_URI_PERMISSION
+//            flags = FLAG_ACTIVITY_NO_HISTORY or FLAG_GRANT_READ_URI_PERMISSION
         }
 
         try {
@@ -59,7 +58,7 @@ open class TakePictureViewModel : ViewModel() {
                 else -> throw Exception("Can't pickGallery with this caller")
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+           Timber.e(e)
         }
     }
 
