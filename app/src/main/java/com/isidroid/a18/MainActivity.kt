@@ -36,15 +36,11 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
             createBottomsheet(bottomSheet, coordinator) { it?.alpha(.5f) }.expand()
         }
 
-        btnSave.setOnClickListener { viewmodel.pickGallery(this, false) }
+        btnSave.setOnClickListener { viewmodel.pickGallery(this, true) }
         btnPdf.setOnClickListener { viewmodel.pick(this, "application/pdf") }
         btnCamera.setOnClickListener {
-            //viewmodel.takePicture(this)
-
-            val selectImageIntent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media
-                .EXTERNAL_CONTENT_URI)
-            startActivityForResult(selectImageIntent, PictureConfig.get().codePick)
-            }
+            viewmodel.takePicture(this)
+        }
 
 //        btnSave.setOnClickListener {
 //            AlertDialog.Builder(this)

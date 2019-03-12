@@ -82,7 +82,7 @@ open class TakePictureViewModel : ViewModel() {
                 if (uri != null) uris.add(uri)
             }
 
-            repository.getFromGallery(uris, callback)
+            repository.getFromGallery(uris.distinct(), callback)
 
         } else if (requestCode == PictureConfig.get().codeTakePicture && takePictureRequest != null)
             repository.processPhoto(takePictureRequest, callback)
