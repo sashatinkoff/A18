@@ -3,11 +3,10 @@ package com.isidroid.a18
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.isidroid.a18.databinding.ActivityMainBinding
 import com.isidroid.pics.PictureConfig
@@ -16,6 +15,7 @@ import com.isidroid.utils.BindActivity
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.listener.single.CompositePermissionListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.sample_main.*
 import timber.log.Timber
 import java.io.File
 
@@ -27,10 +27,15 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         if (intent?.action == Intent.ACTION_SEND || intent?.action == Intent.ACTION_SEND_MULTIPLE) handleSendData(intent)
         Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            .withListener(CompositePermissionListener()).check()
+                .withListener(CompositePermissionListener()).check()
+
+
+        val adapter = Adapter()
+        recyclerview.layoutManager = LinearLayoutManager(this)
+        recyclerview.adapter = adapter
+
 
         btnOpen.setOnClickListener {
             createBottomsheet(bottomSheet, coordinator) { it?.alpha(.5f) }.expand()
@@ -94,7 +99,6 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
             info.result?.forEach {
                 val file = File(it.localPath)
                 Timber.tag("imageinforesult").i("${file.absolutePath}/${file.exists()}")
-
                 Glide.with(imageview).load(it.localPath).into(imageview)
             }
         })
