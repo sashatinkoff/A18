@@ -13,12 +13,12 @@ import java.lang.IllegalStateException
 
 abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     private var loadMoreCallback: (() -> Unit)? = null
-    private var hasMore = false
+    protected var hasMore = false
     protected open val hasEmpty = false
     protected open val loadingResource: Int = R.layout.item_loading
     protected open val emptyResource: Int = R.layout.item_empty
     protected open val hasInitialLoading = false
-    private var isInserted = false
+    protected var isInserted = false
 
     var items = mutableListOf<T>()
 
@@ -47,7 +47,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return if (items.size == 0 && !hasMore && hasEmpty && isInserted) 1
+        return if (items.size == 0 && !hasMore && hasEmpty) 1
         else {
             var size = items.size
             if (hasMore) size++

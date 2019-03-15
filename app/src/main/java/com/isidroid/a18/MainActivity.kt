@@ -36,7 +36,6 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
         recyclerview.layoutManager = LinearLayoutManager(this)
         recyclerview.adapter = adapter
 
-
         btnOpen.setOnClickListener {
             createBottomsheet(bottomSheet, coordinator) { it?.alpha(.5f) }.expand()
         }
