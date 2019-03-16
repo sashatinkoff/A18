@@ -1,5 +1,8 @@
 package com.isidroid.a18
 
+import android.Manifest
+import android.content.Intent
+import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.provider.MediaStore
