@@ -1,57 +1,47 @@
 package com.isidroid.logger
 
+import timber.log.Timber
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.*
 
-const val DEFAULT_LOG_FILENAME = "events"
+class FileLogger(private val baseDir: File, internal val name: String = "diagnostics") {
+    var file: File? = null
+    private var filter = ""
 
-class FileLogger(baseDir: File, val tag: String) {
-    private var file: File? = null
+    fun filter(value: String) = apply { this.filter = value }
+    fun create() = apply {
+        val file = File(baseDir, "$name.log")
 
-    init {
-        val sf = SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault())
-        val limit = if (tag.length > 10) 10 else tag.length
-        val tagname = tag
-                .replace("[^a-z A-Z0-9 .]+", "")
-                .replace(" ", "_").substring(0, limit)
-                .toLowerCase()
-
-        val filename = StringBuilder().apply {
-            if (DEFAULT_LOG_FILENAME != tag) {
-                append(sf.format(Date()))
-                append("_")
-            }
-            append(tagname)
-            append(".log")
-        }.toString()
-
-        val file = File(baseDir, filename)
         if (!file.parentFile.exists()) file.parentFile.mkdirs()
         file.createNewFile()
         this.file = file
 
-        save("Debug $tag, created at ${Utils.now()}", true)
+        save("Debug $filter, created at ${Utils.now()}\n" +
+                "${Utils.deviceInfo()}\n" +
+                "============================" +
+                "\n", true)
     }
+
+    private fun isFilterApplied(message: String) =
+        (filter.isNotEmpty() && message.toLowerCase().contains(filter)) || filter.isEmpty()
 
     fun log(priority: Int, tag: String?, iMessage: String, t: Throwable?) {
         val message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $tag $iMessage $t"
-        save(message)
+        if (isFilterApplied(message)) save(message)
     }
 
     fun log(priority: Int, iMessage: String?, vararg args: Any?) {
         val message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $iMessage $args"
-        save(message)
+        if (isFilterApplied(message)) save(message)
     }
 
     fun log(priority: Int, t: Throwable?, iMessage: String?, vararg args: Any?) {
         val message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $iMessage $args $t"
-        save(message)
+        if (isFilterApplied(message)) save(message)
     }
 
     fun log(priority: Int, t: Throwable?) {
         val message = "${Utils.now()} ${Utils.prefixForPriority(priority)} $t"
-        save(message)
+        if (isFilterApplied(message)) save(message)
     }
 
     private fun save(message: String, isCreate: Boolean = false) {
@@ -62,20 +52,8 @@ class FileLogger(baseDir: File, val tag: String) {
         }
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as FileLogger
-
-        if (tag != other.tag) return false
-
-        return true
+    fun destroy() {
+        file?.delete()
     }
-
-    override fun hashCode(): Int {
-        return tag.hashCode()
-    }
-
 
 }

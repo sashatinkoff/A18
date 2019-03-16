@@ -9,14 +9,14 @@ private const val CRASHLYTICS_KEY_TAG = "tag"
 private const val CRASHLYTICS_KEY_MESSAGE = "message"
 
 open class YDebugTree : Timber.DebugTree() {
-    private var fileLoggers = mutableListOf<FileLogger>()
+    internal var fileLoggers = mutableListOf<FileLogger>()
 
     fun startLogger(logger: FileLogger) {
         fileLoggers.add(logger)
     }
 
     fun stopLogger(tag: String? = null) {
-        var logger = if (tag != null) fileLoggers.firstOrNull { it.tag == tag }
+        val logger = if (tag != null) fileLoggers.firstOrNull { it.name == tag }
         else fileLoggers.lastOrNull()
 
         logger?.let { fileLoggers.remove(it) }
@@ -39,7 +39,6 @@ open class YDebugTree : Timber.DebugTree() {
 
         val exception = t?.let { Exception(it) } ?: Exception(message)
         Crashlytics.logException(exception)
-
     }
 
     override fun log(priority: Int, message: String?, vararg args: Any?) {
