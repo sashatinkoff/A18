@@ -3,7 +3,7 @@ ext {
             // specific for project
 
             // COMMON A18 STARTS HERE
-            "isidroid"                : "1.1.75",
+            "isidroid"                : "1.1.78",
 
             // sdk
             'compileSdk'              : 28,

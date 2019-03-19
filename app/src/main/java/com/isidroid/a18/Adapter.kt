@@ -16,7 +16,7 @@ class Adapter : CoreBindAdapter<String>() {
 
     override fun resource(viewType: Int) = R.layout.sample_item
     override fun onBindHolder(binding: ViewDataBinding, position: Int) {
-        (binding as? SampleItemBinding)?.apply { items[position] }
+//        (binding as? SampleItemBinding)?.apply { items[position] }
     }
 
     override fun getItemCount(): Int {

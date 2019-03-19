@@ -19,6 +19,7 @@ import com.isidroid.utils.BindActivity
 import com.isidroid.utils.subscribeIoMain
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.listener.single.CompositePermissionListener
+import io.reactivex.Flowable
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.sample_main.*
 import timber.log.Timber
@@ -35,12 +36,19 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
 
         if (intent?.action == Intent.ACTION_SEND || intent?.action == Intent.ACTION_SEND_MULTIPLE) handleSendData(intent)
         Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .withListener(CompositePermissionListener()).check()
+            .withListener(CompositePermissionListener()).check()
 
 
-        val adapter = Adapter()
-        recyclerview.layoutManager = LinearLayoutManager(this)
-        recyclerview.adapter = adapter
+        val items = arrayListOf(0, 1, 2)
+        Flowable.fromIterable(items)
+            .doOnNext { Timber.i("workflow print $it") }
+            .doOnComplete { Timber.i("workflow complete") }
+            .subscribe()
+
+
+//        val adapter = Adapter()
+//        recyclerview.layoutManager = LinearLayoutManager(this)
+//        recyclerview.adapter = adapter
 
         btnOpen.setOnClickListener {
             Timber.i("click on button")
@@ -48,7 +56,11 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
         }
 
 
-        btnSave.setOnClickListener { Timber.i("click on save") }
+        btnSave.setOnClickListener {
+            Diagnostics.instance.getShareLogsIntent(this, true)
+                .subscribeIoMain()
+                .subscribe { startActivity(it) }
+        }
         btnPdf.setOnClickListener { Timber.i("click on btnPdf") }
 
         btnPdf.setOnClickListener {

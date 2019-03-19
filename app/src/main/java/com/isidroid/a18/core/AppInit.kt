@@ -18,6 +18,10 @@ object AppInit {
             .disableCrashlytics(BuildConfig.DEBUG)
             .create()
 
+        Diagnostics.instance.createLogger("click", "click")
+        Diagnostics.instance.createLogger("all")
+        Diagnostics.instance.createLogger("pdfclick", "pdf")
+
         RealmConfig(app)
             .version(1L)
             .migration(null)
@@ -31,5 +35,7 @@ object AppInit {
 
         PictureConfig.get().withContext(app).withPackage(BuildConfig.APPLICATION_ID)
         NotificationsChannels()
+
+
     }
 }

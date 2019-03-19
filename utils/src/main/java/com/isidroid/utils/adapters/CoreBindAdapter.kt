@@ -47,7 +47,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return if (items.size == 0 && !hasMore && hasEmpty) 1
+        return if (items.size == 0 && !hasMore && hasEmpty && isInserted) 1
         else {
             var size = items.size
             if (hasMore) size++
@@ -86,14 +86,19 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     }
 
     final override fun onBindViewHolder(holder: CoreHolder, position: Int) {
-        when (getItemViewType(position)) {
+        val viewtype = getItemViewType(position)
+        when (viewtype) {
             VIEW_TYPE_LOADING -> updateLoadingViewHolder(holder as CoreLoadingHolder, position)
             VIEW_TYPE_EMPTY -> {
             }
             else -> updateViewHolder(holder, position)
         }
 
-        (holder as? CoreBindHolder<*, *>)?.let { onBindHolder(it.binding, position) }
+        try {
+            val item = items[position]
+            (holder as? CoreBindHolder<*, *>)?.let { onBindHolder(it.binding, position) }
+        } catch (e: Exception) {
+        }
     }
 
     private fun updateLoadingViewHolder(holder: CoreLoadingHolder, position: Int) {

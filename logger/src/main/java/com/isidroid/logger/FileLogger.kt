@@ -1,6 +1,5 @@
 package com.isidroid.logger
 
-import timber.log.Timber
 import java.io.File
 
 class FileLogger(private val baseDir: File, internal val name: String = "diagnostics") {
@@ -10,15 +9,17 @@ class FileLogger(private val baseDir: File, internal val name: String = "diagnos
     fun filter(value: String) = apply { this.filter = value }
     fun create() = apply {
         val file = File(baseDir, "$name.log")
-
         if (!file.parentFile.exists()) file.parentFile.mkdirs()
-        file.createNewFile()
+        if (!file.exists() || file.length() >= 1048576) file.createNewFile()
+
         this.file = file
 
-        save("Debug $filter, created at ${Utils.now()}\n" +
-                "${Utils.deviceInfo()}\n" +
-                "============================" +
-                "\n", true)
+        save(
+            "Debug $filter, created at ${Utils.now()}\n" +
+                    "${Utils.deviceInfo()}\n" +
+                    "============================" +
+                    "\n", true
+        )
     }
 
     private fun isFilterApplied(message: String) =

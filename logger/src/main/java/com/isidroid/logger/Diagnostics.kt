@@ -18,8 +18,8 @@ const val LOGCAT_BASEDIR = "diagnostics"
 class Diagnostics {
     var authority: String? = null
     lateinit var baseDir: File
-    internal var debugTree: Timber.DebugTree = YDebugTree()
-    private var logsStart: Date? = null
+    var debugTree: Timber.DebugTree = YDebugTree()
+    var logsStart: Date? = null
 
     fun start() {
         logsStart = Date()
