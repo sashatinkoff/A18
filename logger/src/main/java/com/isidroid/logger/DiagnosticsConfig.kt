@@ -32,7 +32,6 @@ class DiagnosticsConfig(private val context: Context) {
 
             Fabric.with(context, crashlytics)
             Timber.plant(debugTree)
-            clearLogs()
         }
     }
 }

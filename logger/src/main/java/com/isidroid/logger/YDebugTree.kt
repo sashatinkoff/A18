@@ -26,9 +26,10 @@ open class YDebugTree : Timber.DebugTree() {
         fileLoggers.clear()
     }
 
+
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         super.log(priority, tag, message, t)
-        fileLoggers.forEach { it.log(priority, tag, message, t) }
+        fileLoggers.forEach { it.log(priority, tag, message, t, null) }
 
         if (priority == Log.VERBOSE || priority == Log.DEBUG || priority == Log.INFO)
             return
@@ -43,18 +44,16 @@ open class YDebugTree : Timber.DebugTree() {
 
     override fun log(priority: Int, message: String?, vararg args: Any?) {
         super.log(priority, message, *args)
-        fileLoggers.forEach { it.log(priority, message, *args) }
+        fileLoggers.forEach { it.log(priority, null, message, null, args) }
     }
 
     override fun log(priority: Int, t: Throwable?, message: String?, vararg args: Any?) {
         super.log(priority, t, message, *args)
-        fileLoggers.forEach { it.log(priority, t, message, *args) }
+        fileLoggers.forEach { it.log(priority, null, message, t, args) }
     }
 
     override fun log(priority: Int, t: Throwable?) {
         super.log(priority, t)
-        fileLoggers.forEach { it.log(priority, t) }
+        fileLoggers.forEach { it.log(priority, null, null, t, null) }
     }
-
-
 }

@@ -39,13 +39,6 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
             .withListener(CompositePermissionListener()).check()
 
 
-        val items = arrayListOf(0, 1, 2)
-        Flowable.fromIterable(items)
-            .doOnNext { Timber.i("workflow print $it") }
-            .doOnComplete { Timber.i("workflow complete") }
-            .subscribe()
-
-
 //        val adapter = Adapter()
 //        recyclerview.layoutManager = LinearLayoutManager(this)
 //        recyclerview.adapter = adapter
@@ -55,16 +48,19 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
             createBottomsheet(bottomSheet, coordinator) { it?.alpha(.5f) }.expand()
         }
 
-
-        btnSave.setOnClickListener {
-            Diagnostics.instance.getShareLogsIntent(this, true)
-                .subscribeIoMain()
-                .subscribe { startActivity(it) }
-        }
-        btnPdf.setOnClickListener { Timber.i("click on btnPdf") }
-
+        btnSave.setOnClickListener { Timber.i("click on btnsave") }
         btnPdf.setOnClickListener {
-            Diagnostics.instance.getShareLogsIntent(this@MainActivity, true)
+            Timber.i("click on btnPdf")
+            try {
+                throw Exception("click throwed an exception")
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
+
+        }
+
+        btnCamera.setOnClickListener {
+            Diagnostics.instance.getShareLogsIntent(this, true)
                 .subscribeIoMain()
                 .subscribe { startActivity(it) }
         }

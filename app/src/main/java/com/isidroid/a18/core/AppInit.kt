@@ -19,8 +19,8 @@ object AppInit {
             .create()
 
         Diagnostics.instance.createLogger("click", "click")
-        Diagnostics.instance.createLogger("all")
-        Diagnostics.instance.createLogger("pdfclick", "pdf")
+//        Diagnostics.instance.createLogger("all")
+//        Diagnostics.instance.createLogger("pdfclick", "pdf")
 
         RealmConfig(app)
             .version(1L)

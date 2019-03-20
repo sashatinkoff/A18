@@ -111,11 +111,6 @@ class Diagnostics {
             .doOnNext { cancel() }
     }
 
-    fun clearLogs() {
-        baseDir.deleteRecursively()
-        baseDir.mkdirs()
-    }
-
     data class LogData(val file: File, val uri: Uri? = null)
 
     companion object {
