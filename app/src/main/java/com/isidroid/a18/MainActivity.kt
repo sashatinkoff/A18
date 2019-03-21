@@ -118,7 +118,7 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
     }
 
     override fun onCreateViewModel() {
-        viewmodel = ViewModelProviders.of(this).get(TakePictureViewModel::class.java)
+        viewmodel = ViewModelProviders.of(this).get(TakePictureViewModel::class.java).create(this)
         viewmodel.error.observe(this, Observer {
             Timber.e("IMAGE INFO OBSERVED ERROR ${it.message}")
             Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()

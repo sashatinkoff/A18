@@ -174,7 +174,10 @@ object FileUtils {
 
     fun isDropboxUri(uri: Uri) = "com.dropbox.android.FileCache" == uri.authority
     fun isYandexDiskUri(uri: Uri) = "ru.yandex.disk.filescache" == uri.authority
-    fun isOneDriveUri(uri: Uri) = "com.microsoft.skydrive.content.external" == uri.authority
+    fun isOneDriveUri(uri: Uri) = arrayOf(
+        "com.microsoft.skydrive.content.external",
+        "com.microsoft.skydrive.content.StorageAccessProvider"
+    ).contains(uri.authority)
 
     /**
      * Get the value of the data column for this Uri. This is useful for
@@ -240,10 +243,28 @@ object FileUtils {
 
         val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
 
-        Timber.i("uri=$uri, isDropbox=${isDropboxUri(uri)}, authority=${uri.authority}")
+        Timber.i(
+            "authority=${uri.authority}, " +
+                    "isDropbox=${isDropboxUri(uri)}, isOneDrive=${isOneDriveUri(uri)}, " +
+                    "isYandexDisk=${isYandexDiskUri(uri)}"
+        )
 
         // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+        if (isDropboxUri(uri) || isYandexDiskUri(uri) || isOneDriveUri(uri)) {
+
+            val fileName = getFileName(context, uri)
+            val cacheDir = getDocumentCacheDir(context)
+            val file = generateFileName(fileName, cacheDir)
+            var destinationPath: String? = null
+            if (file != null) {
+                destinationPath = file.absolutePath
+                saveFileFromUri(context, uri, destinationPath)
+            }
+
+            return destinationPath
+
+
+        } else if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
             // LocalStorageProvider
             if (isLocalStorageDocument(uri)) {
                 // The path is the id
@@ -311,20 +332,6 @@ object FileUtils {
             }// MediaProvider
             // DownloadsProvider
             // ExternalStorageProvider
-        } else if (isDropboxUri(uri) || isYandexDiskUri(uri) || isOneDriveUri(uri)) {
-
-            val fileName = getFileName(context, uri)
-            val cacheDir = getDocumentCacheDir(context)
-            val file = generateFileName(fileName, cacheDir)
-            var destinationPath: String? = null
-            if (file != null) {
-                destinationPath = file.absolutePath
-                saveFileFromUri(context, uri, destinationPath)
-            }
-
-            return destinationPath
-
-
         } else if ("content".equals(uri.scheme!!, ignoreCase = true)) {
 
             // Return the remote address

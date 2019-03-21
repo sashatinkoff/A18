@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 import com.isidroid.pics.PictureConfig
 import com.isidroid.pics.Result
+import timber.log.Timber
 import java.io.*
 import java.util.*
 
@@ -154,7 +155,8 @@ class MediaUriParser(private val context: Context) {
     }
 
     private fun getLocal(uri: Uri): Result? {
-        val file = File(FileUtils.getPath(PictureConfig.get().context, uri))
+        val filepath = FileUtils.getPath(context, uri)
+        val file = File(filepath ?: "")
         return if (file.exists()) Result().apply { localPath = file.absolutePath } else null
     }
 }

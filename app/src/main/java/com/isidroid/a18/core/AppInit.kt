@@ -33,9 +33,6 @@ object AppInit {
         DataBindingConfig.create()
             .withImageLoader { imageView, url -> Glide.with(imageView).load(url).into(imageView) }
 
-        PictureConfig.get().withContext(app).withPackage(BuildConfig.APPLICATION_ID)
         NotificationsChannels()
-
-
     }
 }

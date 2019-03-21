@@ -1,5 +1,6 @@
 package com.isidroid.pics.viewmodel
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -21,8 +22,10 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
 
-class TakePictureRepository(private val compositeDisposable: CompositeDisposable) {
-    private val context = PictureConfig.get().context
+class TakePictureRepository(
+    private val context: Context,
+    private val compositeDisposable: CompositeDisposable
+) {
 
     fun getFromGallery(uris: List<Uri>?, callback: (List<Result>?, Throwable?) -> Unit) {
         if (uris?.isNullOrEmpty() == true) {

@@ -1,6 +1,7 @@
 package com.isidroid.pics.viewmodel
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NO_HISTORY
 import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -18,21 +19,28 @@ import java.io.File
 
 open class TakePictureViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
-    private val repository = TakePictureRepository(compositeDisposable)
+    private lateinit var repository: TakePictureRepository
     private var takePictureRequest: TakePictureRequest? = null
     var data: HashMap<String, String>? = null
     val imageInfo = MutableLiveData<ImageInfo>()
     val error = MutableLiveData<Throwable>()
 
-    fun takePicture(caller: Any, data: HashMap<String, String>? = null,
-                    scale: Float? = null, maxSize: Int? = null) {
+    fun create(context: Context) = apply {
+        repository = TakePictureRepository(context, compositeDisposable)
+    }
+
+    fun takePicture(
+        caller: Any, data: HashMap<String, String>? = null,
+        scale: Float? = null, maxSize: Int? = null
+    ) {
         this.data = data
         val activity = caller as? Activity ?: (caller as Fragment).activity
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         try {
             takePictureRequest = TakePictureRequest(File.createTempFile("temp_image_", ".jpg"), scale, maxSize)
 
-            val photoURI = FileProvider.getUriForFile(activity!!, PictureConfig.get().authority, takePictureRequest!!.file)
+            val photoURI =
+                FileProvider.getUriForFile(activity!!, PictureConfig.get().authority, takePictureRequest!!.file)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
             activity.startActivityForResult(intent, PictureConfig.get().codeTakePicture)
 
@@ -58,11 +66,12 @@ open class TakePictureViewModel : ViewModel() {
                 else -> throw Exception("Can't pickGallery with this caller")
             }
         } catch (e: Exception) {
-           Timber.e(e)
+            Timber.e(e)
         }
     }
 
-    fun pickGallery(caller: Any, isMultiple: Boolean = false, data: HashMap<String, String>? = null) = pick(caller, "image/*", data, isMultiple)
+    fun pickGallery(caller: Any, isMultiple: Boolean = false, data: HashMap<String, String>? = null) =
+        pick(caller, "image/*", data, isMultiple)
 
     fun onResult(requestCode: Int, intent: Intent?) {
         val callback: (List<Result>?, Throwable?) -> Unit = { r, t ->
