@@ -15,16 +15,10 @@ import android.provider.OpenableColumns
 import android.util.Log
 import android.webkit.MimeTypeMap
 
-import java.io.BufferedOutputStream
-import java.io.File
-import java.io.FileFilter
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 import java.text.DecimalFormat
 import androidx.core.content.FileProvider
+import timber.log.Timber
+import java.io.*
 import java.util.*
 
 
@@ -106,8 +100,10 @@ object FileUtils {
                 val filepath = file.absolutePath
 
                 // Construct path without file name.
-                var pathwithoutname = filepath.substring(0,
-                        filepath.length - filename.length)
+                var pathwithoutname = filepath.substring(
+                    0,
+                    filepath.length - filename.length
+                )
                 if (pathwithoutname.endsWith("/")) {
                     pathwithoutname = pathwithoutname.substring(0, pathwithoutname.length - 1)
                 }
@@ -176,6 +172,8 @@ object FileUtils {
         return "com.google.android.apps.photos.content" == uri.authority
     }
 
+    fun isDropboxUri(uri: Uri) = "com.dropbox.android.FileCache" == uri.authority
+
     /**
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
@@ -186,8 +184,10 @@ object FileUtils {
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
-    fun getDataColumn(context: Context, uri: Uri?, selection: String?,
-                      selectionArgs: Array<String>?): String? {
+    fun getDataColumn(
+        context: Context, uri: Uri?, selection: String?,
+        selectionArgs: Array<String>?
+    ): String? {
 
         var cursor: Cursor? = null
         val column = MediaStore.Files.FileColumns.DATA
@@ -225,17 +225,20 @@ object FileUtils {
     fun getPath(context: Context, uri: Uri): String? {
 
         if (DEBUG)
-            Log.d("$TAG File -",
-                    "Authority: " + uri.authority +
-                            ", Fragment: " + uri.fragment +
-                            ", Port: " + uri.port +
-                            ", Query: " + uri.query +
-                            ", Scheme: " + uri.scheme +
-                            ", Host: " + uri.host +
-                            ", Segments: " + uri.pathSegments.toString()
+            Log.d(
+                "$TAG File -",
+                "Authority: " + uri.authority +
+                        ", Fragment: " + uri.fragment +
+                        ", Port: " + uri.port +
+                        ", Query: " + uri.query +
+                        ", Scheme: " + uri.scheme +
+                        ", Host: " + uri.host +
+                        ", Segments: " + uri.pathSegments.toString()
             )
 
         val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+
+        Timber.i("uri=$uri, isDropbox=${isDropboxUri(uri)}, authority=${uri.authority}")
 
         // DocumentProvider
         if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
@@ -259,10 +262,14 @@ object FileUtils {
                     return id.substring(4)
                 }
 
-                val contentUriPrefixesToTry = arrayOf("content://downloads/public_downloads", "content://downloads/my_downloads")
+                val contentUriPrefixesToTry = arrayOf(
+                    "content://downloads/public_downloads",
+                    "content://downloads/my_downloads"
+                )
 
                 for (contentUriPrefix in contentUriPrefixesToTry) {
-                    val contentUri = ContentUris.withAppendedId(Uri.parse(contentUriPrefix), java.lang.Long.valueOf(id!!))
+                    val contentUri =
+                        ContentUris.withAppendedId(Uri.parse(contentUriPrefix), java.lang.Long.valueOf(id!!))
                     try {
                         val path = getDataColumn(context, contentUri, null, null)
                         if (path != null) {
@@ -302,10 +309,25 @@ object FileUtils {
             }// MediaProvider
             // DownloadsProvider
             // ExternalStorageProvider
+        } else if (isDropboxUri(uri)) {
+
+            val fileName = getFileName(context, uri)
+            val cacheDir = getDocumentCacheDir(context)
+            val file = generateFileName(fileName, cacheDir)
+            var destinationPath: String? = null
+            if (file != null) {
+                destinationPath = file.absolutePath
+                saveFileFromUri(context, uri, destinationPath)
+            }
+
+            return destinationPath
+
+
         } else if ("content".equals(uri.scheme!!, ignoreCase = true)) {
 
             // Return the remote address
-            return if (isGooglePhotosUri(uri)) uri.lastPathSegment else getDataColumn(context, uri, null, null)
+            return if (isGooglePhotosUri(uri)) uri.lastPathSegment
+            else getDataColumn(context, uri, null, null)
 
         } else if ("file".equals(uri.scheme!!, ignoreCase = true)) {
             return uri.path
@@ -421,7 +443,10 @@ object FileUtils {
         } else if (url.contains(".txt")) {
             // Text file
             intent.setDataAndType(uri, "text/plain")
-        } else if (url.contains(".3gp") || url.contains(".mpg") || url.contains(".mpeg") || url.contains(".mpe") || url.contains(".mp4") || url.contains(".avi")) {
+        } else if (url.contains(".3gp") || url.contains(".mpg") || url.contains(".mpeg") || url.contains(".mpe") || url.contains(
+                ".mp4"
+            ) || url.contains(".avi")
+        ) {
             // Video files
             intent.setDataAndType(uri, "video/*")
         } else {
@@ -493,21 +518,21 @@ object FileUtils {
 
 
     private fun saveFileFromUri(context: Context, uri: Uri, destinationPath: String?) {
-        var `is`: InputStream? = null
+        var inputstream: InputStream? = null
         var bos: BufferedOutputStream? = null
         try {
-            `is` = context.contentResolver.openInputStream(uri)
+            inputstream = context.contentResolver.openInputStream(uri)
             bos = BufferedOutputStream(FileOutputStream(destinationPath, false))
             val buf = ByteArray(1024)
-            `is`!!.read(buf)
+            inputstream!!.read(buf)
             do {
                 bos.write(buf)
-            } while (`is`.read(buf) != -1)
+            } while (inputstream.read(buf) != -1)
         } catch (e: IOException) {
             e.printStackTrace()
         } finally {
             try {
-                `is`?.close()
+                inputstream?.close()
                 bos?.close()
             } catch (e: IOException) {
                 e.printStackTrace()
