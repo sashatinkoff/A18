@@ -94,11 +94,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
             else -> updateViewHolder(holder, position)
         }
 
-        try {
-            val item = items[position]
-            (holder as? CoreBindHolder<*, *>)?.let { onBindHolder(it.binding, position) }
-        } catch (e: Exception) {
-        }
+        (holder as? CoreBindHolder<*, *>)?.let { onBindHolder(it.binding, position) }
     }
 
     private fun updateLoadingViewHolder(holder: CoreLoadingHolder, position: Int) {
