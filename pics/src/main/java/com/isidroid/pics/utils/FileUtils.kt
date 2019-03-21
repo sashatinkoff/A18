@@ -173,6 +173,7 @@ object FileUtils {
     }
 
     fun isDropboxUri(uri: Uri) = "com.dropbox.android.FileCache" == uri.authority
+    fun isYandexDiskUri(uri: Uri) = "ru.yandex.disk.filescache" == uri.authority
 
     /**
      * Get the value of the data column for this Uri. This is useful for
@@ -309,7 +310,7 @@ object FileUtils {
             }// MediaProvider
             // DownloadsProvider
             // ExternalStorageProvider
-        } else if (isDropboxUri(uri)) {
+        } else if (isDropboxUri(uri) || isYandexDiskUri(uri)) {
 
             val fileName = getFileName(context, uri)
             val cacheDir = getDocumentCacheDir(context)
