@@ -39,10 +39,6 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
             .withListener(CompositePermissionListener()).check()
 
 
-//        val adapter = Adapter()
-//        recyclerview.layoutManager = LinearLayoutManager(this)
-//        recyclerview.adapter = adapter
-
         btnOpen.setOnClickListener {
             Timber.i("click on button")
             createBottomsheet(bottomSheet, coordinator) { it?.alpha(.5f) }.expand()
@@ -66,11 +62,11 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
         }
 
 
-//        btnSave.setOnClickListener { viewmodel.pickGallery(this, true) }
-//        btnPdf.setOnClickListener { viewmodel.pick(this, "application/pdf") }
-//        btnCamera.setOnClickListener {
-//            viewmodel.takePicture(this)
-//        }
+        btnSave.setOnClickListener { viewmodel.pickGallery(this, true) }
+        btnPdf.setOnClickListener { viewmodel.pick(this, "application/pdf") }
+        btnCamera.setOnClickListener {
+            viewmodel.takePicture(this)
+        }
 
 //        btnSave.setOnClickListener {
 //            AlertDialog.Builder(this)
