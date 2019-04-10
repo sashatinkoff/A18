@@ -5,7 +5,6 @@ import com.bumptech.glide.Glide
 import com.isidroid.a18.BuildConfig
 import com.isidroid.logger.Diagnostics
 import com.isidroid.logger.DiagnosticsConfig
-import com.isidroid.pics.PictureConfig
 import com.isidroid.realm.RealmConfig
 import com.isidroid.utils.DataBindingConfig
 import com.isidroid.utils.utils.ScreenUtils

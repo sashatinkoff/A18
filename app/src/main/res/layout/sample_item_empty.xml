@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data />
+    <data/>
 
     <TextView
-        android:id="@+id/textview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#000"
-        android:text="NO ITEMS"
-        android:gravity="center"
-        android:textColor="#FFF" />
+            android:id="@+id/textview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000"
+            android:text="NO ITEMS"
+            android:gravity="center"
+            android:textColor="#FFF"/>
 </layout>

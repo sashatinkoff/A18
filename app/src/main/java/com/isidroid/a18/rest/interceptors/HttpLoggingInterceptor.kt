@@ -1,22 +1,21 @@
 package com.isidroid.a18.rest.interceptors
 
 import com.isidroid.a18.rest.Api
-import java.io.EOFException
-import java.io.IOException
-import java.nio.charset.Charset
-import java.util.concurrent.TimeUnit
-
 import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.Response
 import okhttp3.internal.http.HttpHeaders
 import okhttp3.internal.platform.Platform
-import okio.Buffer
-
 import okhttp3.internal.platform.Platform.INFO
+import okio.Buffer
+import java.io.EOFException
+import java.io.IOException
+import java.nio.charset.Charset
+import java.util.concurrent.TimeUnit
 
 class HttpLoggingInterceptor @JvmOverloads constructor(private val logger: Logger = Logger.DEFAULT) : Interceptor {
-    @Volatile private var level = Api.LogLevel.NONE
+    @Volatile
+    private var level = Api.LogLevel.NONE
 
     fun withLevel(level: Api.LogLevel) = apply { this.level = level }
 
@@ -75,7 +74,11 @@ class HttpLoggingInterceptor @JvmOverloads constructor(private val logger: Logge
             while (i < count) {
                 val name = headers.name(i)
                 // Skip headers from the request body as they are explicitly logged above.
-                if (!"Content-Type".equals(name, ignoreCase = true) && !"Content-Length".equals(name, ignoreCase = true)) {
+                if (!"Content-Type".equals(name, ignoreCase = true) && !"Content-Length".equals(
+                        name,
+                        ignoreCase = true
+                    )
+                ) {
                     logger.log(name + ": " + headers.value(i))
                 }
                 i++
@@ -98,11 +101,15 @@ class HttpLoggingInterceptor @JvmOverloads constructor(private val logger: Logge
                 logger.log("")
                 if (isPlaintext(buffer)) {
                     logger.log(buffer.readString(charset!!))
-                    logger.log("--> END " + request.method()
-                            + " (" + requestBody.contentLength() + "-byte body)")
+                    logger.log(
+                        "--> END " + request.method()
+                                + " (" + requestBody.contentLength() + "-byte body)"
+                    )
                 } else {
-                    logger.log("--> END " + request.method() + " (binary "
-                            + requestBody.contentLength() + "-byte body omitted)")
+                    logger.log(
+                        "--> END " + request.method() + " (binary "
+                                + requestBody.contentLength() + "-byte body omitted)"
+                    )
                 }
             }
         }
@@ -121,11 +128,13 @@ class HttpLoggingInterceptor @JvmOverloads constructor(private val logger: Logge
         val responseBody = response.body() ?: return response
         val contentLength = responseBody.contentLength()
         val bodySize = if (contentLength != -1L) contentLength.toString() + "-byte" else "unknown-length"
-        logger.log("<-- "
-                + response.code()
-                + (if (response.message().isEmpty()) "" else ' ' + response.message())
-                + ' '.toString() + response.request().url()
-                + " (" + tookMs + "ms" + (if (!logHeaders) ", $bodySize body" else "") + ')'.toString())
+        logger.log(
+            "<-- "
+                    + response.code()
+                    + (if (response.message().isEmpty()) "" else ' ' + response.message())
+                    + ' '.toString() + response.request().url()
+                    + " (" + tookMs + "ms" + (if (!logHeaders) ", $bodySize body" else "") + ')'.toString()
+        )
 
         if (logHeaders) {
             val headers = response.headers()

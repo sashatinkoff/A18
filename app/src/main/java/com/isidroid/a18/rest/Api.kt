@@ -31,7 +31,9 @@ class Api<T>(private val cl: Class<T>, private val endPoint: String) {
     private var logLevel = LogLevel.BASIC
 
     fun withDebug(isEnabled: Boolean) = apply { this.debug = isEnabled }
-    fun withDecorator(decorator: (builder: OkHttpClient.Builder) -> Unit) = apply { this.okhttpClientDecorator = decorator }
+    fun withDecorator(decorator: (builder: OkHttpClient.Builder) -> Unit) =
+        apply { this.okhttpClientDecorator = decorator }
+
     fun withOfflineMaxStale(offlineMaxStale: Int) = apply { this.offlineMaxStale = offlineMaxStale }
     fun withMaxStaleUnit(maxStaleUnit: TimeUnit) = apply { this.maxStaleUnit = maxStaleUnit }
     fun withTimeout(timeout: Long) = apply { this.timeout = timeout }
