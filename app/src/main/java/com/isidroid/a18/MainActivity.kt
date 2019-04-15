@@ -21,7 +21,7 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
 
 
         btnOpen.setOnClickListener {
-            Timber.i("click on button")
+            Timber.i("click on button2")
             createBottomsheet(bottomSheet, coordinator) { it?.alpha(.5f) }.expand()
         }
 
