@@ -30,5 +30,4 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
     }
 
     override fun onCreateViewModel() {}
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {}
 }
