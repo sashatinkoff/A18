@@ -21,7 +21,7 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
 
 
         btnOpen.setOnClickListener {
-            Timber.i("click on button2")
+            Timber.i("click on button3")
             createBottomsheet(bottomSheet, coordinator) { it?.alpha(.5f) }.expand()
         }
 
@@ -30,5 +30,4 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
     }
 
     override fun onCreateViewModel() {}
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {}
 }
