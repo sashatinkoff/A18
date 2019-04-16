@@ -5,9 +5,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 apply plugin: 'io.fabric'
 
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
 apply from: '../tasks.gradle'
 
 def versionPropsFile = file('version.properties')
@@ -58,7 +55,7 @@ android {
             signingConfig signingConfigs.release
 
             ndk {
-                abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+                abiFilters 'armeabi-v7a', 'arm64-v8a'
             }
         }
 
@@ -110,9 +107,9 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
 // di
-    implementation "com.google.dagger:dagger-android:${versions.dagger}"
-    kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
-    kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
+//    implementation "com.google.dagger:dagger-android:${versions.dagger}"
+//    kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
+//    kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
 // Retrofit
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"

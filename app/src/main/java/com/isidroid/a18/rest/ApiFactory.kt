@@ -9,13 +9,13 @@ object ApiFactory {
 
     private fun <T> createBase(cl: Class<T>): Api<T> {
         return Api(cl, ENDPOINT)
-                .withLogLevel(Api.LogLevel.BODY)
-                .withDebug(true)
-                .withGson(GsonBuilder().create())
-                .withDecorator {
-                    it.addInterceptor(AuthInterceptor())
-                }
-                .withTimeout(TIMEOUT)
+            .withLogLevel(Api.LogLevel.BODY)
+            .withDebug(true)
+            .withGson(GsonBuilder().create())
+            .withDecorator {
+                it.addInterceptor(AuthInterceptor())
+            }
+            .withTimeout(TIMEOUT)
     }
 
 
