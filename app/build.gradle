@@ -95,14 +95,15 @@ dependencies {
     implementation "androidx.core:core-ktx:${versions.corektx}"
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
     implementation "com.google.android.material:material:${versions.material}"
     implementation "android.arch.work:work-runtime:${versions.worker}"
     implementation "com.google.android.gms:play-services-location:${versions.playServicesLocation}"
 // livedata
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
     kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
+
 // rx
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
@@ -123,6 +124,8 @@ dependencies {
 // Stuff
     implementation "com.google.code.gson:gson:${versions.gson}"
     implementation "com.karumi:dexter:${versions.dexter}"
+
+    implementation 'com.google.zxing:core:3.3.0'
 
 // cores
     implementation project(':utils')
