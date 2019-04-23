@@ -3,42 +3,43 @@ ext {
             // specific for project
 
             // COMMON A18 STARTS HERE
-            "isidroid"                : "1.1.82",
+            "isidroid"            : "1.1.82",
 
             // sdk
-            'compileSdk'              : 28,
-            'minSdk'                  : 21,
+            'compileSdk'          : 28,
+            'minSdk'              : 21,
 
             // playservices / firebase
-            'playServicesVersion'     : '16.0.3',
-            'playServicesLocation'    : '16.0.0',
+            'playServicesVersion' : '16.0.8',
+            'playServicesLocation': '16.0.0',
+            'firebaseMLVision'    : '19.0.3',
 
             // Android components
-            'androidx'                : '1.1.0-alpha04',
-            'corektx'                 : '1.1.0-alpha05',
-            'annotationsX'            : '1.1.0-beta01',
-            'constraint'              : '2.0.0-alpha4',
-            'lifecycle'               : '2.1.0-alpha04',
-            'material'                : '1.1.0-alpha05',
-            'worker'                  : '1.0.1',
-            'navigation'              : '1.0.0-alpha07',
-            'androidx_annotations'    : '1.0.0-beta01',
+            'androidx'            : '1.1.0-alpha04',
+            'corektx'             : '1.1.0-alpha05',
+            'annotationsX'        : '1.1.0-beta01',
+            'constraint'          : '2.0.0-alpha4',
+            'lifecycle'           : '2.1.0-alpha04',
+            'material'            : '1.1.0-alpha05',
+            'worker'              : '1.0.1',
+            'navigation'          : '1.0.0-alpha07',
+            'androidx_annotations': '1.0.0-beta01',
 
             // libraries
-            'crashlytics'             : '2.9.9',
-            'dagger'                  : '2.21',
-            'dexter'                  : '5.0.0',
-            'gson'                    : '2.8.5',
-            'glide'                   : '4.9.0',
-            'okhttp'                  : '3.14.1',
-            'retrofit'                : '2.5.0',
-            'rxJava'                  : '2.2.8',
-            'rxAndroid'               : '2.1.1',
-            'timber'                  : '4.7.1',
+            'crashlytics'         : '2.9.9',
+            'dagger'              : '2.21',
+            'dexter'              : '5.0.0',
+            'gson'                : '2.8.5',
+            'glide'               : '4.9.0',
+            'okhttp'              : '3.14.1',
+            'retrofit'            : '2.5.0',
+            'rxJava'              : '2.2.8',
+            'rxAndroid'           : '2.1.1',
+            'timber'              : '4.7.1',
 
             // tests
-            'junit'                   : '4.13-beta-2',
-            'espresso_core'           : '3.2.0-alpha03'
+            'junit'               : '4.13-beta-2',
+            'espresso_core'       : '3.2.0-alpha03'
 
             // COMMON A18 ENDS HERE
     ]
