@@ -22,7 +22,9 @@ class DiagnosticsConfig(private val context: Context) {
         Diagnostics.instance.apply {
             authority = this@DiagnosticsConfig.authority
             debugTree = this@DiagnosticsConfig.tree
-            baseDir = File(context.cacheDir, LOGCAT_BASEDIR)
+            baseDir = File(context.cacheDir, LOGCAT_BASEDIR).apply {
+                if(!exists()) mkdirs()
+            }
 
             val crashlytics = Crashlytics.Builder()
                     .core(CrashlyticsCore.Builder()
