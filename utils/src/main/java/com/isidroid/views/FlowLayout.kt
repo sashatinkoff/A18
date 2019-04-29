@@ -5,8 +5,6 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RestrictTo
-import androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP
 import androidx.core.view.MarginLayoutParamsCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.R
@@ -45,13 +43,13 @@ class FlowLayout : ViewGroup {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val width = View.MeasureSpec.getSize(widthMeasureSpec)
-        val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
+        val width = MeasureSpec.getSize(widthMeasureSpec)
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
 
-        val height = View.MeasureSpec.getSize(heightMeasureSpec)
-        val heightMode = View.MeasureSpec.getMode(heightMeasureSpec)
+        val height = MeasureSpec.getSize(heightMeasureSpec)
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
 
-        val maxWidth = if (widthMode == View.MeasureSpec.AT_MOST || widthMode == View.MeasureSpec.EXACTLY)
+        val maxWidth = if (widthMode == MeasureSpec.AT_MOST || widthMode == MeasureSpec.EXACTLY)
             width
         else
             Integer.MAX_VALUE
@@ -73,7 +71,7 @@ class FlowLayout : ViewGroup {
             val lp = child.layoutParams
             var leftMargin = 0
             var rightMargin = 0
-            if (lp is ViewGroup.MarginLayoutParams) {
+            if (lp is MarginLayoutParams) {
                 val marginLp = lp
                 leftMargin += marginLp.leftMargin
                 rightMargin += marginLp.rightMargin
@@ -117,8 +115,8 @@ class FlowLayout : ViewGroup {
 
     private fun getMeasuredDimension(size: Int, mode: Int, childrenEdge: Int): Int {
         return when (mode) {
-            View.MeasureSpec.EXACTLY -> size
-            View.MeasureSpec.AT_MOST -> Math.min(childrenEdge, size)
+            MeasureSpec.EXACTLY -> size
+            MeasureSpec.AT_MOST -> Math.min(childrenEdge, size)
             else // UNSPECIFIED:
             -> childrenEdge
         }
@@ -150,7 +148,7 @@ class FlowLayout : ViewGroup {
             val lp = child.layoutParams
             var startMargin = 0
             var endMargin = 0
-            if (lp is ViewGroup.MarginLayoutParams) {
+            if (lp is MarginLayoutParams) {
                 val marginLp = lp
                 startMargin = MarginLayoutParamsCompat.getMarginStart(marginLp)
                 endMargin = MarginLayoutParamsCompat.getMarginEnd(marginLp)

@@ -6,8 +6,8 @@ import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.LifecycleObserver
-import com.isidroid.utils.utils.views.BottomsheetHelper
-import com.isidroid.utils.utils.views.YViewUtils
+import com.isidroid.views.BottomsheetHelper
+import com.isidroid.views.YViewUtils
 
 
 /**

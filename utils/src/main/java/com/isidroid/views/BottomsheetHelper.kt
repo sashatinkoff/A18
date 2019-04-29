@@ -1,11 +1,9 @@
-package com.isidroid.utils.utils.views
+package com.isidroid.views
 
 import android.animation.Animator
 import android.graphics.Color
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.Interpolator
 import android.widget.LinearLayout

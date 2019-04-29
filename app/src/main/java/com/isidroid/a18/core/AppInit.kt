@@ -1,12 +1,9 @@
 package com.isidroid.a18.core
 
 import android.app.Application
-import com.bumptech.glide.Glide
 import com.isidroid.a18.BuildConfig
-import com.isidroid.logger.Diagnostics
 import com.isidroid.logger.DiagnosticsConfig
 import com.isidroid.realm.RealmConfig
-import com.isidroid.utils.DataBindingConfig
 import com.isidroid.utils.utils.ScreenUtils
 import com.isidroid.utils.utils.UpgradeHelper
 
@@ -17,10 +14,6 @@ object AppInit {
             .disableCrashlytics(BuildConfig.DEBUG)
             .create()
 
-        Diagnostics.instance.createLogger("click", "click")
-//        Diagnostics.instance.createLogger("all")
-//        Diagnostics.instance.createLogger("pdfclick", "pdf")
-
         RealmConfig(app)
             .version(1L)
             .migration(null)
@@ -28,9 +21,6 @@ object AppInit {
 
         ScreenUtils.create(app)
         UpgradeHelper.create(app, BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME)
-
-        DataBindingConfig.create()
-            .withImageLoader { imageView, url -> Glide.with(imageView).load(url).into(imageView) }
 
         NotificationsChannels()
     }

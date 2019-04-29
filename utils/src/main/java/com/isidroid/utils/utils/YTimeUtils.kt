@@ -2,6 +2,7 @@ package com.isidroid.utils.utils
 
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 object YTimeUtils {
     fun isSameDay(date1: Date?, date2: Date?): Boolean {
@@ -26,5 +27,45 @@ object YTimeUtils {
         return calendar.time
     }
 
+    fun tsToHoursMinutes(millis: Long?): TimePeriod {
+        millis ?: return TimePeriod()
 
+        val days = TimeUnit.MILLISECONDS.toDays(millis)
+        val hours = TimeUnit.MILLISECONDS.toHours(millis) - TimeUnit.DAYS.toHours(days)
+        val fullMinutes = TimeUnit.MILLISECONDS.toMinutes(millis)
+        val fullSeconds = TimeUnit.MILLISECONDS.toSeconds(millis)
+
+        val hoursInMinutes = TimeUnit.HOURS.toMinutes(hours)
+        val minutes = fullMinutes - hoursInMinutes - TimeUnit.DAYS.toMinutes(days)
+        val seconds = fullSeconds - TimeUnit.MINUTES.toSeconds(minutes) - TimeUnit.HOURS.toSeconds(hours) - TimeUnit.DAYS.toSeconds(days)
+
+        val string = String.format("%d:%d:%d", hours, minutes, seconds)
+        val data = string.split(":")
+
+        return TimePeriod(days.toInt(), data[0].toInt(), data[1].toInt() , data[2].toInt())
+    }
+
+    fun difference(startDate: Date, endDate: Date): TimePeriod {
+        var different = endDate.time - startDate.time
+
+        val secondsInMilli: Long = 1000
+        val minutesInMilli = secondsInMilli * 60
+        val hoursInMilli = minutesInMilli * 60
+        val daysInMilli = hoursInMilli * 24
+
+        val elapsedDays = different / daysInMilli
+        different %= daysInMilli
+
+        val elapsedHours = different / hoursInMilli
+        different %= hoursInMilli
+
+        val elapsedMinutes = different / minutesInMilli
+        different %= minutesInMilli
+
+        val elapsedSeconds = different / secondsInMilli
+
+        return TimePeriod(elapsedDays.toInt(), elapsedHours.toInt(), elapsedMinutes.toInt(), elapsedSeconds.toInt())
+    }
 }
+
+data class TimePeriod(val days: Int = 0, val hours: Int = 0, val minutes: Int = 0, val seconds: Int = 0)
