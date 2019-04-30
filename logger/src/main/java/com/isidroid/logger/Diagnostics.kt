@@ -21,45 +21,44 @@ class Diagnostics {
     var debugTree: Timber.DebugTree = YDebugTree()
     var logsStart: Date? = null
 
-    fun start() {
-        logsStart = Date()
-    }
-
-    fun cancel() {
-        logsStart = null
-    }
+    fun start() = apply { logsStart = Date() }
+    fun cancel() = apply { logsStart = null }
 
     fun createLogger(logger: FileLogger) = apply { (debugTree as? YDebugTree)?.startLogger(logger.create()) }
-    fun createLogger(filename: String, filter: String = "") = apply {
-        (debugTree as? YDebugTree)?.startLogger(FileLogger(baseDir, filename).filter(filter).create())
+    fun createLogger(filename: String, vararg filters: String) = apply {
+        (debugTree as? YDebugTree)?.startLogger(FileLogger(baseDir, filename).filter(*filters).create())
     }
 
     fun destroyLogger(filename: String) = apply { (debugTree as? YDebugTree)?.stopLogger(filename) }
-    fun stopAll() = apply { (debugTree as? YDebugTree)?.stopAll() }
+    fun destroyLogger(logger: FileLogger, deleteFile: Boolean = false) = apply {
+        (debugTree as? YDebugTree)?.stopLogger(logger.name)
+        if (deleteFile) logger.file?.delete()
+    }
 
+    fun stopAll() = apply { (debugTree as? YDebugTree)?.stopAll() }
     fun destroyAllLoggers() = apply {
         (debugTree as? YDebugTree)?.fileLoggers?.forEach { it.destroy() }
         (debugTree as? YDebugTree)?.stopAll()
     }
 
-    private fun uri(context: Context, file: File): Uri? {
-        return if (!authority.isNullOrEmpty()) {
-            FileProvider.getUriForFile(context, authority!!, file)
-        } else null
+    private fun uri(context: Context, file: File?) = try {
+        FileProvider.getUriForFile(context, authority!!, file!!)
+    } catch (e: Exception) {
+        null
     }
 
     fun getLogs(context: Context, withLogcat: Boolean = false): Flowable<MutableList<LogData>> {
         val result = mutableListOf<LogData>()
 
         val loggers = (debugTree as? YDebugTree)?.fileLoggers ?: mutableListOf()
-        loggers.filter { it.file?.exists() == true }
-            .forEach {
-                val file = it.file!!
-                result.add(LogData(file, uri(context, file)))
-            }
+        loggers.filter { it.file?.exists() == true && uri(context, it.file) != null }
+                .forEach {
+                    val file = it.file!!
+                    result.add(LogData(file, uri(context, file)))
+                }
 
         return Flowable.just(result)
-            .doOnNext { collectStandardLogs(context, withLogcat, it) }
+                .doOnNext { collectStandardLogs(context, withLogcat, it) }
     }
 
 
@@ -71,7 +70,7 @@ class Diagnostics {
 
             val process = Runtime.getRuntime().exec(command)
             val bufferedReader = BufferedReader(
-                InputStreamReader(process.inputStream)
+                    InputStreamReader(process.inputStream)
             )
 
             // Grab the results
@@ -107,14 +106,13 @@ class Diagnostics {
 
     fun getShareLogsIntent(context: Context, withLogcat: Boolean = false): Flowable<Intent> {
         return getLogs(context, withLogcat)
-            .map { Utils.shareLogsIntent(it) }
-            .doOnNext { cancel() }
+                .map { Utils.shareLogsIntent(it) }
+                .doOnNext { cancel() }
     }
 
     data class LogData(val file: File, val uri: Uri? = null)
 
     companion object {
-        const val LOGTAG = "Diagnostics"
-        val instance = Diagnostics()
+        val instance by lazy { Diagnostics() }
     }
 }

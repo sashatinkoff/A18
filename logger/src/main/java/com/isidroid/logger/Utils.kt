@@ -23,15 +23,12 @@ internal object Utils {
         }
     }
 
-    fun now(dateFormat: SimpleDateFormat = this.dateFormat): String {
-        return dateFormat.format(Date())
-    }
-
+    fun now(dateFormat: SimpleDateFormat = this.dateFormat) = dateFormat.format(Date())
     fun shareLogsIntent(data: MutableList<Diagnostics.LogData>): Intent {
         val mutableUris = mutableListOf<Uri>()
         data
-                .filter { it.uri != null }
-                .forEach { mutableUris.add(it.uri!!) }
+            .filter { it.uri != null }
+            .forEach { mutableUris.add(it.uri!!) }
 
         return Intent().apply {
             action = Intent.ACTION_SEND_MULTIPLE
@@ -48,8 +45,8 @@ internal object Utils {
         }
 
         return StringBuilder().apply {
-            append("device=${Build.MANUFACTURER} ${Build.BRAND} ${Build.MODEL}\n")
-            append("${Build.BRAND} $os ${Build.VERSION.RELEASE}, API ${Build.VERSION.SDK_INT}\n")
+            append("device=${Build.MANUFACTURER} ${Build.BRAND} ${Build.MODEL} ")
+            append("running on ${Build.BRAND} $os ${Build.VERSION.RELEASE}, API ${Build.VERSION.SDK_INT}\n")
             append("Screen ${Resources.getSystem().displayMetrics.widthPixels}x${Resources.getSystem().displayMetrics.heightPixels}\n")
         }.toString()
     }
