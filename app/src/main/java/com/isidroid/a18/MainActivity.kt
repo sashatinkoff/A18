@@ -9,6 +9,7 @@ import com.isidroid.utils.BindActivity
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.listener.single.CompositePermissionListener
 import kotlinx.android.synthetic.main.sample_main.*
+import timber.log.Timber
 
 
 class MainActivity : BindActivity<ActivityMainBinding>() {
