@@ -97,6 +97,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
     implementation "com.google.android.material:material:${versions.material}"
     implementation "android.arch.work:work-runtime:${versions.worker}"
+// firebase / google gcm
     implementation "com.google.android.gms:play-services-location:${versions.playServicesLocation}"
     implementation "com.google.firebase:firebase-core:${versions.playServicesVersion}"
     implementation "com.google.firebase:firebase-ml-vision:${versions.firebaseMLVision}"
@@ -105,14 +106,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
     kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
-
 // rx
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
-// di
-//    implementation "com.google.dagger:dagger-android:${versions.dagger}"
-//    kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
-//    kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
 // Retrofit
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
@@ -125,7 +121,6 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:${versions.glide}"
     implementation "com.google.code.gson:gson:${versions.gson}"
     implementation "com.karumi:dexter:${versions.dexter}"
-    implementation 'com.google.zxing:core:3.3.0'
 // cores
     implementation project(':utils')
     implementation project(':logger')
