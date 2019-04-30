@@ -3,7 +3,8 @@ ext {
             // specific for project
 
             // COMMON A18 STARTS HERE
-            "isidroid"            : "1.1.83",
+
+            "isidroid"            : "1.1.84",
 
             // sdk
             'compileSdk'          : 28,
@@ -25,6 +26,7 @@ ext {
             'worker'              : '1.0.1',
             'navigation'          : '1.0.0-alpha07',
             'androidx_annotations': '1.0.0-beta01',
+            'eventbus'            : '3.1.1',
 
             // libraries
             'crashlytics'         : '2.9.9',

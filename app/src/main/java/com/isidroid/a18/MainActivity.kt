@@ -3,6 +3,8 @@ package com.isidroid.a18
 import android.Manifest
 import android.os.Bundle
 import com.isidroid.a18.databinding.ActivityMainBinding
+import com.isidroid.logger.Diagnostics
+import com.isidroid.logger.FileLogger
 import com.isidroid.utils.BindActivity
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.listener.single.CompositePermissionListener
@@ -15,9 +17,14 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
         super.onCreate(savedInstanceState)
 
         Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            .withListener(CompositePermissionListener()).check()
+                .withListener(CompositePermissionListener()).check()
 
-        btnSave.setOnClickListener { }
-        btnPdf.setOnClickListener { }
+        btnSave.setOnClickListener { Timber.i("save") }
+        btnPdf.setOnClickListener { Timber.i("pdf") }
+        btnCamera.setOnClickListener { Timber.i("camera") }
+
+        btnOpen.setOnClickListener {
+        }
     }
+
 }
