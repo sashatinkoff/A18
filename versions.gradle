@@ -42,7 +42,7 @@ ext {
 
             // tests
             'junit'               : '4.13-beta-2',
-            'espresso_core'       : '3.2.0-alpha03'
+            'espresso_core'       : '3.2.0-alpha04'
 
             // COMMON A18 ENDS HERE
     ]
