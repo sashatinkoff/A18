@@ -1,56 +1,51 @@
 package com.isidroid.logger
 
-import android.util.Log
 import java.io.File
 
-class FileLogger(private val baseDir: File, internal val name: String = "diagnostics") {
+class FileLogger(private val baseDir: File = Diagnostics.instance.baseDir,
+                 val name: String = "diagnostics") {
+
     var file: File? = null
-    private var filter = ""
     private var isRecreate = false
     private var maxFileSize = 500f * 1024f
+    private var filters = mutableListOf<String>()
 
     fun recreate(value: Boolean) = apply { isRecreate = value }
     fun maxFileSizeMb(value: Float) = apply { this.maxFileSize = value * 1024 * 1024 }
-    fun filter(value: String) = apply { this.filter = value }
+    fun filter(vararg value: String) = apply { filters.addAll(value) }
+    fun content() = try {
+        file?.readText()
+    } catch (e: Exception) {
+        null
+    }
 
-    fun create() = apply {
+    internal fun create() = apply {
         val file = File(baseDir, "$name.log")
         if (!file.parentFile.exists()) file.parentFile.mkdirs()
         this.file = file
-
-        Log.e(
-            "workflow", "$name, file=${file.name}, " +
-                    "fileexists=${file.exists()}, size=${file.length()}, " +
-                    "ismore=${file.length() >= (maxFileSize)}"
-        )
 
         if (!file.exists() || file.length() >= (maxFileSize) || isRecreate) {
             isRecreate = false
             file.createNewFile()
             save(
-                "Debug $filter, created at ${Utils.now()}\n" +
-                        "${Utils.deviceInfo()}\n" +
-                        "============================" +
-                        "\n", true
+                    "Debug for $filters, created at ${Utils.now()}\n" +
+                            Utils.deviceInfo() +
+                            "---" +
+                            "\n", true
             )
 
         } else {
-            save(
-                "\n\n============================\n" +
-                        "Start new session at ${Utils.now()}\n"
-            )
+            save("\n===Start new session at ${Utils.now()}===\n")
         }
 
     }
 
-    private fun isFilterApplied(message: String) =
-        (filter.isNotEmpty() && message.toLowerCase().contains(filter)) || filter.isEmpty()
-
-    fun log(priority: Int, tag: String?, message: String?, t: Throwable?, vararg args: Any?) {
+    private fun isFilterApplied(message: String) = filters.any { message.toLowerCase().contains(it) }
+    internal fun log(priority: Int, tag: String?, message: String?, t: Throwable?, vararg args: Any?) {
         val builder = StringBuilder(Utils.now())
-            .append(" ")
-            .append(Utils.prefixForPriority(priority))
-            .append(" ")
+                .append(" ")
+                .append(Utils.prefixForPriority(priority))
+                .append(" ")
 
         tag?.let { builder.append(it).append(" ") }
         t?.let { builder.append(it.message).append(" ") }
@@ -63,11 +58,9 @@ class FileLogger(private val baseDir: File, internal val name: String = "diagnos
             builder.append("]")
         }
 
-//        val message = "${Utils.now()} ${Utils.prefixForPriority(priority)} tag $message $args ${t?.message ?: ""}"
         val data = builder.toString()
         if (isFilterApplied(data)) save(data)
     }
-
 
     private fun save(message: String, isCreate: Boolean = false) {
         try {

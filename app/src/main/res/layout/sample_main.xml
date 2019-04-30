@@ -47,14 +47,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Pick image"/>
+                android:text="Create qrcode"/>
 
         <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnPdf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Pick pdf"/>
+                android:text="Read qrcode"/>
 
         <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCamera"

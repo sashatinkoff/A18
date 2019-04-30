@@ -36,7 +36,7 @@ object MediaHelper {
     }
 
     fun isGoogleDrive(uri: Uri): Boolean {
-        return "com.google.android.apps.docs.storage" == uri.authority
+        return "com.google.android.apps.docs.storage" == uri.authority || "com.google.android.apps.docs.storage.legacy" == uri.authority
     }
 
     fun isGoogleDriveLegacy(uri: Uri) = "com.google.android.apps.docs.storage.legacy" == uri.authority

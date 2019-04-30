@@ -91,18 +91,21 @@ dependencies {
 
     testImplementation "junit:junit:${versions.junit}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso_core}"
-// support
+// google
     implementation "androidx.core:core-ktx:${versions.corektx}"
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
     implementation "com.google.android.material:material:${versions.material}"
     implementation "android.arch.work:work-runtime:${versions.worker}"
     implementation "com.google.android.gms:play-services-location:${versions.playServicesLocation}"
+    implementation "com.google.firebase:firebase-core:${versions.playServicesVersion}"
+    implementation "com.google.firebase:firebase-ml-vision:${versions.firebaseMLVision}"
 // livedata
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
     kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
+
 // rx
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
     implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
@@ -115,15 +118,14 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
     implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
-// Glide
+// Stuff
     implementation("com.github.bumptech.glide:glide:${versions.glide}") {
         exclude group: "com.android.support"
     }
     kapt "com.github.bumptech.glide:compiler:${versions.glide}"
-// Stuff
     implementation "com.google.code.gson:gson:${versions.gson}"
     implementation "com.karumi:dexter:${versions.dexter}"
-
+    implementation 'com.google.zxing:core:3.3.0'
 // cores
     implementation project(':utils')
     implementation project(':logger')
@@ -137,5 +139,5 @@ dependencies {
 //    implementation(name: "pics.${versions.isidroid}", ext: 'aar')
 }
 
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
 
