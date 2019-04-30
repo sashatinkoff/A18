@@ -101,6 +101,7 @@ dependencies {
     implementation "com.google.android.gms:play-services-location:${versions.playServicesLocation}"
     implementation "com.google.firebase:firebase-core:${versions.playServicesVersion}"
     implementation "com.google.firebase:firebase-ml-vision:${versions.firebaseMLVision}"
+    implementation "com.google.firebase:firebase-messaging:${versions.firebase_messages}"
 // livedata
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"

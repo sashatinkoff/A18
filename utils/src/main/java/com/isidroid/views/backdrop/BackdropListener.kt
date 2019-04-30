@@ -1,4 +1,4 @@
-package com.isidroid.utils.utils.views.backdrop
+package com.isidroid.views.backdrop
 
 interface BackdropListener {
     fun onCollapse()

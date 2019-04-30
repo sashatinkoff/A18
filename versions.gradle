@@ -13,6 +13,7 @@ ext {
             'playServicesVersion' : '16.0.8',
             'playServicesLocation': '16.0.0',
             'firebaseMLVision'    : '19.0.3',
+            'firebase_messages'   : '17.6.0',
 
             // Android components
             'androidx'            : '1.1.0-alpha04',
@@ -24,6 +25,7 @@ ext {
             'worker'              : '1.0.1',
             'navigation'          : '1.0.0-alpha07',
             'androidx_annotations': '1.0.0-beta01',
+            'eventbus'            : '3.1.1',
 
             // libraries
             'crashlytics'         : '2.9.9',

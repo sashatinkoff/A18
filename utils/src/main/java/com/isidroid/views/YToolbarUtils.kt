@@ -1,4 +1,4 @@
-package com.isidroid.utils.utils.views
+package com.isidroid.views
 
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar

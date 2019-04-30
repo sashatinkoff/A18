@@ -1,6 +1,5 @@
 package com.isidroid.utils
 
-import android.os.Looper
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
