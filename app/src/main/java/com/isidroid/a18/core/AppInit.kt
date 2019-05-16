@@ -3,6 +3,7 @@ package com.isidroid.a18.core
 import android.app.Application
 import com.isidroid.a18.BuildConfig
 import com.isidroid.logger.DiagnosticsConfig
+import com.isidroid.pics.PictureConfig
 import com.isidroid.realm.RealmConfig
 import com.isidroid.utils.utils.ScreenUtils
 import com.isidroid.utils.utils.UpgradeHelper
@@ -19,6 +20,7 @@ object AppInit {
             .migration(null)
             .create()
 
+        PictureConfig.get().withPackage(BuildConfig.APPLICATION_ID)
         ScreenUtils.create(app)
         UpgradeHelper.create(app, BuildConfig.VERSION_CODE, BuildConfig.VERSION_NAME)
 

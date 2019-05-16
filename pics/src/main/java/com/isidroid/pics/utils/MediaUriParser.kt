@@ -30,6 +30,7 @@ class MediaUriParser(private val context: Context) {
             }
 
         } catch (e: Exception) {
+            Timber.e(e)
         }
 
         cursor?.close()
