@@ -7,6 +7,7 @@ import android.content.Intent.FLAG_ACTIVITY_NO_HISTORY
 import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
 import android.net.Uri
 import android.provider.MediaStore
+import androidx.annotation.CallSuper
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -29,9 +30,10 @@ open class TakePictureViewModel : ViewModel() {
         repository = TakePictureRepository(context, compositeDisposable)
     }
 
-    fun takePicture(
-        caller: Any, data: HashMap<String, String>? = null,
-        scale: Float? = null, maxSize: Int? = null
+    @CallSuper
+    open fun takePicture(
+            caller: Any, data: HashMap<String, String>? = null,
+            scale: Float? = null, maxSize: Int? = null
     ) {
         this.data = data
         val activity = caller as? Activity ?: (caller as Fragment).activity
@@ -40,7 +42,7 @@ open class TakePictureViewModel : ViewModel() {
             takePictureRequest = TakePictureRequest(File.createTempFile("temp_image_", ".jpg"), scale, maxSize)
 
             val photoURI =
-                FileProvider.getUriForFile(activity!!, PictureConfig.get().authority, takePictureRequest!!.file)
+                    FileProvider.getUriForFile(activity!!, PictureConfig.get().authority, takePictureRequest!!.file)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
             activity.startActivityForResult(intent, PictureConfig.get().codeTakePicture)
 
@@ -50,7 +52,8 @@ open class TakePictureViewModel : ViewModel() {
     }
 
 
-    fun pick(caller: Any, contentType: String, data: HashMap<String, String>? = null, isMultiple: Boolean = false) {
+    @CallSuper
+    open fun pick(caller: Any, contentType: String, data: HashMap<String, String>? = null, isMultiple: Boolean = false) {
         this.data = data
         val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
@@ -70,15 +73,19 @@ open class TakePictureViewModel : ViewModel() {
         }
     }
 
-    fun pickGallery(caller: Any, isMultiple: Boolean = false, data: HashMap<String, String>? = null) =
-        pick(caller, "image/*", data, isMultiple)
+    @CallSuper
+    open fun pickGallery(caller: Any, isMultiple: Boolean = false, data: HashMap<String, String>? = null) =
+            pick(caller, "image/*", data, isMultiple)
 
-    fun onResult(requestCode: Int, intent: Intent?) {
+    @CallSuper
+    open fun onResult(requestCode: Int, intent: Intent?) {
         val callback: (List<Result>?, Throwable?) -> Unit = { r, t ->
             if (t != null) error.postValue(t)
             else {
                 imageInfo.postValue(ImageInfo(r, data))
             }
+
+            doFinally()
         }
 
         if (requestCode == PictureConfig.get().codePick) {
@@ -101,6 +108,8 @@ open class TakePictureViewModel : ViewModel() {
         super.onCleared()
         compositeDisposable.clear()
     }
+
+    open fun doFinally(){}
 
     data class TakePictureRequest(val file: File, val scale: Float? = null, val maxSize: Int? = null)
     data class ImageInfo(val result: List<Result>?, val data: HashMap<String, String>?)

@@ -4,7 +4,7 @@ ext {
 
             // COMMON A18 STARTS HERE
 
-            "isidroid"            : "1.1.84",
+            "isidroid"            : "1.1.85",
 
             // sdk
             'compileSdk'          : 28,
@@ -35,7 +35,9 @@ ext {
             'gson'                : '2.8.5',
             'glide'               : '4.9.0',
             'okhttp'              : '4.0.0-alpha01',
+            'okhttp_logging'      : '4.0.0-alpha01',
             'retrofit'            : '2.5.0',
+            'okio'                : '2.1.0',
             'rxJava'              : '2.2.8',
             'rxAndroid'           : '2.1.1',
             'timber'              : '4.7.1',
