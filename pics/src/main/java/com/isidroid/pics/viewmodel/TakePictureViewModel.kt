@@ -32,8 +32,8 @@ open class TakePictureViewModel : ViewModel() {
 
     @CallSuper
     open fun takePicture(
-            caller: Any, data: HashMap<String, String>? = null,
-            scale: Float? = null, maxSize: Int? = null
+        caller: Any, data: HashMap<String, String>? = null,
+        scale: Float? = null, maxSize: Int? = null
     ) {
         this.data = data
         val activity = caller as? Activity ?: (caller as Fragment).activity
@@ -42,9 +42,12 @@ open class TakePictureViewModel : ViewModel() {
             takePictureRequest = TakePictureRequest(File.createTempFile("temp_image_", ".jpg"), scale, maxSize)
 
             val photoURI =
-                    FileProvider.getUriForFile(activity!!, PictureConfig.get().authority, takePictureRequest!!.file)
+                FileProvider.getUriForFile(activity!!, PictureConfig.get().authority, takePictureRequest!!.file)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-            activity.startActivityForResult(intent, PictureConfig.get().codeTakePicture)
+            when(caller){
+                is Activity -> caller.startActivityForResult(intent, PictureConfig.get().codeTakePicture)
+                is Fragment -> caller.startActivityForResult(intent, PictureConfig.get().codeTakePicture)
+            }
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -53,13 +56,18 @@ open class TakePictureViewModel : ViewModel() {
 
 
     @CallSuper
-    open fun pick(caller: Any, contentType: String, data: HashMap<String, String>? = null, isMultiple: Boolean = false) {
+    open fun pick(
+        caller: Any,
+        contentType: String,
+        data: HashMap<String, String>? = null,
+        isMultiple: Boolean = false
+    ) {
         this.data = data
         val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             putExtra(Intent.EXTRA_ALLOW_MULTIPLE, isMultiple)
             type = contentType
-//            flags = FLAG_ACTIVITY_NO_HISTORY or FLAG_GRANT_READ_URI_PERMISSION
+            flags = FLAG_ACTIVITY_NO_HISTORY or FLAG_GRANT_READ_URI_PERMISSION
         }
 
         try {
@@ -75,20 +83,18 @@ open class TakePictureViewModel : ViewModel() {
 
     @CallSuper
     open fun pickGallery(caller: Any, isMultiple: Boolean = false, data: HashMap<String, String>? = null) =
-            pick(caller, "image/*", data, isMultiple)
+        pick(caller, "image/*", data, isMultiple)
 
     @CallSuper
-    open fun onResult(requestCode: Int, intent: Intent?) {
+    open fun onResult(requestCode: Int, intent: Intent?): Boolean {
         val callback: (List<Result>?, Throwable?) -> Unit = { r, t ->
             if (t != null) error.postValue(t)
-            else {
-                imageInfo.postValue(ImageInfo(r, data))
-            }
+            else imageInfo.postValue(ImageInfo(r, data))
 
             doFinally()
         }
 
-        if (requestCode == PictureConfig.get().codePick) {
+        return if (requestCode == PictureConfig.get().codePick) {
             val uris = mutableListOf<Uri>()
             intent?.data?.let { uris.add(it) }
 
@@ -99,9 +105,12 @@ open class TakePictureViewModel : ViewModel() {
             }
 
             repository.getFromGallery(uris.distinct(), callback)
+            uris.distinct().isNotEmpty()
 
-        } else if (requestCode == PictureConfig.get().codeTakePicture && takePictureRequest != null)
+        } else if (requestCode == PictureConfig.get().codeTakePicture && takePictureRequest != null) {
             repository.processPhoto(takePictureRequest, callback)
+            true
+        } else false
     }
 
     override fun onCleared() {
@@ -109,7 +118,7 @@ open class TakePictureViewModel : ViewModel() {
         compositeDisposable.clear()
     }
 
-    open fun doFinally(){}
+    open fun doFinally() {}
 
     data class TakePictureRequest(val file: File, val scale: Float? = null, val maxSize: Int? = null)
     data class ImageInfo(val result: List<Result>?, val data: HashMap<String, String>?)
