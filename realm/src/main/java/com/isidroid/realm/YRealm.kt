@@ -61,8 +61,7 @@ object YRealm {
         false
     }
 
-    fun restore(directory: File = Environment.getExternalStorageDirectory()) = try {
-        val dbname = get().configuration.realmFileName
+    fun restore(directory: File = Environment.getExternalStorageDirectory(), dbname:String = get().configuration.realmFileName) = try {
         val restoredFile = File(directory, dbname)
         val targetFile = File(get().configuration.realmDirectory, dbname)
         restoredFile.copyTo(targetFile, true)
