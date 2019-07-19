@@ -93,10 +93,14 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso_core}"
 // google
     implementation "androidx.core:core-ktx:${versions.corektx}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx_coroutines}"
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
     implementation "com.google.android.material:material:${versions.material}"
     implementation "android.arch.work:work-runtime:${versions.worker}"
+    implementation "androidx.room:room-runtime:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
+    implementation "androidx.room:room-ktx:${versions.room}"
 // firebase / google gcm
     implementation "com.google.android.gms:play-services-location:${versions.playServicesLocation}"
     implementation "com.google.firebase:firebase-core:${versions.playServicesVersion}"
