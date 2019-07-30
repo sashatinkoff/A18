@@ -5,6 +5,7 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 abstract class CoroutineViewModel(application: Application) : AndroidViewModel(application), CoroutineScope {
     private val job = Job()
@@ -21,6 +22,7 @@ abstract class CoroutineViewModel(application: Application) : AndroidViewModel(a
                 try {
                     executor()
                 } catch (e: Exception) {
+                    Timber.e(e)
                     error.postValue(e)
                 } finally {
                     progress.postValue(false)
