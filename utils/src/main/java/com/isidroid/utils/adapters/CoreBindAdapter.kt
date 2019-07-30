@@ -2,19 +2,17 @@ package com.isidroid.utils.adapters
 
 import android.os.Handler
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.isidroid.utils.R
-import java.lang.IllegalStateException
 
 abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     private var loadMoreCallback: (() -> Unit)? = null
     protected var hasMore = false
-    protected open val hasEmpty = false
+    protected open var hasEmpty = false
     protected open val loadingResource: Int = R.layout.item_loading
     protected open val emptyResource: Int = R.layout.item_empty
     protected open val hasInitialLoading = false
@@ -157,8 +155,13 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
         }
     }
 
-    fun clear() = apply { items.clear() }
+    fun clear() = apply {
+        isInserted = false
+        items.clear()
+    }
+
     fun reset() = apply {
+        isInserted = false
         hasMore = hasInitialLoading
         items.clear()
 
