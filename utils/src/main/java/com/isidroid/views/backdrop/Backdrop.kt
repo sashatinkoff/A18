@@ -138,18 +138,18 @@ class Backdrop(
             duration = animationDuration
             interpolator = this@Backdrop.interpolator
 
-            doOnEnd {
-                if (frontContainer.translationY != translateY(backContainer.height)
-                        && frontLayerMinHeight == 0) animate(backContainer.height, true)
-                else {
-                    state = when (state) {
-                        STATE_COLLAPSE_STARTED -> STATE_COLLAPSED
-                        else -> STATE_EXPANDED
-                    }
-
-                    action?.invoke()
-                }
-            }
+//            doOnEnd {
+//                if (frontContainer.translationY != translateY(backContainer.height)
+//                        && frontLayerMinHeight == 0) animate(backContainer.height, true)
+//                else {
+//                    state = when (state) {
+//                        STATE_COLLAPSE_STARTED -> STATE_COLLAPSED
+//                        else -> STATE_EXPANDED
+//                    }
+//
+//                    action?.invoke()
+//                }
+//            }
 
             start()
         }

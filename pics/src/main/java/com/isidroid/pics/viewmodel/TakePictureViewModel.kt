@@ -14,12 +14,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.isidroid.pics.PictureConfig
 import com.isidroid.pics.Result
-import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import java.io.File
 
 open class TakePictureViewModel : ViewModel() {
-    private val compositeDisposable = CompositeDisposable()
     private lateinit var repository: TakePictureRepository
     private var takePictureRequest: TakePictureRequest? = null
     var data: HashMap<String, String>? = null
@@ -27,7 +25,7 @@ open class TakePictureViewModel : ViewModel() {
     val error = MutableLiveData<Throwable>()
 
     fun create(context: Context) = apply {
-        repository = TakePictureRepository(context, compositeDisposable)
+//        repository = TakePictureRepository(context, compositeDisposable)
     }
 
     @CallSuper
@@ -111,11 +109,6 @@ open class TakePictureViewModel : ViewModel() {
             repository.processPhoto(takePictureRequest, callback)
             true
         } else false
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.clear()
     }
 
     open fun doFinally() {}

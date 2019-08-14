@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.content.FileProvider
-import io.reactivex.Flowable
 import timber.log.Timber
 import java.io.BufferedReader
 import java.io.File
@@ -47,19 +46,19 @@ class Diagnostics {
         null
     }
 
-    fun getLogs(context: Context, withLogcat: Boolean = false): Flowable<MutableList<LogData>> {
-        val result = mutableListOf<LogData>()
-
-        val loggers = (debugTree as? YDebugTree)?.fileLoggers ?: mutableListOf()
-        loggers.filter { it.file?.exists() == true && uri(context, it.file) != null }
-                .forEach {
-                    val file = it.file!!
-                    result.add(LogData(file, uri(context, file)))
-                }
-
-        return Flowable.just(result)
-                .doOnNext { collectStandardLogs(context, withLogcat, it) }
-    }
+//    fun getLogs(context: Context, withLogcat: Boolean = false): Flowable<MutableList<LogData>> {
+//        val result = mutableListOf<LogData>()
+//
+//        val loggers = (debugTree as? YDebugTree)?.fileLoggers ?: mutableListOf()
+//        loggers.filter { it.file?.exists() == true && uri(context, it.file) != null }
+//                .forEach {
+//                    val file = it.file!!
+//                    result.add(LogData(file, uri(context, file)))
+//                }
+//
+//        return Flowable.just(result)
+//                .doOnNext { collectStandardLogs(context, withLogcat, it) }
+//    }
 
 
     private fun collectStandardLogs(context: Context, withLogcat: Boolean, result: MutableList<LogData>) {
@@ -104,11 +103,11 @@ class Diagnostics {
         }
     }
 
-    fun getShareLogsIntent(context: Context, withLogcat: Boolean = false): Flowable<Intent> {
-        return getLogs(context, withLogcat)
-                .map { Utils.shareLogsIntent(it) }
-                .doOnNext { cancel() }
-    }
+//    fun getShareLogsIntent(context: Context, withLogcat: Boolean = false): Flowable<Intent> {
+//        return getLogs(context, withLogcat)
+//                .map { Utils.shareLogsIntent(it) }
+//                .doOnNext { cancel() }
+//    }
 
     data class LogData(val file: File, val uri: Uri? = null)
 

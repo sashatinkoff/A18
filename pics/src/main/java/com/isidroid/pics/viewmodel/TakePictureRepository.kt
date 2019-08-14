@@ -6,26 +6,17 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
-import android.webkit.MimeTypeMap
-import com.isidroid.pics.PictureConfig
 import com.isidroid.pics.Result
-import com.isidroid.pics.addTo
-import com.isidroid.pics.subscribeIoMain
 import com.isidroid.pics.utils.BitmapUtils
 import com.isidroid.pics.utils.ImageHeaderParser
 import com.isidroid.pics.utils.MediaUriParser
-import io.reactivex.Flowable
-import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
 
-class TakePictureRepository(
-    private val context: Context,
-    private val compositeDisposable: CompositeDisposable
-) {
+class TakePictureRepository(private val context: Context) {
 
     fun getFromGallery(uris: List<Uri>?, callback: (List<Result>?, Throwable?) -> Unit) {
         if (uris?.isNullOrEmpty() == true) {
@@ -34,26 +25,26 @@ class TakePictureRepository(
         }
 
         val result = mutableListOf<Result?>()
-        Flowable.fromIterable(uris)
-            .map { u ->
-                MediaUriParser(context).parse(u)?.apply {
-                    if (BitmapUtils.isImage(localPath)) localPath = rotate(this)
-                }
-            }
-            .subscribeIoMain()
-            .subscribe(
-                { result.add(it) },
-                {
-                    Timber.e(it)
-                    callback(null, it)
-                },
-                {
-                    val completeResult = mutableListOf<Result>()
-                    result.filter { it != null }.forEach { completeResult.add(it!!) }
-                    callback(completeResult, null)
-                }
-            )
-            .addTo(compositeDisposable)
+//        Flowable.fromIterable(uris)
+//            .map { u ->
+//                MediaUriParser(context).parse(u)?.apply {
+//                    if (BitmapUtils.isImage(localPath)) localPath = rotate(this)
+//                }
+//            }
+//            .subscribeIoMain()
+//            .subscribe(
+//                { result.add(it) },
+//                {
+//                    Timber.e(it)
+//                    callback(null, it)
+//                },
+//                {
+//                    val completeResult = mutableListOf<Result>()
+//                    result.filter { it != null }.forEach { completeResult.add(it!!) }
+//                    callback(completeResult, null)
+//                }
+//            )
+//            .addTo(compositeDisposable)
     }
 
     fun processPhoto(request: TakePictureViewModel.TakePictureRequest?, callback: (List<Result>?, Throwable?) -> Unit) {
@@ -62,20 +53,20 @@ class TakePictureRepository(
             return
         }
 
-        Flowable.just(request)
-            .map {
-                val result = Result()
-                result.localPath = request.file.absolutePath
-                result.dateTaken = Date()
-
-                result.localPath = rotate(result)
-                result
-            }
-            .subscribe(
-                { callback(listOf(it), null) },
-                { callback(null, it) }
-            )
-            .addTo(compositeDisposable)
+//        Flowable.just(request)
+//            .map {
+//                val result = Result()
+//                result.localPath = request.file.absolutePath
+//                result.dateTaken = Date()
+//
+//                result.localPath = rotate(result)
+//                result
+//            }
+//            .subscribe(
+//                { callback(listOf(it), null) },
+//                { callback(null, it) }
+//            )
+//            .addTo(compositeDisposable)
     }
 
     private fun rotate(result: Result?): String? {
