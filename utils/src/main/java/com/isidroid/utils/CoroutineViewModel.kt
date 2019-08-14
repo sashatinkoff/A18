@@ -14,13 +14,12 @@ abstract class CoroutineViewModel(application: Application) : AndroidViewModel(a
     val error by lazy { MutableLiveData<Throwable>() }
     val progress by lazy { MutableLiveData<Boolean>() }
 
-    protected fun io(executor: () -> Unit) {
-        val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    protected fun io(block: () -> Unit, dispatcher: CoroutineDispatcher = Dispatchers.IO): Job {
         progress.postValue(true)
-        launch {
+        return launch {
             withContext(dispatcher) {
                 try {
-                    executor()
+                    block()
                 } catch (e: Exception) {
                     Timber.e(e)
                     error.postValue(e)

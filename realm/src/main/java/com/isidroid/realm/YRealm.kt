@@ -44,7 +44,8 @@ object YRealm {
             .create()
 
         val json = gsonHandler.toJson(list)
-        realmExe { it.createOrUpdateAllFromJson(cls, json) }
+        realmExe {
+            it.createOrUpdateAllFromJson(cls, json) }
     }
 
     fun backup(activity: Activity? = null, directory: File = Environment.getExternalStorageDirectory()) = try {
