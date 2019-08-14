@@ -14,7 +14,8 @@ abstract class CoroutineViewModel(application: Application) : AndroidViewModel(a
     val error by lazy { MutableLiveData<Throwable>() }
     val progress by lazy { MutableLiveData<Boolean>() }
 
-    protected fun io(block: () -> Unit, dispatcher: CoroutineDispatcher = Dispatchers.IO): Job {
+    protected fun io(block: () -> Unit): Job {
+        val dispatcher: CoroutineDispatcher = Dispatchers.IO
         progress.postValue(true)
         return launch {
             withContext(dispatcher) {

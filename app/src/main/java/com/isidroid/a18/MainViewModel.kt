@@ -1,26 +1,22 @@
 package com.isidroid.a18
 
 import android.app.Application
+import android.content.Intent
 import androidx.lifecycle.MutableLiveData
+import com.isidroid.logger.Diagnostics
 import com.isidroid.utils.CoroutineViewModel
 
 class MainViewModel(application: Application) : CoroutineViewModel(application) {
+    val intent = MutableLiveData<Intent>()
 
-    enum class Action {
-        NONE, INSERT, UPDATE
+    fun startLogging() {
+        Diagnostics.instance.createLogger("test", "test")
     }
 
-    val action = MutableLiveData(Action.NONE)
-
-    init {
+    fun stopLogging() {
+        io {
+            intent.postValue(Diagnostics.instance.logIntent(getApplication(), true))
+        }
     }
 
-    fun save() {
-    }
-
-    fun read() {
-    }
-
-    fun update() {
-    }
 }

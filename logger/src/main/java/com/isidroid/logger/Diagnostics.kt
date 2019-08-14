@@ -46,71 +46,63 @@ class Diagnostics {
         null
     }
 
-//    fun getLogs(context: Context, withLogcat: Boolean = false): Flowable<MutableList<LogData>> {
-//        val result = mutableListOf<LogData>()
-//
-//        val loggers = (debugTree as? YDebugTree)?.fileLoggers ?: mutableListOf()
-//        loggers.filter { it.file?.exists() == true && uri(context, it.file) != null }
-//                .forEach {
-//                    val file = it.file!!
-//                    result.add(LogData(file, uri(context, file)))
-//                }
-//
-//        return Flowable.just(result)
-//                .doOnNext { collectStandardLogs(context, withLogcat, it) }
-//    }
+    fun getLogs(context: Context, withLogcat: Boolean = false): MutableList<LogData> {
+        val loggers = (debugTree as? YDebugTree)?.fileLoggers ?: mutableListOf()
+        val result = loggers
+            .filter { it.file?.exists() == true && uri(context, it.file) != null }
+            .mapTo(mutableListOf()) { LogData(it.file!!, uri(context, it.file!!)) }
 
+        if (withLogcat) collectStandardLogs(context, result)
+        return result
+    }
 
-    private fun collectStandardLogs(context: Context, withLogcat: Boolean, result: MutableList<LogData>) {
-        if (withLogcat || logsStart != null) {
-            val command = "logcat -d"
-            val year = Calendar.getInstance().get(Calendar.YEAR)
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US)
+    fun logIntent(context: Context, withLogcat: Boolean = false): Intent {
+        val logs = getLogs(context, withLogcat)
+        cancel()
+        return Utils.shareLogsIntent(logs)
+    }
 
-            val process = Runtime.getRuntime().exec(command)
-            val bufferedReader = BufferedReader(
-                    InputStreamReader(process.inputStream)
-            )
+    private fun collectStandardLogs(context: Context, result: MutableList<LogData>) {
+        val command = "logcat -d"
+        val year = Calendar.getInstance().get(Calendar.YEAR)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US)
 
-            // Grab the results
-            val log = StringBuilder().append(Utils.deviceInfo())
-            var line: String?
+        val process = Runtime.getRuntime().exec(command)
+        val bufferedReader = BufferedReader(
+            InputStreamReader(process.inputStream)
+        )
 
-            do {
-                line = bufferedReader.readLine()
+        // Grab the results
+        val log = StringBuilder().append(Utils.deviceInfo())
+        var line: String?
 
-                val isLog = if (logsStart != null) {
-                    val time = try {
-                        dateFormat.parse("$year-$line")
-                    } catch (e: Exception) {
-                        Date()
-                    }
-                    time.after(logsStart)
-                } else true
+        do {
+            line = bufferedReader.readLine()
 
-                if (isLog && line != null) log.append(line + "\n")
-            } while (line != null)
-
-
-            // save in file
-            if (log.isNotEmpty()) {
-                val file = File(baseDir, LOGCAT_FILENAME).apply {
-                    createNewFile()
-                    writeText(log.toString())
+            val isLog = if (logsStart != null) {
+                val time = try {
+                    dateFormat.parse("$year-$line")
+                } catch (e: Exception) {
+                    Date()
                 }
-                result.add(LogData(file, uri(context, file)))
+                time.after(logsStart)
+            } else true
+
+            if (isLog && line != null) log.append(line + "\n")
+        } while (line != null)
+
+
+        // save in file
+        if (log.isNotEmpty()) {
+            val file = File(baseDir, LOGCAT_FILENAME).apply {
+                createNewFile()
+                writeText(log.toString())
             }
+            result.add(LogData(file, uri(context, file)))
         }
     }
 
-//    fun getShareLogsIntent(context: Context, withLogcat: Boolean = false): Flowable<Intent> {
-//        return getLogs(context, withLogcat)
-//                .map { Utils.shareLogsIntent(it) }
-//                .doOnNext { cancel() }
-//    }
-
     data class LogData(val file: File, val uri: Uri? = null)
-
     companion object {
         val instance by lazy { Diagnostics() }
     }
