@@ -1,15 +1,13 @@
-package com.isidroid.pics.viewmodel
+package com.isidroid.pics
 
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_NO_HISTORY
 import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
 import android.provider.MediaStore
 import androidx.annotation.CallSuper
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import com.isidroid.pics.ImageInfo
 import java.io.File
 
 class PictureHandler(app: Application,

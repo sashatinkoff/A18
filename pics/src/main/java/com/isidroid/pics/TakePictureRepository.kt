@@ -1,4 +1,4 @@
-package com.isidroid.pics.viewmodel
+package com.isidroid.pics
 
 import android.content.Context
 import android.content.Intent
@@ -7,11 +7,9 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
-import com.isidroid.pics.ImageInfo
 import com.isidroid.pics.utils.BitmapUtils
 import com.isidroid.pics.utils.ImageHeaderParser
 import com.isidroid.pics.utils.MediaUriParser
-import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -22,19 +20,17 @@ class TakePictureRepository(private val context: Context) {
         if (uris?.isNullOrEmpty() == true) throw IllegalStateException("Uris are null")
 
         return uris
-                .mapTo(mutableListOf()) {
-                    MediaUriParser(context).parse(it)?.apply {
-                        if (BitmapUtils.isImage(localPath)) localPath = rotate(this)
-                    }
-                }.filterNotNull()
+            .mapTo(mutableListOf()) {
+                MediaUriParser(context).parse(it)?.apply {
+                    if (BitmapUtils.isImage(localPath)) localPath = rotate(this)
+                }
+            }.filterNotNull()
 
     }
 
     fun getFromGallery(intent: Intent?): List<ImageInfo> {
         val uris = mutableListOf<Uri>()
         intent?.data?.let { uris.add(it) }
-
-        Timber.i("intent=$intent, data=${intent?.data}, clipDataCount=${intent?.clipData?.itemCount}")
 
         val clipDataCount = intent?.clipData?.itemCount ?: 0
         (0 until clipDataCount).forEach {
@@ -90,7 +86,7 @@ class TakePictureRepository(private val context: Context) {
                 }
             }
         } catch (e: Exception) {
-            Timber.e(e)
+            e.printStackTrace()
         } finally {
             wrapTry { bitmap?.recycle() }
             wrapTry { fileStream?.close() }
@@ -105,8 +101,7 @@ class TakePictureRepository(private val context: Context) {
         try {
             action()
         } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
-
-
 }

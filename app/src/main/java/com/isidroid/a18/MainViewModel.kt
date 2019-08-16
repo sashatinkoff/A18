@@ -5,7 +5,7 @@ import android.app.Application
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData
 import com.isidroid.logger.Diagnostics
-import com.isidroid.pics.viewmodel.PictureHandler
+import com.isidroid.pics.PictureHandler
 import com.isidroid.utils.CoroutineViewModel
 
 class MainViewModel(application: Application) : CoroutineViewModel(application) {

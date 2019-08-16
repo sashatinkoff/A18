@@ -1,8 +1,6 @@
 package com.isidroid.pics
 
 import android.webkit.MimeTypeMap
-import androidx.core.content.MimeTypeFilter
-import timber.log.Timber
 import java.io.Serializable
 import java.util.*
 

@@ -10,7 +10,6 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 import com.isidroid.pics.ImageInfo
-import timber.log.Timber
 import java.io.*
 import java.util.*
 
@@ -20,7 +19,6 @@ class MediaUriParser(private val context: Context) {
 
     fun parse(uri: Uri): ImageInfo? {
         var cursor: Cursor? = null
-        Timber.i("getpicinfo uri=$uri")
         try {
             when {
                 MediaHelper.isGooglePhotosUri(uri) -> googlePhotos(uri)
@@ -32,7 +30,7 @@ class MediaUriParser(private val context: Context) {
             }
 
         } catch (e: Exception) {
-            Timber.e(e)
+            e.printStackTrace()
         }
 
         cursor?.close()
@@ -54,23 +52,7 @@ class MediaUriParser(private val context: Context) {
 
         val cursor = getData(uri, null, projection)
         val hasData = cursor?.moveToFirst()
-        Timber.i("getpicinfo hasData=$hasData, count=${cursor?.count}")
         var filename = ""
-        if (hasData == true) {
-            projection.forEach {
-                try {
-                    Timber.i("getpicinfo $it=${cursor.getString(cursor.getColumnIndex(it))}")
-//                    filename = cursor.getString(getColumn(cursor, projection[0]))
-
-                } catch (e: Exception) {
-                    Timber.e("getpicinfo ${e.message}:: $it failed with clm index=${cursor.getColumnIndex(it)}")
-                }
-            }
-
-        }
-
-
-        Timber.i("getpicinfo hasData=$hasData, filename=$filename, ${getLocal(uri)}")
         return null
     }
 
