@@ -6,7 +6,7 @@ import timber.log.Timber
 import java.io.Serializable
 import java.util.*
 
-class Result : Serializable {
+class ImageInfo : Serializable {
     var dateTaken: Date? = null
     var localPath: String? = null
     var orientation: Int = 0
@@ -14,7 +14,7 @@ class Result : Serializable {
     fun isType(vararg exts: String) = exts.toList().contains(MimeTypeMap.getFileExtensionFromUrl(localPath).toLowerCase())
 
     override fun toString(): String {
-        return "Result{" +
+        return "ImageInfo{" +
                 ", dateTaken=" + dateTaken +
                 ", localPath='" + localPath + '\''.toString() +
                 ", orientation=" + orientation +

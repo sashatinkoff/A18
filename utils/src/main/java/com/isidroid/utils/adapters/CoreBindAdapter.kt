@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.isidroid.utils.R
 
@@ -203,5 +204,21 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
 
     open class CoreEmptyHolder(b: ViewDataBinding) : CoreBindHolder<String, ViewDataBinding>(b) {
         override fun onBind(item: String) {}
+    }
+
+    class DiffCallback<T>(private val itemsBefore: List<T>,
+                   private val itemsAfter: List<T>) : DiffUtil.Callback() {
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return try {
+                itemsBefore[oldItemPosition] != itemsAfter[oldItemPosition]
+            } catch (e: Exception) {
+                false
+            }
+        }
+
+        override fun getOldListSize() = itemsBefore.size
+        override fun getNewListSize() = itemsAfter.size
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = areItemsTheSame(oldItemPosition, newItemPosition)
     }
 }
