@@ -1,4 +1,4 @@
-package com.isidroid.pics.utils
+package com.isidroid.pics
 
 import android.content.ContentUris
 import android.content.Context
@@ -9,8 +9,9 @@ import android.provider.BaseColumns
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
-import com.isidroid.pics.ImageInfo
-import java.io.*
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
 import java.util.*
 
 class MediaUriParser(private val context: Context) {
@@ -50,9 +51,14 @@ class MediaUriParser(private val context: Context) {
 
         )
 
-        val cursor = getData(uri, null, projection)
-        val hasData = cursor?.moveToFirst()
-        var filename = ""
+        val cursor: Cursor? = null
+        try {
+            getData(uri, null, projection)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            cursor?.close()
+        }
         return null
     }
 
@@ -172,7 +178,7 @@ class MediaUriParser(private val context: Context) {
     }
 
     private fun getLocal(uri: Uri): ImageInfo? {
-        val filepath = FileUtils.getPath(context, uri)
+        val filepath = MediaParserUtils.getPath(context, uri)
         val file = File(filepath ?: "")
         return if (file.exists()) ImageInfo().apply { localPath = file.absolutePath } else null
     }

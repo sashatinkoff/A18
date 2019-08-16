@@ -7,27 +7,12 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
-import com.isidroid.pics.utils.BitmapUtils
-import com.isidroid.pics.utils.ImageHeaderParser
-import com.isidroid.pics.utils.MediaUriParser
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
 
 class TakePictureRepository(private val context: Context) {
-    fun getFromGallery(uris: List<Uri>?): List<ImageInfo> {
-        if (uris?.isNullOrEmpty() == true) throw IllegalStateException("Uris are null")
-
-        return uris
-            .mapTo(mutableListOf()) {
-                MediaUriParser(context).parse(it)?.apply {
-                    if (BitmapUtils.isImage(localPath)) localPath = rotate(this)
-                }
-            }.filterNotNull()
-
-    }
-
     fun getFromGallery(intent: Intent?): List<ImageInfo> {
         val uris = mutableListOf<Uri>()
         intent?.data?.let { uris.add(it) }
@@ -39,6 +24,18 @@ class TakePictureRepository(private val context: Context) {
         }
 
         return getFromGallery(uris.distinct())
+    }
+
+    fun getFromGallery(uris: List<Uri>?): List<ImageInfo> {
+        if (uris?.isNullOrEmpty() == true) throw IllegalStateException("Uris are null")
+
+        return uris
+            .mapTo(mutableListOf()) {
+                MediaUriParser(context).parse(it)?.apply {
+                    if (isImage()) localPath = rotate(this)
+                }
+            }.filterNotNull()
+
     }
 
     fun processPhoto(request: PictureHandler.TakePictureRequest?): ImageInfo {
