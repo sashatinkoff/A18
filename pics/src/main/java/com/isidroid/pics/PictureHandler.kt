@@ -37,7 +37,7 @@ class PictureHandler(app: Application,
     fun pickGallery(caller: Any, contentType: String,
                     data: HashMap<String, String>? = null,
                     isMultiple: Boolean = false,
-                    onIntent: ((Intent) -> Unit)? = null) {
+                    decorIntent: ((Intent) -> Unit)? = null) {
 
         this.data = data
         val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -47,7 +47,7 @@ class PictureHandler(app: Application,
 
                     addCategory(Intent.CATEGORY_OPENABLE)
                     putExtra(Intent.EXTRA_ALLOW_MULTIPLE, isMultiple)
-                    onIntent?.invoke(this)
+                    decorIntent?.invoke(this)
                 }
 
         when (caller) {

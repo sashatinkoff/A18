@@ -29,7 +29,7 @@ class MainViewModel(application: Application) : CoroutineViewModel(application) 
     }
 
     fun gallery(activity: Activity) {
-        pictureHandler.pickGallery(activity)
+        pictureHandler.pickGallery(activity, decorIntent = { })
     }
 
     fun onResult(requestCode: Int, data: Intent?) {
