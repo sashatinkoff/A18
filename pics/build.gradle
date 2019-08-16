@@ -28,19 +28,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin}"
-// support
-    implementation "com.google.android.material:material:${versions.material}"
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
-// Stuff
     implementation "androidx.annotation:annotation:${versions.annotationsX}"
-    api "com.jakewharton.timber:timber:${versions.timber}"
-// rx
-    implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
-    implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
-// livedata
-    implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
-    kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
 }
 repositories {
     mavenCentral()

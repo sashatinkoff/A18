@@ -19,6 +19,8 @@ object MediaHelper {
         return "com.android.providers.downloads.documents" == uri.authority
     }
 
+    fun isChromeDownload(uri: Uri) = "com.android.chrome.FileProvider" == uri.authority
+
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri fileAuthority is MediaProvider.

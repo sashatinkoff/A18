@@ -18,7 +18,7 @@ class AuthInterceptor : Interceptor {
         val request = requestBuilder.build()
         val response = chain.proceed(request)
 
-        val modifiedResponse = when (response.code()) {
+        val modifiedResponse = when (response.code) {
             401 -> handle401(chain, request)
             else -> response
         }

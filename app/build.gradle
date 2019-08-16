@@ -83,6 +83,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -93,10 +97,14 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso_core}"
 // google
     implementation "androidx.core:core-ktx:${versions.corektx}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx_coroutines}"
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
     implementation "com.google.android.material:material:${versions.material}"
     implementation "android.arch.work:work-runtime:${versions.worker}"
+    implementation "androidx.room:room-runtime:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
+    implementation "androidx.room:room-ktx:${versions.room}"
 // firebase / google gcm
     implementation "com.google.android.gms:play-services-location:${versions.playServicesLocation}"
     implementation "com.google.firebase:firebase-core:${versions.playServicesVersion}"
@@ -107,14 +115,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
     kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
-// rx
-    implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
-    implementation "io.reactivex.rxjava2:rxjava:${versions.rxJava}"
 // Retrofit
+    implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
     implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp_logging}"
 // Stuff
     implementation("com.github.bumptech.glide:glide:${versions.glide}") {
         exclude group: "com.android.support"

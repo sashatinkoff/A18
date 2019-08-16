@@ -2,11 +2,10 @@ package com.isidroid.a18.rest
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.isidroid.a18.rest.interceptors.HttpLoggingInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -46,7 +45,7 @@ class Api<T>(private val cl: Class<T>, private val endPoint: String) {
             override fun log(message: String) {
                 Timber.tag(cl.simpleName).i(message)
             }
-        }).withLevel(logLevel)
+        })
 
         val interceptor = Interceptor { chain ->
             val request = chain.request().newBuilder()
@@ -68,7 +67,6 @@ class Api<T>(private val cl: Class<T>, private val endPoint: String) {
             .baseUrl(endPoint)
             .client(builder.build())
             .addConverterFactory(GsonConverterFactory.create(gson))
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 
         return retrofit.create(cl) as T

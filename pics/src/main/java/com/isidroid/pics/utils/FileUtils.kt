@@ -17,7 +17,6 @@ import android.webkit.MimeTypeMap
 
 import java.text.DecimalFormat
 import androidx.core.content.FileProvider
-import timber.log.Timber
 import java.io.*
 import java.util.*
 
@@ -242,12 +241,6 @@ object FileUtils {
             )
 
         val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-
-        Timber.i(
-            "authority=${uri.authority}, " +
-                    "isDropbox=${isDropboxUri(uri)}, isOneDrive=${isOneDriveUri(uri)}, " +
-                    "isYandexDisk=${isYandexDiskUri(uri)}"
-        )
 
         // DocumentProvider
         if (isDropboxUri(uri) || isYandexDiskUri(uri) || isOneDriveUri(uri)) {

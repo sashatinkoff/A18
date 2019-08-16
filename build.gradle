@@ -11,7 +11,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:$androidPlugin"
+        classpath "com.android.tools.build:gradle:${androidPlugin}"
         classpath "io.realm:realm-gradle-plugin:$realm"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
         classpath "io.fabric.tools:gradle:$fabric"

@@ -2,19 +2,18 @@ package com.isidroid.utils.adapters
 
 import android.os.Handler
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.isidroid.utils.R
-import java.lang.IllegalStateException
 
 abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     private var loadMoreCallback: (() -> Unit)? = null
     protected var hasMore = false
-    protected open val hasEmpty = false
+    protected open var hasEmpty = false
     protected open val loadingResource: Int = R.layout.item_loading
     protected open val emptyResource: Int = R.layout.item_empty
     protected open val hasInitialLoading = false
@@ -157,8 +156,13 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
         }
     }
 
-    fun clear() = apply { items.clear() }
+    fun clear() = apply {
+        isInserted = false
+        items.clear()
+    }
+
     fun reset() = apply {
+        isInserted = false
         hasMore = hasInitialLoading
         items.clear()
 
@@ -200,5 +204,21 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
 
     open class CoreEmptyHolder(b: ViewDataBinding) : CoreBindHolder<String, ViewDataBinding>(b) {
         override fun onBind(item: String) {}
+    }
+
+    class DiffCallback<T>(private val itemsBefore: List<T>,
+                   private val itemsAfter: List<T>) : DiffUtil.Callback() {
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return try {
+                itemsBefore[oldItemPosition] != itemsAfter[oldItemPosition]
+            } catch (e: Exception) {
+                false
+            }
+        }
+
+        override fun getOldListSize() = itemsBefore.size
+        override fun getNewListSize() = itemsAfter.size
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = areItemsTheSame(oldItemPosition, newItemPosition)
     }
 }
