@@ -12,7 +12,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
 
-class TakePictureRepository(private val context: Context) {
+class TakePictureRepository(private val context: Context, val forceRotate: Boolean = true) {
     fun getFromGallery(intent: Intent?): List<ImageInfo> {
         val uris = mutableListOf<Uri>()
         intent?.data?.let { uris.add(it) }
@@ -27,7 +27,7 @@ class TakePictureRepository(private val context: Context) {
     }
 
     fun getFromGallery(uris: List<Uri>?): List<ImageInfo> {
-        if (uris?.isNullOrEmpty() == true) throw IllegalStateException("Uris are null")
+        check(uris?.isNullOrEmpty() != true) { "Uris are null" }
 
         return uris
             .mapTo(mutableListOf()) {
@@ -50,6 +50,7 @@ class TakePictureRepository(private val context: Context) {
 
     private fun rotate(imageInfo: ImageInfo?): String? {
         if (imageInfo?.localPath == null) return null
+        if (!forceRotate) return imageInfo.localPath
 
         val file = File(imageInfo.localPath)
         var fileStream: FileInputStream? = null

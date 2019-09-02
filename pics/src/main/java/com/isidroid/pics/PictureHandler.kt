@@ -13,8 +13,9 @@ import java.io.File
 class PictureHandler(app: Application,
                      private val authority: String = "${app.packageName}.fileprovider",
                      private val codeTakePicture: Int = 100,
-                     private val codePickGallery: Int = 101) {
-    private val repository = TakePictureRepository(app)
+                     private val codePickGallery: Int = 101,
+                     var forceRotate: Boolean = true) {
+    private val repository = TakePictureRepository(app, forceRotate)
     private var takePictureRequest: TakePictureRequest? = null
     private var data: HashMap<String, String>? = null
 
@@ -41,14 +42,14 @@ class PictureHandler(app: Application,
 
         this.data = data
         val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                .apply {
-                    flags = FLAG_GRANT_READ_URI_PERMISSION
-                    type = contentType
+            .apply {
+                flags = FLAG_GRANT_READ_URI_PERMISSION
+                type = contentType
 
-                    addCategory(Intent.CATEGORY_OPENABLE)
-                    putExtra(Intent.EXTRA_ALLOW_MULTIPLE, isMultiple)
-                    decorIntent?.invoke(this)
-                }
+                addCategory(Intent.CATEGORY_OPENABLE)
+                putExtra(Intent.EXTRA_ALLOW_MULTIPLE, isMultiple)
+                decorIntent?.invoke(this)
+            }
 
         when (caller) {
             is Activity -> caller.startActivityForResult(intent, codePickGallery)
@@ -61,7 +62,7 @@ class PictureHandler(app: Application,
                     isMultiple: Boolean = false,
                     data: HashMap<String, String>? = null,
                     decorIntent: ((Intent) -> Unit)? = null) =
-            pickGallery(caller, "image/*", data, isMultiple, decorIntent)
+        pickGallery(caller, "image/*", data, isMultiple, decorIntent)
 
     fun result(requestCode: Int, intent: Intent?): PictureResults? {
         val isPickRequest = requestCode == codePickGallery

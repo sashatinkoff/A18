@@ -4,6 +4,7 @@ ext {
 
             // COMMON A18 STARTS HERE
 <<<<<<< HEAD
+<<<<<<< HEAD
             "isidroid"            : "1.1.85",
 =======
 
@@ -12,6 +13,10 @@ ext {
 >>>>>>> develop
 =======
             "isidroid"            : "1.2.4",
+>>>>>>> develop
+=======
+
+            "isidroid"            : "1.2.5",
 >>>>>>> develop
 
             // sdk
