@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.isidroid.a18.databinding.ActivityMainBinding
 import com.isidroid.utils.BindActivity
 import com.karumi.dexter.Dexter
@@ -59,7 +60,9 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
         viewmodel.intent.observe(this, Observer { startActivity(it) })
         viewmodel.pictureResults.observe(this, Observer { results ->
             results.list.firstOrNull()?.apply {
-                imageview.setImageBitmap(BitmapFactory.decodeFile(localPath))
+//                imageview.setImageBitmap(BitmapFactory.decodeFile(localPath))
+
+                Glide.with(imageview).load(localPath).into(imageview)
             }
         })
     }

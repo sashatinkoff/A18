@@ -1,4 +1,4 @@
-package com.isidroid.pics.utils;
+package com.isidroid.pics;
 
 import android.util.Log;
 

@@ -7,7 +7,11 @@ ext {
             "isidroid"            : "1.1.85",
 =======
 
+<<<<<<< HEAD
             "isidroid"            : "1.2.0",
+>>>>>>> develop
+=======
+            "isidroid"            : "1.2.4",
 >>>>>>> develop
 
             // sdk
@@ -15,12 +19,12 @@ ext {
             'minSdk'              : 21,
 
             // playservices / firebase
-            'playServicesVersion' : '17.0.1',
+            'playServicesVersion' : '17.2.0',
             'playServicesLocation': '17.0.0',
-            'firebaseMLVision'    : '22.0.0',
-            'firebase_messages'   : '19.0.1',
-            'kotlinx_coroutines'  : '1.3.0-RC2',
-            'room'                : '2.2.0-alpha02',
+            'firebaseMLVision'    : '23.0.0',
+            'firebase_messages'   : '20.0.0',
+            'kotlinx_coroutines'  : '1.3.0',
+            'room'                : '2.2.0-beta01',
 
 
             // Android components
@@ -44,7 +48,7 @@ ext {
             'okhttp'              : '4.1.0',
             'okhttp_logging'      : '4.1.0',
             'retrofit'            : '2.6.1',
-            'okio'                : '2.3.0',
+            'okio'                : '2.4.0',
             'rxJava'              : '2.2.10',
             'rxAndroid'           : '2.1.1',
             'timber'              : '4.7.1',

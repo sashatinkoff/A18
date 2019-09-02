@@ -114,7 +114,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
-    kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
+    kapt "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
 // Retrofit
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
