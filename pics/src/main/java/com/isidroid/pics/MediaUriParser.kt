@@ -24,8 +24,8 @@ class MediaUriParser(private val context: Context) {
             when {
                 MediaHelper.isGooglePhotosUri(uri) -> googlePhotos(uri)
                 MediaHelper.isGoogleDrive(uri) -> googleDrive(uri)
-                MediaHelper.isDownloadsDocument(uri) -> cursor = downloadsDocument(uri)
                 MediaHelper.isExternalStorageDocument(uri) -> externalStorage(uri)
+                MediaHelper.isDownloadsDocument(uri) -> cursor = downloadsDocument(uri)
                 MediaHelper.isMediaDocument(uri) -> cursor = media(uri)
                 MediaHelper.isChromeDownload(uri) -> chromeDownloads(uri)
             }
@@ -43,11 +43,11 @@ class MediaUriParser(private val context: Context) {
 
     private fun chromeDownloads(uri: Uri): Cursor? {
         val projection = arrayOf(
-            BaseColumns._ID,
-            MediaStore.Files.FileColumns.DATA,
-            MediaStore.Files.FileColumns.MEDIA_TYPE,
-            MediaStore.Files.FileColumns.PARENT,
-            MediaStore.Files.FileColumns._ID
+                BaseColumns._ID,
+                MediaStore.Files.FileColumns.DATA,
+                MediaStore.Files.FileColumns.MEDIA_TYPE,
+                MediaStore.Files.FileColumns.PARENT,
+                MediaStore.Files.FileColumns._ID
 
         )
 
@@ -68,10 +68,10 @@ class MediaUriParser(private val context: Context) {
         val result = ImageInfo()
 
         val projection = arrayOf(
-            MediaStore.Images.ImageColumns.DISPLAY_NAME,
-            MediaStore.Images.ImageColumns.DATE_TAKEN,
-            MediaStore.Images.ImageColumns.DATA,
-            MediaStore.Files.FileColumns.MIME_TYPE
+                MediaStore.Images.ImageColumns.DISPLAY_NAME,
+                MediaStore.Images.ImageColumns.DATE_TAKEN,
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Files.FileColumns.MIME_TYPE
         )
 
         val cursor = getData(uri, null, projection)
@@ -121,9 +121,9 @@ class MediaUriParser(private val context: Context) {
         val type = split[0]
         var contentUri: Uri? = null
         val projection = arrayOf(
-            MediaStore.Images.ImageColumns.DATA,
-            MediaStore.Images.ImageColumns.DATE_TAKEN,
-            MediaStore.Images.ImageColumns.DISPLAY_NAME
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.ImageColumns.DATE_TAKEN,
+                MediaStore.Images.ImageColumns.DISPLAY_NAME
         )
 
         if ("image" == type)
@@ -149,26 +149,40 @@ class MediaUriParser(private val context: Context) {
 
         if ("primary".equals(type, ignoreCase = true)) {
             imageInfo =
-                ImageInfo().apply { localPath = Environment.getExternalStorageDirectory().toString() + "/" + split[1] }
+                    ImageInfo().apply { localPath = Environment.getExternalStorageDirectory().toString() + "/" + split[1] }
         }
     }
 
     private fun downloadsDocument(uri: Uri): Cursor? {
         val cursor: Cursor?
-
         val id = DocumentsContract.getDocumentId(uri)
-        val contentUri =
-            ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id))
 
-        val projection = arrayOf("_data", "lastmod")
-        cursor = getData(contentUri, id, projection)
-        if (cursor?.moveToFirst() == true) {
-            imageInfo = ImageInfo()
-            imageInfo?.localPath = cursor.getString(getColumn(cursor, projection[0]))
-            imageInfo?.dateTaken = Date(cursor.getLong(getColumn(cursor, projection[1])))
+        return try {
+            val contentUri =
+                    ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), id.toLong())
+
+            val projection = arrayOf("_data", "lastmod")
+            cursor = getData(contentUri, id, projection)
+            if (cursor?.moveToFirst() == true) {
+                imageInfo = ImageInfo()
+                imageInfo?.localPath = cursor.getString(getColumn(cursor, projection[0]))
+                imageInfo?.dateTaken = Date(cursor.getLong(getColumn(cursor, projection[1])))
+            }
+
+            cursor
+        } catch (e: Exception) {
+            e.printStackTrace()
+            imageInfo = getRaw(id)
+            null
         }
+    }
 
-        return cursor
+    private fun getRaw(id: String): ImageInfo? {
+        val uri = Uri.parse(id)
+        val path = uri.path
+        val file = File(path)
+
+        return if (file.exists()) ImageInfo().apply { localPath = file.absolutePath } else null
     }
 
     private fun getData(uri: Uri, id: String?, projection: Array<String>): Cursor? {
