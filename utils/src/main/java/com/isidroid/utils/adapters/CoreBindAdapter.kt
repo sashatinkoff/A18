@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.isidroid.utils.R
+import timber.log.Timber
 
 abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     private var loadMoreCallback: (() -> Unit)? = null
@@ -20,6 +21,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
     protected var isInserted = false
 
     var items = mutableListOf<T>()
+
 
     fun onLoadMore(callback: (() -> Unit)) = apply { this.loadMoreCallback = callback }
 
@@ -107,7 +109,7 @@ abstract class CoreBindAdapter<T> : RecyclerView.Adapter<CoreHolder>() {
             onUpdateHolder(holder, item)
             (holder as? CoreBindHolder<T, ViewDataBinding>)?.bind(item)
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.i(e.message)
         }
     }
 
