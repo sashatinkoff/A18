@@ -1,23 +1,10 @@
 ext {
-    versions = [
+      versions = [
             // specific for project
 
+
             // COMMON A18 STARTS HERE
-<<<<<<< HEAD
-<<<<<<< HEAD
-            "isidroid"            : "1.1.85",
-=======
-
-<<<<<<< HEAD
-            "isidroid"            : "1.2.0",
->>>>>>> develop
-=======
-            "isidroid"            : "1.2.4",
->>>>>>> develop
-=======
-
-            "isidroid"            : "1.2.5",
->>>>>>> develop
+            "isidroid"            : "1.2.6",
 
             // sdk
             'compileSdk'          : 28,
