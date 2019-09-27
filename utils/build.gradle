@@ -35,9 +35,10 @@ dependencies {
     implementation "androidx.annotation:annotation:${versions.annotationsX}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx_coroutines}"
 // livedata
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
-    kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
+    kapt "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
 
 // stuff
     api "com.jakewharton.timber:timber:${versions.timber}"

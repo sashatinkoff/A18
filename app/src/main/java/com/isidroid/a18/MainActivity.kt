@@ -2,12 +2,15 @@ package com.isidroid.a18
 
 import android.Manifest
 import android.content.Intent
+import android.content.Intent.ACTION_VIEW
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.isidroid.a18.databinding.ActivityMainBinding
+import com.isidroid.a18.sample.rest.ApiTest
 import com.isidroid.utils.BindActivity
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.listener.single.CompositePermissionListener
@@ -25,9 +28,17 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
         logging()
 
         Dexter.withActivity(this).withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .withListener(CompositePermissionListener())
-                .check()
+            .withListener(CompositePermissionListener())
+            .check()
         pictures()
+
+        btnSave.apply {
+            text = "send"
+            setOnClickListener {
+                val url = "https://foodocity.page.link/V4SP"
+                startActivity(Intent(ACTION_VIEW, Uri.parse(url)))
+            }
+        }
 
     }
 
@@ -60,7 +71,7 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
         viewmodel.intent.observe(this, Observer { startActivity(it) })
         viewmodel.pictureResults.observe(this, Observer { results ->
             results.list.firstOrNull()?.apply {
-//                imageview.setImageBitmap(BitmapFactory.decodeFile(localPath))
+                //                imageview.setImageBitmap(BitmapFactory.decodeFile(localPath))
 
                 Glide.with(imageview).load(localPath).into(imageview)
             }

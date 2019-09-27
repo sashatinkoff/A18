@@ -4,7 +4,7 @@ import com.google.gson.GsonBuilder
 import com.isidroid.a18.rest.interceptors.AuthInterceptor
 
 object ApiFactory {
-    const val ENDPOINT = "http://dev.teamprinter.com/api/v1/"
+    const val ENDPOINT = "https://ya.ru/"
     const val TIMEOUT = 15L
 
     private fun <T> createBase(cl: Class<T>): Api<T> {
