@@ -1,4 +1,4 @@
-package com.isidroid.perms.runtimepermission.base;
+package com.isidroid.a18.base;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,18 +6,18 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.core.content.ContextCompat;
 
-
-import com.isidroid.perms.runtimepermission.base.callbacks.AcceptedCallback;
-import com.isidroid.perms.runtimepermission.base.callbacks.DeniedCallback;
-import com.isidroid.perms.runtimepermission.base.callbacks.ForeverDeniedCallback;
-import com.isidroid.perms.runtimepermission.base.callbacks.PermissionListener;
-import com.isidroid.perms.runtimepermission.base.callbacks.ResponseCallback;
+import com.isidroid.a18.base.callbacks.AcceptedCallback;
+import com.isidroid.a18.base.callbacks.DeniedCallback;
+import com.isidroid.a18.base.callbacks.ForeverDeniedCallback;
+import com.isidroid.a18.base.callbacks.PermissionListener;
+import com.isidroid.a18.base.callbacks.ResponseCallback;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;

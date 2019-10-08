@@ -1,1 +1,1 @@
-include ':app', ':utils', ':logger', ':realm', ':pics'
+include ':app', ':utils', ':logger', ':realm', ':pics', ':runtimepermissions'

@@ -26,10 +26,10 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin}"
-    implementation "androidx.appcompat:appcompat:${versions.androidx}"
-    implementation "androidx.annotation:annotation:${versions.annotationsX}"
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${kotlin}"
+    api "androidx.appcompat:appcompat:${versions.androidx}"
+    api "androidx.annotation:annotation:${versions.annotationsX}"
 }
 repositories {
     mavenCentral()

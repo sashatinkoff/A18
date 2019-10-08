@@ -1,4 +1,4 @@
-package com.isidroid.perms.runtimepermission.base;
+package com.isidroid.a18.base;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
