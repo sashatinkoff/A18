@@ -5,25 +5,22 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import io.realm.RealmMigration
 
-class RealmConfig(private val application: Application) {
-    private var migration: RealmMigration? = null
-    private var version = -1L
-    private var dbname = "default.realm"
-
-    fun migration(migration: RealmMigration?) = apply { this.migration = migration }
-    fun version(version: Long) = apply { this.version = version }
-    fun name(dbname: String) = apply { this.dbname = dbname }
-
-    fun create() {
+class RealmConfig(
+    application: Application,
+    migration: RealmMigration? = null,
+    version: Long = -1L,
+    dbname: String = "default.realm"
+) {
+    init {
         if (version == -1L) throw Exception("Version is not set")
 
         Realm.init(application)
         val config = RealmConfiguration.Builder()
-                .name(dbname)
-                .schemaVersion(version)
+            .name(dbname)
+            .schemaVersion(version)
 
 
-        if (migration != null) config.migration(migration!!)
+        if (migration != null) config.migration(migration)
         else config.deleteRealmIfMigrationNeeded()
 
         Realm.setDefaultConfiguration(config.build())

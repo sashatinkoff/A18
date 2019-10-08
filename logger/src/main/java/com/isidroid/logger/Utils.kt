@@ -39,7 +39,7 @@ internal object Utils {
 
     fun deviceInfo(): String {
         val os = try {
-            Build.VERSION_CODES::class.java.fields[android.os.Build.VERSION.SDK_INT].name
+            Build.VERSION_CODES::class.java.fields[Build.VERSION.SDK_INT].name
         } catch (e: Exception) {
             ""
         }

@@ -53,10 +53,6 @@ android {
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-
-            ndk {
-                abiFilters 'armeabi-v7a', 'arm64-v8a'
-            }
         }
 
         debug {
@@ -101,10 +97,11 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
     implementation "com.google.android.material:material:${versions.material}"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:${versions.swipe_refresh}"
     implementation "android.arch.work:work-runtime:${versions.worker}"
     implementation "androidx.room:room-runtime:${versions.room}"
-    kapt "androidx.room:room-compiler:${versions.room}"
     implementation "androidx.room:room-ktx:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
 // firebase / google gcm
     implementation "com.google.android.gms:play-services-location:${versions.playServicesLocation}"
     implementation "com.google.firebase:firebase-core:${versions.playServicesVersion}"
@@ -115,7 +112,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
     kapt "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
-// Retrofit
+// network
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
@@ -127,7 +124,7 @@ dependencies {
     }
     kapt "com.github.bumptech.glide:compiler:${versions.glide}"
     implementation "com.google.code.gson:gson:${versions.gson}"
-    implementation "com.karumi:dexter:${versions.dexter}"
+    implementation "com.github.chrisbanes:PhotoView:${versions.photoview}"
 // cores
     implementation project(':utils')
     implementation project(':logger')

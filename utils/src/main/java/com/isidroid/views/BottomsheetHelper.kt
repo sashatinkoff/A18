@@ -12,29 +12,17 @@ import androidx.core.view.ViewCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.*
 
-open class BottomsheetHelper(private val view: View) {
+open class BottomsheetHelper(
+    private val view: View,
+    var onSlide: ((BottomsheetHelper, View, Float) -> Unit)? = null,
+    var onStateChanged: ((BottomsheetHelper, View, Int) -> Unit)? = null,
+    var onCollapsed: ((BottomsheetHelper, View) -> Unit)? = null,
+    var onExpanded: ((BottomsheetHelper, View) -> Unit)? = null,
+    var onHidden: ((BottomsheetHelper, View) -> Unit)? = null,
+    var onHalfExpanded: ((BottomsheetHelper, View) -> Unit)? = null
+) {
     lateinit var behavior: BottomSheetBehavior<View>
-    private var onSlide: ((BottomsheetHelper, View, Float) -> Unit)? = null
-    private var onStateChanged: ((BottomsheetHelper, View, Int) -> Unit)? = null
-    private var onCollapsed: ((BottomsheetHelper, View) -> Unit)? = null
-    private var onExpanded: ((BottomsheetHelper, View) -> Unit)? = null
-    private var onHidden: ((BottomsheetHelper, View) -> Unit)? = null
-    private var onHalfExpanded: ((BottomsheetHelper, View) -> Unit)? = null
     internal var dim: Dim? = null
-
-    fun onSlide(callback: (helper: BottomsheetHelper, view: View, offset: Float) -> Unit) =
-            apply { this.onSlide = callback }
-
-    fun onStateChanged(callback: (helper: BottomsheetHelper, view: View, state: Int) -> Unit) =
-            apply { this.onStateChanged = callback }
-
-    fun onCollapsed(callback: (helper: BottomsheetHelper, view: View) -> Unit) = apply { this.onCollapsed = callback }
-    fun onExpanded(callback: (helper: BottomsheetHelper, view: View) -> Unit) = apply { this.onExpanded = callback }
-    fun onHidden(callback: (helper: BottomsheetHelper, view: View) -> Unit) = apply { this.onHidden = callback }
-    fun onHalfExpanded(callback: (helper: BottomsheetHelper, view: View) -> Unit) =
-            apply { this.onHalfExpanded = callback }
-
-    fun withDim(view: CoordinatorLayout?) = apply { this.dim = Dim(view).attach(this) }
 
     private val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
         override fun onSlide(view: View, offset: Float) {
@@ -69,12 +57,28 @@ open class BottomsheetHelper(private val view: View) {
     }
 
     fun create() = apply {
-        behavior = BottomSheetBehavior.from(view)
-        behavior.setBottomSheetCallback(bottomSheetCallback)
+        behavior = from(view)
+        behavior.bottomSheetCallback = bottomSheetCallback
         ViewCompat.setElevation(view, 255f)
     }
 
-    open fun onStateChanged(view: View, state: Int) {}
+    fun withDim(view: CoordinatorLayout?) = apply { this.dim = Dim(view).attach(this) }
+
+    fun callbacks(
+        onSlide: ((BottomsheetHelper, View, Float) -> Unit)? = null,
+        onStateChanged: ((BottomsheetHelper, View, Int) -> Unit)? = null,
+        onCollapsed: ((BottomsheetHelper, View) -> Unit)? = null,
+        onExpanded: ((BottomsheetHelper, View) -> Unit)? = null,
+        onHidden: ((BottomsheetHelper, View) -> Unit)? = null,
+        onHalfExpanded: ((BottomsheetHelper, View) -> Unit)? = null
+    ) = apply {
+        this.onSlide = onSlide
+        this.onStateChanged = onStateChanged
+        this.onCollapsed = onCollapsed
+        this.onExpanded = onExpanded
+        this.onHidden = onHidden
+        this.onHalfExpanded = onHalfExpanded
+    }
 
     fun expand() = apply {
         dim?.show()
@@ -91,7 +95,7 @@ open class BottomsheetHelper(private val view: View) {
         behavior.state = STATE_COLLAPSED
     }
 
-
+    open fun onStateChanged(view: View, state: Int) {}
     fun isExpanded() = behavior.state == STATE_EXPANDED
     fun isCollapsed() = behavior.state == STATE_COLLAPSED
     fun isHidden() = behavior.state == STATE_HIDDEN
@@ -114,14 +118,19 @@ open class BottomsheetHelper(private val view: View) {
         fun alpha(alpha: Float) = apply { this.alpha = alpha }
         fun interpolator(interpolator: Interpolator) = apply { this.interpolator = interpolator }
 
-        internal fun attach(bottomsheetHelper: BottomsheetHelper) = apply { this.bottom = bottomsheetHelper }
+        internal fun attach(bottomsheetHelper: BottomsheetHelper) =
+            apply { this.bottom = bottomsheetHelper }
+
         fun create() = apply { createOverlay() }
 
         private fun createOverlay() {
             (parent as? ViewGroup)?.let {
                 overlay = LinearLayout(it.context).apply {
                     layoutParams =
-                            ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+                        ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
                     alpha = 0f
                     visibility = View.GONE
                     setBackgroundColor(color)
@@ -139,22 +148,22 @@ open class BottomsheetHelper(private val view: View) {
         fun onChange() {
             val alpha = if (isActive) alpha else 0f
             overlay?.animate()
-                    ?.setDuration(duration.toLong())
-                    ?.setInterpolator(interpolator)
-                    ?.alpha(alpha)
-                    ?.setListener(object : Animator.AnimatorListener {
-                        override fun onAnimationRepeat(animation: Animator?) {}
-                        override fun onAnimationCancel(animation: Animator?) {}
+                ?.setDuration(duration.toLong())
+                ?.setInterpolator(interpolator)
+                ?.alpha(alpha)
+                ?.setListener(object : Animator.AnimatorListener {
+                    override fun onAnimationRepeat(animation: Animator?) {}
+                    override fun onAnimationCancel(animation: Animator?) {}
 
-                        override fun onAnimationEnd(animation: Animator?) {
-                            overlay?.visibility = if (isActive) View.VISIBLE else View.GONE
-                        }
+                    override fun onAnimationEnd(animation: Animator?) {
+                        overlay?.visibility = if (isActive) View.VISIBLE else View.GONE
+                    }
 
-                        override fun onAnimationStart(animation: Animator?) {
-                            overlay?.visibility = View.VISIBLE
-                        }
+                    override fun onAnimationStart(animation: Animator?) {
+                        overlay?.visibility = View.VISIBLE
+                    }
 
-                    })
+                })
         }
     }
 }

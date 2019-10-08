@@ -27,7 +27,7 @@ class MainViewModel(application: Application) : CoroutineViewModel(application) 
 
     fun stopLogging() {
         io {
-            intent.postValue(Diagnostics.instance.logIntent(getApplication(), true))
+            intent.postValue(Diagnostics.instance.logIntent(true))
         }
     }
 
@@ -51,7 +51,7 @@ class MainViewModel(application: Application) : CoroutineViewModel(application) 
     }
 
     fun works() = io {
-//        ApiSession.create().register(RegisterRequest(RegistrationRequest("sdf", "123", "123", "123", "tes"))).execute()
+        //        ApiSession.create().register(RegisterRequest(RegistrationRequest("sdf", "123", "123", "123", "tes"))).execute()
         ApiTest.create().posts().execute()
 
     }

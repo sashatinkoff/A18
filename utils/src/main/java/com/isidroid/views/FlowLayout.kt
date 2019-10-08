@@ -1,4 +1,5 @@
 package com.isidroid.views
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
@@ -10,6 +11,7 @@ import androidx.core.view.ViewCompat
 import com.google.android.material.R
 
 /**
+ * https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/internal/FlowLayout.java
  * Horizontally lay out children until the row is filled and then moved to the next line. Call
  * [FlowLayout.setSingleLine] to disable reflow and lay all children out in one line.
  *
@@ -35,6 +37,7 @@ class FlowLayout : ViewGroup {
         loadFromAttributes(context, attrs)
     }
 
+    @SuppressLint("PrivateResource")
     private fun loadFromAttributes(context: Context, attrs: AttributeSet?) {
         val array = context.theme.obtainStyledAttributes(attrs, R.styleable.FlowLayout, 0, 0)
         lineSpacing = array.getDimensionPixelSize(R.styleable.FlowLayout_lineSpacing, 0)

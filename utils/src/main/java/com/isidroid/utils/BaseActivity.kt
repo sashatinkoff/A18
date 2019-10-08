@@ -6,8 +6,8 @@ import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.LifecycleObserver
+import com.isidroid.utils.extensions.hideSoftKeyboard
 import com.isidroid.views.BottomsheetHelper
-import com.isidroid.views.YViewUtils
 
 
 /**
@@ -25,7 +25,7 @@ abstract class BaseActivity : AppCompatActivity(), LifecycleObserver {
 
     override fun onPause() {
         super.onPause()
-        YViewUtils.hideSoftKeyboard(this)
+        hideSoftKeyboard()
     }
 
     /**
@@ -33,22 +33,24 @@ abstract class BaseActivity : AppCompatActivity(), LifecycleObserver {
      * @param content: CoordinatorLayout? - a view to be dimmed
      * @param dimConfig: (BottomsheetHelper.Dim) - a config for dim (alpha / color / interpolator / duration)
      */
-    protected fun createBottomsheet(view: View,
-                                    content: CoordinatorLayout? = null,
-                                    dimConfig: ((BottomsheetHelper.Dim?) -> Unit)? = null) =
-            BottomsheetHelper(view)
-                    .withDim(content)
-                    .create().apply {
-                        dimConfig?.invoke(dim)
-                        dim?.create()
-                        bottomsheetHelper = this
-                    }
-
-    protected fun createBottomsheet(view: View, config: (BottomsheetHelper) -> Unit) =
-            BottomsheetHelper(view).apply {
-                config(this)
+    protected fun createBottomsheet(
+        view: View,
+        content: CoordinatorLayout? = null,
+        dimConfig: ((BottomsheetHelper.Dim?) -> Unit)? = null
+    ) =
+        BottomsheetHelper(view)
+            .withDim(content)
+            .create().apply {
+                dimConfig?.invoke(dim)
+                dim?.create()
                 bottomsheetHelper = this
             }
+
+    protected fun createBottomsheet(view: View, config: (BottomsheetHelper) -> Unit) =
+        BottomsheetHelper(view).apply {
+            config(this)
+            bottomsheetHelper = this
+        }
 
     open fun onCreateViewModel() {}
     override fun onBackPressed() {

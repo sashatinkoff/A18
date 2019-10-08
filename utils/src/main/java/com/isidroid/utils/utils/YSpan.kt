@@ -3,14 +3,14 @@ package com.isidroid.utils.utils
 import android.content.Context
 import android.text.Spannable
 import android.text.SpannableStringBuilder
+import android.text.style.*
 import android.text.style.DynamicDrawableSpan.ALIGN_BASELINE
-import android.text.style.ImageSpan
-import android.text.style.URLSpan
 import android.view.View
+import com.isidroid.utils.extensions.resourceFromAttr
 
 open class YSpan(private val context: Context? = null) {
-    private val builder = SpannableStringBuilder()
-    private var start = 0
+    protected val builder = SpannableStringBuilder()
+    protected var start = 0
 
     fun append(str: String) = apply {
         start = builder.length
@@ -39,6 +39,19 @@ open class YSpan(private val context: Context? = null) {
     fun image(res: Int, after: Int = 1, before: Int = 1) = apply {
         if (context == null) throw Exception("Context is missing in the constructor")
         imagespan(ImageSpan(context, res, ALIGN_BASELINE), after, before)
+    }
+
+    fun imageSpan(
+        attr: Int,
+        verticalAlign: Int = ALIGN_BASELINE
+    ) = apply {
+
+        append(" ")
+        style(ImageSpan(context!!, context.resourceFromAttr(attr), verticalAlign))
+    }
+
+    fun linkify() = apply {
+        style(UnderlineSpan())
     }
 
     fun imagespan(span: ImageSpan, after: Int = 1, before: Int = 1) = apply {

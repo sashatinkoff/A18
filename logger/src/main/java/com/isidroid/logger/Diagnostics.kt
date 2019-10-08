@@ -14,18 +14,24 @@ import java.util.*
 const val LOGCAT_FILENAME = "logcat.log"
 const val LOGCAT_BASEDIR = "diagnostics"
 
-class Diagnostics {
-    var authority: String? = null
-    lateinit var baseDir: File
-    var debugTree: Timber.DebugTree = YDebugTree()
+class Diagnostics internal constructor(
+    val context: Context,
+    val authority: String,
+    val debugTree: Timber.DebugTree = YDebugTree(),
+    val baseDir: File
+) {
     var logsStart: Date? = null
 
     fun start() = apply { logsStart = Date() }
     fun cancel() = apply { logsStart = null }
 
-    fun createLogger(logger: FileLogger) = apply { (debugTree as? YDebugTree)?.startLogger(logger.create()) }
+    fun createLogger(logger: FileLogger) =
+        apply { (debugTree as? YDebugTree)?.startLogger(logger.create()) }
+
     fun createLogger(filename: String, vararg filters: String) = apply {
-        (debugTree as? YDebugTree)?.startLogger(FileLogger(baseDir, filename).filter(*filters).create())
+        (debugTree as? YDebugTree)?.startLogger(
+            FileLogger(baseDir, filename).filter(*filters).create()
+        )
     }
 
     fun destroyLogger(filename: String) = apply { (debugTree as? YDebugTree)?.stopLogger(filename) }
@@ -41,28 +47,28 @@ class Diagnostics {
     }
 
     private fun uri(context: Context, file: File?) = try {
-        FileProvider.getUriForFile(context, authority!!, file!!)
+        FileProvider.getUriForFile(context, authority, file!!)
     } catch (e: Exception) {
         null
     }
 
-    fun getLogs(context: Context, withLogcat: Boolean = false): MutableList<LogData> {
+    fun getLogs(withLogcat: Boolean = false): MutableList<LogData> {
         val loggers = (debugTree as? YDebugTree)?.fileLoggers ?: mutableListOf()
         val result = loggers
             .filter { it.file?.exists() == true && uri(context, it.file) != null }
             .mapTo(mutableListOf()) { LogData(it.file!!, uri(context, it.file!!)) }
 
-        if (withLogcat) collectStandardLogs(context, result)
+        if (withLogcat) collectStandardLogs(result)
         return result
     }
 
-    fun logIntent(context: Context, withLogcat: Boolean = false): Intent {
-        val logs = getLogs(context, withLogcat)
+    fun logIntent(withLogcat: Boolean = false): Intent {
+        val logs = getLogs(withLogcat)
         cancel()
         return Utils.shareLogsIntent(logs)
     }
 
-    private fun collectStandardLogs(context: Context, result: MutableList<LogData>) {
+    private fun collectStandardLogs(result: MutableList<LogData>) {
         val command = "logcat -d"
         val year = Calendar.getInstance().get(Calendar.YEAR)
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US)
@@ -103,7 +109,8 @@ class Diagnostics {
     }
 
     data class LogData(val file: File, val uri: Uri? = null)
+
     companion object {
-        val instance by lazy { Diagnostics() }
+        lateinit var instance: Diagnostics
     }
 }

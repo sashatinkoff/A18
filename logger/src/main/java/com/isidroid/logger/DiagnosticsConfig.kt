@@ -8,32 +8,30 @@ import timber.log.Timber
 import java.io.File
 
 
-class DiagnosticsConfig(private val context: Context) {
-    private var authority: String? = null
-    private var tree: Timber.DebugTree = YDebugTree()
-    private var disableCrashlytics = false
+class DiagnosticsConfig(
+    application: Context,
+    appName: String,
+    authority: String = "",
+    tree: Timber.DebugTree = YDebugTree(),
+    disableCrashlytics: Boolean = false
+) {
 
-    fun appname(name: String) = apply { this.authority = "$name.fileprovider" }
-    fun authority(authority: String) = apply { this.authority = authority }
-    fun tree(tree: Timber.DebugTree) = apply { this.tree = tree }
-    fun disableCrashlytics(enabled: Boolean) = apply { this.disableCrashlytics = enabled }
+    init {
+        val fileAuthority = if (authority.isEmpty()) "$appName.fileprovider" else authority
+        val directory = File(application.cacheDir, LOGCAT_BASEDIR)
+            .apply { if (!exists()) mkdirs() }
 
-    fun create() {
-        Diagnostics.instance.apply {
-            authority = this@DiagnosticsConfig.authority
-            debugTree = this@DiagnosticsConfig.tree
-            baseDir = File(context.cacheDir, LOGCAT_BASEDIR).apply {
-                if(!exists()) mkdirs()
-            }
+        val crashlyticsConfigBuilder = Crashlytics.Builder()
+            .core(CrashlyticsCore.Builder().disabled(disableCrashlytics).build())
 
-            val crashlytics = Crashlytics.Builder()
-                    .core(CrashlyticsCore.Builder()
-                            .disabled(disableCrashlytics)
-                            .build())
-                    .build()
+        Diagnostics.instance = Diagnostics(
+            context = application.applicationContext,
+            authority = fileAuthority,
+            debugTree = tree,
+            baseDir = directory
+        )
 
-            Fabric.with(context, crashlytics)
-            Timber.plant(debugTree)
-        }
+        Fabric.with(application, crashlyticsConfigBuilder.build())
+        Timber.plant(tree)
     }
 }

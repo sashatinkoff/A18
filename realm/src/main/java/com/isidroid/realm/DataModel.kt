@@ -1,8 +1,6 @@
 package com.isidroid.realm
 
-import android.util.Log
 import androidx.annotation.CallSuper
-import io.realm.Realm
 import io.realm.RealmModel
 import io.realm.kotlin.deleteFromRealm
 import io.realm.kotlin.isManaged
@@ -11,13 +9,13 @@ interface DataModel : RealmModel {
     @CallSuper
     fun save() = apply {
         if (onSave())
-            YRealm.realmExeMain { it.insertOrUpdate(this) }
+            YRealm.executeOnMainThread { it.insertOrUpdate(this) }
     }
 
 
     @CallSuper
     fun delete() = apply {
-        YRealm.realmExeMain {
+        YRealm.executeOnMainThread {
             if (onDelete()) {
                 var item2 = this
                 if (!isManaged()) item2 = it.copyToRealmOrUpdate(item2)
@@ -29,7 +27,7 @@ interface DataModel : RealmModel {
     @CallSuper
     fun update() = apply {
         val json = YRealm.gson.toJson(arrayListOf((this)))
-        YRealm.realmExeMain { it.createOrUpdateAllFromJson(javaClass, json) }
+        YRealm.executeOnMainThread { it.createOrUpdateAllFromJson(javaClass, json) }
     }
 
     @CallSuper

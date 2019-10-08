@@ -15,7 +15,7 @@ import java.lang.reflect.Type
 
 object YRealm {
     private const val GSON_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ"
-    val gson = GsonBuilder().setDateFormat(GSON_DATE_FORMAT).create()
+    internal val gson = GsonBuilder().setDateFormat(GSON_DATE_FORMAT).create()
 
     fun get() = Realm.getDefaultInstance()
     fun refresh() = get().apply { refresh() }
@@ -23,7 +23,7 @@ object YRealm {
     fun <T> fromJson(json: String, type: Type): T = gson.fromJson<T>(json, type)
     fun <T> fromJson(json: String, cl: Class<T>): T = gson.fromJson<T>(json, cl)
 
-    fun realmExe(execute: (realm: Realm) -> Unit) {
+    fun execute(execute: (realm: Realm) -> Unit) {
         get().apply {
             val transaction = isInTransaction
             if (!transaction) beginTransaction()
@@ -32,8 +32,8 @@ object YRealm {
         }
     }
 
-    fun realmExeMain(execute: (realm: Realm) -> Unit) {
-        Handler(Looper.getMainLooper()).run { realmExe(execute) }
+    fun executeOnMainThread(execute: (realm: Realm) -> Unit) {
+        Handler(Looper.getMainLooper()).run { execute(execute) }
     }
 
     fun update(list: List<RealmModel>, gson: Gson? = null) {
@@ -44,11 +44,13 @@ object YRealm {
             .create()
 
         val json = gsonHandler.toJson(list)
-        realmExe {
-            it.createOrUpdateAllFromJson(cls, json) }
+        execute { it.createOrUpdateAllFromJson(cls, json) }
     }
 
-    fun backup(activity: Activity? = null, directory: File = Environment.getExternalStorageDirectory()) = try {
+    fun backup(
+        activity: Activity? = null,
+        directory: File = Environment.getExternalStorageDirectory()
+    ) = try {
         val destination = File(directory, get().configuration.realmFileName)
         if (destination.exists()) destination.delete()
         get().writeCopyTo(destination)
@@ -62,7 +64,10 @@ object YRealm {
         false
     }
 
-    fun restore(directory: File = Environment.getExternalStorageDirectory(), dbname:String = get().configuration.realmFileName) = try {
+    fun restore(
+        directory: File = Environment.getExternalStorageDirectory(),
+        dbname: String = get().configuration.realmFileName
+    ) = try {
         val restoredFile = File(directory, dbname)
         val targetFile = File(get().configuration.realmDirectory, dbname)
         restoredFile.copyTo(targetFile, true)
