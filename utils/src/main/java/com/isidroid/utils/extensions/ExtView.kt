@@ -13,7 +13,7 @@ fun View.enable(enabled: Boolean, alpha: Float = .6f) = apply {
     isEnabled = enabled
 }
 
-fun View.visible(isVisible: Boolean, isInvisible: Boolean = true) {
+fun View.visible(isVisible: Boolean, isInvisible: Boolean = false) {
     visibility = when {
         isVisible -> View.VISIBLE
         isInvisible -> View.INVISIBLE
@@ -26,30 +26,20 @@ fun View.hideSoftKeyboard() {
     imm.hideSoftInputFromWindow(windowToken, 0)
 }
 
-fun View.height(onlyHeight: Boolean): Int {
+fun View.height(onlyHeight: Boolean = true): Int {
     val params = layoutParams as ViewGroup.MarginLayoutParams
     val offsets = params.topMargin + params.bottomMargin + paddingTop + paddingBottom
     return height + if (onlyHeight) 0 else offsets
 }
 
-fun View.findViewsByTag(tag: String?, callback: ((view: View) -> Unit)? = null): ArrayList<View> {
-    val views = ArrayList<View>()
-    if (this !is ViewGroup) return views
-
+fun View.applyOnChildren(tag: String? = null, callback: ((view: View) -> Unit)) {
+    if (this !is ViewGroup) return
     val childCount = childCount
     for (i in 0 until childCount) {
         val child = getChildAt(i)
-        if (child is ViewGroup)
-            views.addAll(child.findViewsByTag(tag, callback))
-
-        val tagObj = child.tag
-        if (tagObj != null && tagObj == tag) {
-            callback?.invoke(child)
-            views.add(child)
-        }
+        if (tag != null && child.tag == tag) callback.invoke(child)
+        child.applyOnChildren(tag, callback)
     }
-
-    return views
 }
 
 fun View.childrenAll(): ArrayList<View> {
@@ -62,19 +52,6 @@ fun View.childrenAll(): ArrayList<View> {
     }
 
     return views
-}
-
-
-fun View.applyOnChildren(tag: String?, callback: ((view: View) -> Unit)) {
-    if (this !is ViewGroup) return
-    tag ?: return
-
-    val childCount = childCount
-    for (i in 0 until childCount) {
-        val child = getChildAt(i)
-        if (child.tag == tag) callback.invoke(child)
-        child.applyOnChildren(tag, callback)
-    }
 }
 
 fun View.expand(duration: Long, targetHeight: Int) = apply {
