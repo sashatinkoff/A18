@@ -1,4 +1,4 @@
-package com.isidroid.a18
+package com.isidroid.perms
 
 import java.lang.Exception
 

@@ -1,4 +1,4 @@
-package com.isidroid.a18.base;
+package com.isidroid.perms;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,11 +13,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.isidroid.a18.base.callbacks.AcceptedCallback;
-import com.isidroid.a18.base.callbacks.DeniedCallback;
-import com.isidroid.a18.base.callbacks.ForeverDeniedCallback;
-import com.isidroid.a18.base.callbacks.PermissionListener;
-import com.isidroid.a18.base.callbacks.ResponseCallback;
+import com.isidroid.perms.callbacks.AcceptedCallback;
+import com.isidroid.perms.callbacks.DeniedCallback;
+import com.isidroid.perms.callbacks.ForeverDeniedCallback;
+import com.isidroid.perms.callbacks.PermissionListener;
+import com.isidroid.perms.callbacks.ResponseCallback;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
@@ -74,7 +74,7 @@ public class RuntimePermission {
      */
     public static RuntimePermission askPermission(@Nullable final Fragment fragment, String... permissions) {
         @Nullable FragmentActivity activity = null;
-        if(fragment != null){
+        if (fragment != null) {
             activity = fragment.getActivity();
         }
         return askPermission(activity).request(permissions);
@@ -128,6 +128,7 @@ public class RuntimePermission {
     /**
      * We want to only request given permissions
      * If we do not call this method, the library will find all needed permissions to ask from manifest
+     *
      * @see android.Manifest.permission
      */
     public RuntimePermission request(@Nullable final List<String> permissions) {
@@ -230,7 +231,7 @@ public class RuntimePermission {
                     .getSupportFragmentManager()
                     .findFragmentByTag(TAG);
 
-            if(oldFragment != null){
+            if (oldFragment != null) {
                 oldFragment.setListener(listener);
             } else {
                 final PermissionFragment newFragment = PermissionFragment.newInstance(permissions);
@@ -253,7 +254,7 @@ public class RuntimePermission {
     private boolean arePermissionsAlreadyAccepted(@NonNull Context context, @NonNull final List<String> permissions) {
         for (String permission : permissions) {
             final int permissionState = ContextCompat.checkSelfPermission(context, permission);
-            if(permissionState == PackageManager.PERMISSION_DENIED){
+            if (permissionState == PackageManager.PERMISSION_DENIED) {
                 return false;
             }
         }

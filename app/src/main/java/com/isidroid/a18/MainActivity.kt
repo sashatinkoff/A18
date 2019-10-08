@@ -4,6 +4,7 @@ import android.Manifest
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.isidroid.a18.databinding.ActivityMainBinding
+import com.isidroid.perms.askPermission
 import com.isidroid.utils.BindActivity
 import kotlinx.android.synthetic.main.sample_main.*
 import timber.log.Timber

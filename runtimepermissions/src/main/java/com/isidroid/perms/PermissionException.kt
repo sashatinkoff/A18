@@ -1,7 +1,4 @@
-package com.isidroid.a18
-
-import com.isidroid.a18.base.PermissionResult
-import com.isidroid.a18.base.RuntimePermission
+package com.isidroid.perms
 
 class PermissionException(val permissionResult: PermissionResult) : Exception() {
 

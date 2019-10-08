@@ -1,4 +1,4 @@
-package com.isidroid.a18.base;
+package com.isidroid.perms;
 
 import android.annotation.TargetApi;
 import android.content.Context;

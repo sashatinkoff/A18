@@ -1,7 +1,4 @@
-package com.isidroid.a18
-
-import com.isidroid.a18.base.PermissionResult
-import com.isidroid.a18.base.RuntimePermission
+package com.isidroid.perms
 
 
 fun androidx.fragment.app.Fragment.askPermission(vararg permissions: String, acceptedblock: (PermissionResult) -> Unit): KotlinRuntimePermission {

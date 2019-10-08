@@ -1,7 +1,7 @@
-package com.isidroid.a18.base.callbacks;
+package com.isidroid.perms.callbacks;
 
 
-import com.isidroid.a18.base.PermissionResult;
+import com.isidroid.perms.PermissionResult;
 
 import java.util.List;
 

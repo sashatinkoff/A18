@@ -26,19 +26,19 @@ android {
 }
 
 dependencies {
-    api fileTree(dir: 'libs', include: ['*.jar'])
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
 // support
-    api "androidx.core:core-ktx:${versions.corektx}"
-    api "com.google.android.material:material:${versions.material}"
-    api "androidx.appcompat:appcompat:${versions.androidx}"
-    api "androidx.annotation:annotation:${versions.annotationsX}"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx_coroutines}"
-    api "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
-    api "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
-    api "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
+    implementation "androidx.core:core-ktx:${versions.corektx}"
+    implementation "com.google.android.material:material:${versions.material}"
+    implementation "androidx.appcompat:appcompat:${versions.androidx}"
+    implementation "androidx.annotation:annotation:${versions.annotationsX}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx_coroutines}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
     kapt "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
 
 // stuff
-    api "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
 }
