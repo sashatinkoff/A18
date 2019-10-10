@@ -23,8 +23,8 @@ fun Context.colorFromAttr(@AttrRes attr: Int) = if (attr == 0) 0 else with(Typed
 
 fun Activity.hideSoftKeyboard() {
     if (isFinishing) return
-    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.hideSoftInputFromWindow(getRootView().windowToken, 0)
+     (getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager)
+        .toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
 }
 
 fun Context.screenWidthPx() = Resources.getSystem().displayMetrics.widthPixels
