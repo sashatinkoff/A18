@@ -4,7 +4,7 @@ ext {
 
             // COMMON A18 STARTS HERE
 
-            "isidroid"            : "1.3.1",
+            "isidroid"            : "1.3.2",
 
             // sdk
             'compileSdk'          : 29,

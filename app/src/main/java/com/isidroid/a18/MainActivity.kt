@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.isidroid.a18.databinding.ActivityMainBinding
 import com.isidroid.perms.askPermission
 import com.isidroid.utils.BindActivity
+import com.isidroid.utils.extensions.onKeyboardVisibility
 import kotlinx.android.synthetic.main.sample_main.*
 import timber.log.Timber
 
@@ -22,6 +23,8 @@ class MainActivity : BindActivity<ActivityMainBinding>() {
             setOnClickListener { }
         }
 
+
+        onKeyboardVisibility { Timber.i("visible=$it") }
 
         val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
         askPermission(permission) {
