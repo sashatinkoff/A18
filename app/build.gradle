@@ -103,6 +103,7 @@ dependencies {
     implementation "com.google.android.material:material:${versions.material}"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:${versions.swipe_refresh}"
     implementation "android.arch.work:work-runtime:${versions.worker}"
+    implementation "androidx.preference:preference-ktx:${versions.preferences}"
     implementation "androidx.room:room-runtime:${versions.room}"
     implementation "androidx.room:room-ktx:${versions.room}"
     kapt "androidx.room:room-compiler:${versions.room}"
