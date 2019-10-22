@@ -16,8 +16,8 @@ class UpgradeHelper private constructor(application: Application, val code: Int,
     val isInstalled = prefs.getInt(KEY_CODE, INSTALL_VERSION) == INSTALL_VERSION
     val isUpgraded = code != prefs.getInt(KEY_CODE, INSTALL_VERSION) && !isInstalled
 
-    val lastCode: Int by lazy { prefs.getInt(KEY_LAST_CODE, -1) }
-    val lastVersion: String by lazy { prefs.getString(KEY_LAST_VERSION, null) }
+    val lastCode = prefs.getInt(KEY_LAST_CODE, -1)
+    val lastVersion = prefs.getString(KEY_LAST_VERSION, "")
 
     init {
         val editor = prefs.edit()

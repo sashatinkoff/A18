@@ -48,17 +48,14 @@ open class BottomsheetHelper(
                     dim?.show()
                     onHalfExpanded?.invoke(this@BottomsheetHelper, view)
                 }
-                STATE_SETTLING -> {
-                }
-                STATE_DRAGGING -> {
-                }
+                STATE_DRAGGING, STATE_SETTLING -> {}
             }
         }
     }
 
     fun create() = apply {
         behavior = from(view)
-        behavior.bottomSheetCallback = bottomSheetCallback
+        behavior.addBottomSheetCallback(bottomSheetCallback)
         ViewCompat.setElevation(view, 255f)
     }
 

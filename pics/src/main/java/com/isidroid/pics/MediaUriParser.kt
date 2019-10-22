@@ -92,7 +92,7 @@ class MediaUriParser(private val context: Context) {
         if (result.localPath == null) {
             try {
                 val file = File(context.cacheDir, filename)
-                inputStream.use { input -> file.outputStream().use { input.copyTo(it) } }
+                inputStream.use { input -> file.outputStream().use { input?.copyTo(it) } }
                 result.localPath = file.absolutePath
 
             } catch (e: Exception) {
