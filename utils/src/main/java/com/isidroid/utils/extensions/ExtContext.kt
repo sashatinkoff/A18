@@ -21,12 +21,6 @@ fun Context.colorFromAttr(@AttrRes attr: Int) = if (attr == 0) 0 else with(Typed
     data
 }
 
-fun Activity.hideSoftKeyboard() {
-    if (isFinishing) return
-     (getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager)
-        .toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-}
-
 fun Context.screenWidthPx() = Resources.getSystem().displayMetrics.widthPixels
 fun Context.screenHeightPx() = Resources.getSystem().displayMetrics.heightPixels
 

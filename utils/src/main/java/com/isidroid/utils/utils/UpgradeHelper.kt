@@ -1,7 +1,7 @@
 package com.isidroid.utils.utils
 
 import android.app.Application
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 
 const val KEY_CODE = "current_code"
 const val KEY_VERSION = "current_version"
@@ -55,9 +55,7 @@ class UpgradeHelper private constructor(application: Application, val code: Int,
             }
         }
 
-        fun get(): UpgradeHelper {
-            return instance!!
-        }
+        fun get() = instance!!
     }
 
 

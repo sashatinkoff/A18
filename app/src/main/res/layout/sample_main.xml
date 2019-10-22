@@ -1,100 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                     xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                     android:id="@+id/coordinator"
-                                                     android:layout_width="match_parent"
-                                                     android:layout_height="match_parent"
-                                                     android:background="#000">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF">
 
     <LinearLayout
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="36dp">
-
-        <com.google.android.material.textfield.TextInputLayout
-                style="@style/YTextInputLayout"
-                app:hintTextAppearance="@style/TextInputHintTextAppearance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Please enter your name">
-
-            <androidx.appcompat.widget.AppCompatEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="sdfsdf"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-                style="@style/YTextInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:hint="Please enter your password">
-
-            <androidx.appcompat.widget.AppCompatEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSave"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Create qrcode"/>
-
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnPdf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Read qrcode"/>
-
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCamera"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Take picture with camera"/>
-
-        <ImageView
-                android:id="@+id/imageview"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
-
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnOpen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="Show bottom menu"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-            android:id="@+id/bottomSheet"
-            app:behavior_hideable="false"
-            app:behavior_peekHeight="20dp"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="#FF0"
-            android:orientation="vertical">
-
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnBottomSheet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="32dp"
-                android:text="Hello world"/>
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="36dp">
 
 
     </LinearLayout>

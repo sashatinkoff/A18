@@ -11,9 +11,6 @@
     </style>
 
     <style name="YTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/colorAccent</item>
-        <item name="boxStrokeWidth">1dp</item>
-        <item name="android:textColorHint">@color/text_input_inactive_hint</item>
     </style>
 
     <style name="TextInputHintTextAppearance" parent="TextAppearance.AppCompat">

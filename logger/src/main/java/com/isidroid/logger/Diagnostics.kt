@@ -22,6 +22,10 @@ class Diagnostics internal constructor(
 ) {
     var logsStart: Date? = null
 
+    init {
+        instance = this
+    }
+
     fun start() = apply { logsStart = Date() }
     fun cancel() = apply { logsStart = null }
 

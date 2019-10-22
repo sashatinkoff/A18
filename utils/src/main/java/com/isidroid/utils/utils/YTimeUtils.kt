@@ -8,7 +8,7 @@ object YTimeUtils {
     fun isSameDay(date1: Date?, date2: Date?): Boolean {
         val d1 = date1 ?: Date()
         val d2 = date2 ?: Date()
-        val sf = SimpleDateFormat("yyyyMMdd")
+        val sf = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
         return sf.format(d1) == sf.format(d2)
     }
 

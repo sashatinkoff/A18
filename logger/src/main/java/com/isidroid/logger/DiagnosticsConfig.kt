@@ -24,7 +24,7 @@ class DiagnosticsConfig(
         val crashlyticsConfigBuilder = Crashlytics.Builder()
             .core(CrashlyticsCore.Builder().disabled(disableCrashlytics).build())
 
-        Diagnostics.instance = Diagnostics(
+        Diagnostics(
             context = application.applicationContext,
             authority = fileAuthority,
             debugTree = tree,

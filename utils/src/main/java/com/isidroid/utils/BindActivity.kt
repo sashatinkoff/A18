@@ -4,16 +4,11 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 
-abstract class BindActivity<D : ViewDataBinding> : BaseActivity() {
+abstract class BindActivity<D : ViewDataBinding>(val layoutRes: Int) : BaseActivity() {
     protected lateinit var binding: D
-    abstract val resource: Int
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = DataBindingUtil.setContentView(this, resource)
-        onCreateBinding()
+        binding = DataBindingUtil.setContentView(this, layoutRes)
     }
-
-    open fun onCreateBinding() {}
 }

@@ -11,8 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleObserver
 
 
-abstract class BasePage<D : ViewDataBinding> : Fragment(), LifecycleObserver {
-    abstract val resource: Int
+abstract class BasePage<D : ViewDataBinding>(val layoutRes: Int) : Fragment(), LifecycleObserver {
     protected lateinit var dataBinding: D
 
     @CallSuper
@@ -29,7 +28,7 @@ abstract class BasePage<D : ViewDataBinding> : Fragment(), LifecycleObserver {
 
     @CallSuper
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dataBinding = DataBindingUtil.inflate(inflater, resource, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater, layoutRes, container, false)
         onDataBindingCreated(dataBinding)
         return dataBinding.root
     }
