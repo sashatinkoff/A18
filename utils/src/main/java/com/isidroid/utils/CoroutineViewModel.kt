@@ -28,6 +28,7 @@ abstract class CoroutineViewModel(application: Application) : AndroidViewModel(a
             onComplete?.invoke((data))
         } catch (e: Throwable) {
             Timber.e(e)
+            error.postValue(e)
             onError?.invoke(e)
         } finally {
             progress.postValue(false)
