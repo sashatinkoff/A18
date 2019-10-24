@@ -1,7 +1,9 @@
 package com.isidroid.utils.utils
 
+import android.view.View
 import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -9,9 +11,28 @@ import com.isidroid.utils.extensions.getRootView
 import com.isidroid.utils.extensions.isKeyboardOpen
 
 internal class KeyboardEventListener(
-    private val activity: AppCompatActivity,
+    private val lifecycleObserver: LifecycleObserver,
     private val callback: (isOpen: Boolean) -> Unit
 ) : LifecycleObserver {
+
+    private val activity: AppCompatActivity =
+        when (lifecycleObserver) {
+            is AppCompatActivity -> lifecycleObserver
+            is Fragment -> lifecycleObserver.activity as AppCompatActivity
+            else -> throw Exception("A lifecycleObserver is neither Fragment or AppCompatActivity")
+        }
+
+    fun getRootView(): View = when (lifecycleObserver) {
+        is AppCompatActivity -> lifecycleObserver.getRootView()
+        is Fragment -> lifecycleObserver.view!!
+        else -> throw Exception("A lifecycleObserver is neither Fragment or AppCompatActivity")
+    }
+
+    fun lifecycle() = when (lifecycleObserver) {
+        is AppCompatActivity -> lifecycleObserver.lifecycle
+        is Fragment -> lifecycleObserver.lifecycle
+        else -> throw Exception("A lifecycleObserver is neither Fragment or AppCompatActivity")
+    }
 
     private val listener = object : ViewTreeObserver.OnGlobalLayoutListener {
         private var lastState: Boolean = activity.isKeyboardOpen()
@@ -28,10 +49,9 @@ internal class KeyboardEventListener(
     }
 
     init {
-        activity.lifecycle.addObserver(this)
+        lifecycle().addObserver(this)
         registerKeyboardListener()
     }
-
 
     @OnLifecycleEvent(value = Lifecycle.Event.ON_PAUSE)
     fun onLifecyclePause() = unregisterKeyboardListener()
@@ -41,8 +61,10 @@ internal class KeyboardEventListener(
 
     private fun dispatchKeyboardEvent(isOpen: Boolean) = callback(isOpen)
     private fun registerKeyboardListener() =
-        activity.getRootView().viewTreeObserver.addOnGlobalLayoutListener(listener)
+        getRootView().viewTreeObserver.addOnGlobalLayoutListener(listener)
 
     private fun unregisterKeyboardListener() =
-        activity.getRootView().viewTreeObserver.removeOnGlobalLayoutListener(listener)
+        getRootView().viewTreeObserver.removeOnGlobalLayoutListener(listener)
+
+
 }

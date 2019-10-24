@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.isidroid.a18.databinding.ActivityMainBinding
 import com.isidroid.perms.askPermission
 import com.isidroid.utils.BindActivity
+import com.isidroid.utils.extensions.onKeyboardVisibility
+import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
 class MainActivity : BindActivity<ActivityMainBinding>(layoutRes = R.layout.activity_main) {
@@ -24,6 +26,17 @@ class MainActivity : BindActivity<ActivityMainBinding>(layoutRes = R.layout.acti
                 onError = { Timber.tag("check_locations").e(it.message) }
             )
         }
+
+        btnStart.setOnClickListener { start() }
+        btnStop.setOnClickListener { stop() }
+    }
+
+    private fun start() {
+        viewmodel.start()
+    }
+
+    private fun stop() {
+        viewmodel.stop()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

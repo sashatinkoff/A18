@@ -28,7 +28,7 @@ fun Activity.isKeyboardOpen(): Boolean {
 }
 
 fun Activity.isKeyboardClosed() = !this.isKeyboardOpen()
-fun AppCompatActivity.onKeyboardVisibility(callback: (isOpen: Boolean) -> Unit) {
+fun LifecycleObserver.onKeyboardVisibility(callback: (isOpen: Boolean) -> Unit) {
     KeyboardEventListener(this, callback)
 }
 
