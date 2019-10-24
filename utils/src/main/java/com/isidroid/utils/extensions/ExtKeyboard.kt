@@ -6,6 +6,7 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
+import android.view.inputmethod.InputMethodManager.HIDE_IMPLICIT_ONLY
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -33,9 +34,8 @@ fun LifecycleObserver.onKeyboardVisibility(callback: (isOpen: Boolean) -> Unit) 
 }
 
 fun Activity.hideSoftKeyboard() {
-    if (isFinishing) return
     (getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager)
-        .toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+        .toggleSoftInput(HIDE_IMPLICIT_ONLY, HIDE_IMPLICIT_ONLY)
 }
 
 
