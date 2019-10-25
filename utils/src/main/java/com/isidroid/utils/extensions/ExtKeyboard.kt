@@ -35,7 +35,8 @@ fun LifecycleObserver.onKeyboardVisibility(callback: (isOpen: Boolean) -> Unit) 
 
 fun Activity.hideSoftKeyboard() {
     (getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager)
-        .toggleSoftInput(HIDE_IMPLICIT_ONLY, HIDE_IMPLICIT_ONLY)
+        .hideSoftInputFromWindow(getRootView().windowToken, 0)
+//        .toggleSoftInput(HIDE_IMPLICIT_ONLY, HIDE_IMPLICIT_ONLY)
 }
 
 
