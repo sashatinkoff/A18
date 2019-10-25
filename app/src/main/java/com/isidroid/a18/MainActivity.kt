@@ -14,35 +14,37 @@ import timber.log.Timber
 
 class MainActivity : BindActivity<ActivityMainBinding>(layoutRes = R.layout.activity_main) {
     private val viewmodel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
-    private val locationHelper = LocationHelper(this)
-
+    private val repository by lazy { LocationRepository(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         askPermission(Manifest.permission.ACCESS_FINE_LOCATION) {
-            locationHelper.start(
-                onLocation = { Timber.tag("check_locations").i("location=$it") },
-                onError = { Timber.tag("check_locations").e(it.message) }
-            )
+
         }
 
+        btnRefreshed.setOnClickListener { refresh() }
         btnStart.setOnClickListener { start() }
         btnStop.setOnClickListener { stop() }
     }
 
+    private fun refresh() {
+        repository.start(
+            useLast = false,
+            onLocation = { Timber.i("onLocation $it") },
+            onError = { Timber.e(it.message) }
+        )
+    }
+
     private fun start() {
-        viewmodel.start()
+        repository.start(
+            useLast = true,
+            onLocation = { Timber.i("onLocation $it") },
+            onError = { Timber.e(it.message) }
+        )
     }
 
     private fun stop() {
-        viewmodel.stop()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            locationHelper.codeResolution -> locationHelper.onResult(resultCode)
-            else -> super.onActivityResult(requestCode, resultCode, data)
-        }
+        repository.stop()
     }
 }

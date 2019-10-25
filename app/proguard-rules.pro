@@ -19,7 +19,7 @@
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
 #-keepresourcexmlelements manifest/application/meta-data@email=io.fabric.ApiKey
--printmapping mapping.txt
+#printmapping mapping.txt
 
 
 # Dagger 2
