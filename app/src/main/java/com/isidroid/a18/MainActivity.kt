@@ -6,8 +6,10 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.isidroid.a18.databinding.ActivityMainBinding
+import com.isidroid.a18.sample.rest.ApiTest
 import com.isidroid.perms.askPermission
 import com.isidroid.utils.BindActivity
+import com.isidroid.utils.Tasks
 import com.isidroid.utils.extensions.onKeyboardVisibility
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
@@ -18,6 +20,8 @@ class MainActivity : BindActivity<ActivityMainBinding>(layoutRes = R.layout.acti
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        start()
 
         askPermission(Manifest.permission.ACCESS_FINE_LOCATION) {
 
@@ -37,10 +41,10 @@ class MainActivity : BindActivity<ActivityMainBinding>(layoutRes = R.layout.acti
     }
 
     private fun start() {
-        repository.start(
-            useLast = true,
-            onLocation = { Timber.i("onLocation $it") },
-            onError = { Timber.e(it.message) }
+        Tasks.io(
+            doWork = { ApiTest.create().posts().execute().body() },
+            onError = { Timber.tag("Uosj").e(it) },
+            onComplete = { Timber.tag("Uosj").i("result=${it?.firstOrNull()?.userId}") }
         )
     }
 
