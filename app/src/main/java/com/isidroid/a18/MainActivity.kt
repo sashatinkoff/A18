@@ -1,16 +1,10 @@
 package com.isidroid.a18
 
-import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.isidroid.a18.databinding.ActivityMainBinding
-import com.isidroid.a18.sample.rest.ApiTest
-import com.isidroid.perms.askPermission
 import com.isidroid.utils.BindActivity
-import com.isidroid.utils.Tasks
-import com.isidroid.utils.extensions.onKeyboardVisibility
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
@@ -21,15 +15,15 @@ class MainActivity : BindActivity<ActivityMainBinding>(layoutRes = R.layout.acti
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        start()
-
-        askPermission(Manifest.permission.ACCESS_FINE_LOCATION) {
-
-        }
+        viewmodel.start()
 
         btnRefreshed.setOnClickListener { refresh() }
-        btnStart.setOnClickListener { start() }
+        btnStart.setOnClickListener { viewmodel.start() }
         btnStop.setOnClickListener { stop() }
+    }
+
+    override fun onCreateViewModel() {
+        viewmodel.error.observe(this, Observer { Timber.e("Uosj $it") })
     }
 
     private fun refresh() {
@@ -37,14 +31,6 @@ class MainActivity : BindActivity<ActivityMainBinding>(layoutRes = R.layout.acti
             useLast = false,
             onLocation = { Timber.i("onLocation $it") },
             onError = { Timber.e(it.message) }
-        )
-    }
-
-    private fun start() {
-        Tasks.io(
-            doWork = { ApiTest.create().posts().execute().body() },
-            onError = { Timber.tag("Uosj").e(it) },
-            onComplete = { Timber.tag("Uosj").i("result=${it?.firstOrNull()?.userId}") }
         )
     }
 

@@ -6,7 +6,7 @@ import com.isidroid.a18.rest.Api
 import retrofit2.Call
 import retrofit2.http.GET
 
-private const val ENDPOINT = "https://jsonplaceholder.typicode.comsdfsdfsdfsdf/"
+private const val ENDPOINT = "https://jsonplaceholder.typicode.com/"
 
 interface ApiTest {
 

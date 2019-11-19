@@ -48,10 +48,8 @@ class Api<T>(
 
         val noInternetConnectioInterceptor = Interceptor { chain ->
             if (!context.isConnected()) throw NoInternetConnection()
-
             chain.proceed(chain.request())
         }
-
 
         val builder = OkHttpClient().newBuilder()
             .readTimeout(timeout, TimeUnit.SECONDS)
