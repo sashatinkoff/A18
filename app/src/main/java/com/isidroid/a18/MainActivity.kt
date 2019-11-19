@@ -23,7 +23,7 @@ class MainActivity : BindActivity<ActivityMainBinding>(layoutRes = R.layout.acti
     }
 
     override fun onCreateViewModel() {
-        viewmodel.error.observe(this, Observer { Timber.e("Uosj $it") })
+//        viewmodel.error.observe(this, Observer { Timber.e("Uosj $it") })
     }
 
     private fun refresh() {

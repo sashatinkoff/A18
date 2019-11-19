@@ -1,6 +1,7 @@
 package com.isidroid.utils
 
 import android.app.Application
+import android.os.Looper
 import androidx.annotation.CallSuper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -36,19 +37,24 @@ abstract class CoroutineViewModel(application: Application) : AndroidViewModel(a
         }
 
         return viewModelScope.launch(mainDispatcher) {
-            progress.postValue(true)
+
 
             var data: T? = null
             try {
+                progress.value = true
                 doBefore?.invoke()
                 withContext(workDispatcher) { data = doWork() }
                 onComplete?.invoke((data))
             } catch (e: Throwable) {
                 Timber.e(e)
-                error.postValue(e)
+
+                val isMainThread = Looper.myLooper() == Looper.getMainLooper()
+                if (isMainThread) error.value = e
+                else error.postValue(e)
+
                 onError?.invoke(e)
             } finally {
-                progress.postValue(false)
+                progress.value = false
             }
         }
     }

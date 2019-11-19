@@ -14,8 +14,6 @@ class MainViewModel(application: Application) : CoroutineViewModel(application) 
 
     fun start() = io(
         doWork = { ApiTest.create().posts().execute().body() },
-        onError = { Timber.tag("Uosj").e("err=${it}, error=${error.value}") },
-        onComplete = { Timber.tag("Uosj").i("result=${it?.firstOrNull()?.userId}") }
+        onError = { Timber.e("Uosj err=${it}, error.value=${error.value}") }
     )
-
 }
