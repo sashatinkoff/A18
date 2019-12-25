@@ -7,15 +7,25 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/bg_window</item>
-        <item name="alertDialogTheme">@style/YDialog</item>
     </style>
 
-    <style name="YTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-    </style>
+    <style name="YTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"></style>
 
     <style name="TextInputHintTextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">#FF0</item>
     </style>
 
+    <style name="TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="endIconDrawable">@drawable/ic_close_black_24dp</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="android:layout_marginBottom">18dp</item>
+    </style>
+
+    <style name="Input">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>

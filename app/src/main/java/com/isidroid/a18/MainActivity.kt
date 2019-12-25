@@ -1,104 +1,143 @@
 package com.isidroid.a18
 
-import android.graphics.Color
+import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
-import androidx.databinding.ViewDataBinding
-import com.isidroid.a18.databinding.ActivityMainBinding
-import com.isidroid.a18.databinding.SampleItemBinding
-import com.isidroid.utils.BindActivity
-import com.isidroid.utils.adapters.CoreBindAdapter
-import com.isidroid.utils.utils.YSpan
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.GsonBuilder
+import com.google.gson.annotations.SerializedName
+import com.google.gson.reflect.TypeToken
+import com.isidroid.a18.extensions.alert
 import kotlinx.android.synthetic.main.activity_main.*
-import okhttp3.internal.toHexString
 import timber.log.Timber
+import java.security.MessageDigest
 import java.util.*
+import kotlin.random.Random
 
 
-class MainActivity : BindActivity<ActivityMainBinding>(layoutRes = R.layout.activity_main) {
-    private val adapter = Adapter()
+private const val REQUEST_CODE_REVO = 192
+
+class MainActivity : AppCompatActivity() {
+    private val gson = GsonBuilder().create()
+    private var alert: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-
-        textview.movementMethod = LinkMovementMethod.getInstance()
-        textview.text = YSpan(this)
-            .append("name")
-            .append("==Sasha==")
-            .onclick { Timber.i("clicked on Sasha/$it") }
-            .append(" end")
-            .build()
-
-        recyclerview.adapter = adapter
-
-//        name(name = "Red", bgColor = Color.parseColor("#FF0000"))
-//        name(name = "Green", bgColor = Color.parseColor("#009688"))
-//        name(name = "White", bgColor = Color.parseColor("#FFFFFF"))
-//        name(name = "BLACK", bgColor = Color.parseColor("#000000"))
+        createForm()
     }
 
-    fun name(name: String, bgColor: Int) {
-        val color = Color.rgb(
-            255 - Color.red(bgColor),
-            255 - Color.green(bgColor),
-            255 - Color.blue(bgColor)
-        )
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-        adapter.add(
-            Item(
-                bgColor = bgColor,
-                color = if (isBrightColor(bgColor)) Color.BLACK else Color.WHITE,
-                bgName = name,
-                colorName = ""
+        val response = data?.getStringExtra("json_data")
+        val message =
+            if (resultCode == RESULT_OK) "все прошло удачно" else "произошла какая-то ошибка"
+
+        debug("onActivityResult response=$response")
+
+        if (alert == null) alert(
+            title = "Получен результат от Revo",
+            message = "$message\n$response",
+            positiveRes = android.R.string.ok
+        )
+    }
+
+    private fun createForm() {
+        btnFillForm.setOnClickListener { fillForm() }
+        btnSubmit.setOnClickListener { sendRevo() }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun fillForm() {
+        val storeId = Random.nextInt(100, 1_000)
+        val phone = "99912${Random.nextInt(100_000, 999_999)}"
+        val merchantId = UUID.randomUUID().toString().substring(0, 15)
+        val orderId = Random.nextInt(100_000, 1_000_000)
+        val amount = Random.nextInt(1_000, 100_000).toFloat().toString()
+        val clientPhone = "99912${Random.nextInt(100_000, 999_999)}"
+
+        inputStoreId.setText("$storeId")
+        inputAgentPhone.setText(phone)
+        inputMerchantAgentId.setText("$merchantId@fake.lamoda2revo")
+        inputOrderId.setText("$orderId")
+        inputAmount.setText(amount)
+        inputPhone.setText(clientPhone)
+    }
+
+    private fun sendRevo() {
+        val secretKey = "lamoda_secretkey"
+
+        val request = Request(
+            credentials = RequestCredentials(
+                storeId = inputStoreId.text.toString().toIntOrNull() ?: 1
+            ),
+            payload = RequestPayload(
+                agentPhone = inputAgentPhone.text.toString(),
+                merchantAgentId = inputMerchantAgentId.text.toString(),
+                orderId = inputOrderId.text.toString(),
+                amount = inputOrderId.text.toString().toFloatOrNull() ?: 0f,
+                phone = inputPhone.text.toString()
             )
         )
-    }
 
-    fun isBrightColor(color: Int): Boolean {
-        if (android.R.color.transparent == color) return true
-        var rtnValue = false
-        val rgb = intArrayOf(
-            Color.red(color),
-            Color.green(color),
-            Color.blue(color)
-        )
-        val brightness = Math.sqrt(
-            rgb[0] * rgb[0] * .241 + (rgb[1]
-                    * rgb[1] * .691) + rgb[2] * rgb[2] * .068
-        ).toInt()
-        // color is light
-        if (brightness >= 200) {
-            rtnValue = true
+        val map = toMap(request.payload)
+        val signature = map.keys.sorted().map { map[it] }.joinToString("") + secretKey
+        request.credentials.signature = signature.hash()
+
+        val json = gson.toJson(request)
+        debug(json)
+
+        val intent = Intent("ru.revoplus.client").putExtra("json_data", json)
+        try {
+            startActivityForResult(intent, REQUEST_CODE_REVO)
+        } catch (e: Throwable) {
+            val message = when (e) {
+                is ActivityNotFoundException -> "Не найдено приложений, которые могут открыть intent"
+                else -> "${e.message}"
+            }
+
+            alert = alert(
+                title = "Ошибка",
+                message = message,
+                positiveRes = android.R.string.ok
+            )
         }
-        return rtnValue
     }
 
+    private fun String.hash(): String {
+        val md = MessageDigest.getInstance("SHA-1")
+        val digest = md.digest(toByteArray())
+        return digest.fold("", { str, it -> str + "%02x".format(it) })
+    }
 
-    private data class Item(
-        val bgColor: Int,
-        val color: Int,
-        val bgName: String,
-        val colorName: String
+    private fun toMap(item: Any): Map<String, String> = with(gson.toJson(item)) {
+        gson.fromJson(this, object : TypeToken<Map<String, String>>() {}.type)
+    }
+
+    private fun debug(msg: String) {
+        Timber.tag("lamoda").i(msg)
+    }
+
+    data class Request(
+        @SerializedName("credentials") val credentials: RequestCredentials,
+        @SerializedName("payload") val payload: RequestPayload
     )
 
-    private class Adapter : CoreBindAdapter<Item>() {
-        override fun resource(viewType: Int) = R.layout.sample_item
-        override fun onBindHolder(binding: ViewDataBinding, position: Int) {
-            Timber.i("onBindHolder $binding")
-            (binding as? SampleItemBinding)?.apply {
-                val item = items[position]
+    data class RequestCredentials(
+        @SerializedName("store_id") val storeId: Int,
+        @SerializedName("auth_type") val authType: String = "sha-1-sorted",
+        @SerializedName("signature") var signature: String = ""
+    )
 
-                textview.text = YSpan(root.context)
-                    .append("background=${item.bgName} #{${item.bgColor.toHexString()}}")
-                    .br()
-                    .append("color=${item.colorName} #{${item.color.toHexString()}}")
-                    .build()
-
-                bgView.setBackgroundColor(item.bgColor)
-                colorView.setTextColor(item.color)
-                colorView.text = UUID.randomUUID().toString()
-            }
-        }
-    }
+    data class RequestPayload(
+        @SerializedName("agent_phone") val agentPhone: String,
+        @SerializedName("merchant_agent_id") val merchantAgentId: String,
+        @SerializedName("order_id") val orderId: String,
+        @SerializedName("amount") val amount: Float,
+        @SerializedName("phone") val phone: String
+    )
 }

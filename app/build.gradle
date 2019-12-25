@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'realm-android'
 apply plugin: 'io.fabric'
 
 apply from: '../tasks.gradle'
@@ -20,7 +19,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.isidroid.a18"
+        applicationId "com.isidroid.lamoda2revo"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.compileSdk
         def versionMajor = 1
@@ -99,52 +98,18 @@ dependencies {
     implementation "androidx.core:core-ktx:${versions.corektx}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinx_coroutines}"
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
-    implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
-    implementation "com.google.android.material:material:${versions.material}"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:${versions.swipe_refresh}"
-    implementation "android.arch.work:work-runtime:${versions.worker}"
     implementation "androidx.preference:preference-ktx:${versions.preferences}"
-    implementation "androidx.palette:palette-ktx:1.0.0"
-    implementation "androidx.room:room-runtime:${versions.room}"
-    implementation "androidx.room:room-ktx:${versions.room}"
-    kapt "androidx.room:room-compiler:${versions.room}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
+
 // firebase / google gcm
-    implementation "com.google.android.gms:play-services-location:${versions.playServicesLocation}"
-    implementation "com.google.firebase:firebase-core:${versions.playServicesVersion}"
-    implementation "com.google.firebase:firebase-ml-vision:${versions.firebaseMLVision}"
-    implementation "com.google.firebase:firebase-messaging:${versions.firebase_messages}"
-// livedata
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-runtime:${versions.lifecycle}"
-    kapt "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
 // network
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
     implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
     implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp_logging}"
-// Stuff
-    implementation("com.github.bumptech.glide:glide:${versions.glide}") {
-        exclude group: "com.android.support"
-    }
-    kapt "com.github.bumptech.glide:compiler:${versions.glide}"
-    implementation "com.google.code.gson:gson:${versions.gson}"
-    implementation "com.github.chrisbanes:PhotoView:${versions.photoview}"
 // cores
     implementation project(':utils')
     implementation project(':logger')
-    implementation project(':realm')
-    implementation project(':pics')
-    implementation project(':runtimepermissions')
-
-    // include modules as aars
-//    implementation(name: "logger.${versions.isidroid}", ext: 'aar')
-//    implementation(name: "utils.${versions.isidroid}", ext: 'aar')
-//    implementation(name: "realm.${versions.isidroid}", ext: 'aar')
-//    implementation(name: "pics.${versions.isidroid}", ext: 'aar')
-//    implementation(name: "runtimepermissions.${versions.isidroid}", ext: 'aar')
 }
-
-apply plugin: 'com.google.gms.google-services'
 

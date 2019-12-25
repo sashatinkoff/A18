@@ -4,23 +4,120 @@
 
     <data />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:layout_marginTop="56dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="18dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textview"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="12dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayout"
+                    android:id="@+id/inputStoreIdLayout"
+                    android:hint="Торговая точка (store id)">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/inputStoreId"
+                        style="@style/Input"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayout"
+                    android:id="@+id/inputAgentPhoneLayout"
+                    android:hint="Телефон агента курьера (agent_phone)">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/inputAgentPhone"
+                        style="@style/Input"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayout"
+                    android:id="@+id/inputMerchantAgentIdLayout"
+                    android:hint="Id сотрудника в системе партнера(merchant_agent_id)">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/inputMerchantAgentId"
+                        style="@style/Input" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayout"
+                    android:id="@+id/inputOrderIdLayout"
+                    android:hint="Id заказа (order_id)">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/inputOrderId"
+                        style="@style/Input" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayout"
+                    android:id="@+id/inputAmountLayout"
+                    android:hint="Сумма заказа (amount)">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/inputAmount"
+                        style="@style/Input"
+                        android:inputType="numberDecimal" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayout"
+                    android:id="@+id/inputPhoneLayout"
+                    android:hint="Телефон клиента (phone)">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/inputPhone"
+                        style="@style/Input"
+                        android:inputType="number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmit"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="20sp" />
+            android:layout_margin="12dp"
+            android:text="Отправить в Revo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnFillForm"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnFillForm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="Заполнить форму"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnSubmit" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
