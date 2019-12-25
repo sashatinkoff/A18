@@ -3,10 +3,10 @@
     <!-- A18 colors starts here -->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="bg_window">#000</color>
-    <color name="text_input_inactive_hint">#90FFFFFF</color>
-    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#FFF</color>
+    <color name="colorAccent">#009688</color>
+    <color name="bg_window">#FFF</color>
+    <color name="text_input_inactive_hint">#000</color>
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#000</color>
 
 
     <!-- A18 Dialog style starts here -->

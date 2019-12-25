@@ -7,6 +7,7 @@ import android.text.style.*
 import android.text.style.DynamicDrawableSpan.ALIGN_BASELINE
 import android.view.View
 import com.isidroid.utils.extensions.resourceFromAttr
+import timber.log.Timber
 
 open class YSpan(private val context: Context? = null) {
     protected val builder = SpannableStringBuilder()
@@ -62,13 +63,27 @@ open class YSpan(private val context: Context? = null) {
     }
 
     fun onclick(callback: (url: String) -> Unit) = apply {
+        Timber.e("MainActivity onclick onclick")
+
         val span = object : URLSpan("") {
             override fun onClick(widget: View) {
                 val text = builder.substring(start, builder.length)
+                Timber.e("MainActivity onclick limits=${start}-${builder.length}, text=$text")
                 callback(text)
             }
         }
 
+        style(span)
+    }
+
+    fun onClick2(callback: (String) -> Unit) = apply {
+        val span = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                val text = builder.substring(start, builder.length)
+                Timber.e("MainActivity onclick limits=${start}-${builder.length}, text=$text")
+                callback(text)
+            }
+        }
         style(span)
     }
 

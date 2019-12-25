@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data />
 
@@ -8,24 +9,18 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnStart"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="start" />
+            android:textSize="20sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnRefreshed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="get refreshed" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnStop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="stop" />
     </LinearLayout>
 
 </layout>
