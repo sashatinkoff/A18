@@ -55,27 +55,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createForm() {
-        btnFillForm.setOnClickListener {
-            sendNotification(
-                title = "Title",
-                body = "body",
-                url = null
-            )
-        }
-
-        btnSubmit.setOnClickListener {
-            sendNotification(
-                title = "Title",
-                body = "body",
-                url = "https://ya.ru"
-            )
-        }
+        btnFillForm.setOnClickListener { fillForm() }
+        btnSubmit.setOnClickListener { sendRevo() }
     }
 
 
     @SuppressLint("SetTextI18n")
     private fun fillForm() {
-        val storeId = Random.nextInt(100, 1_000)
+        val storeId = 379
         val phone = "99912${Random.nextInt(100_000, 999_999)}"
         val merchantId = UUID.randomUUID().toString().substring(0, 15)
         val orderId = Random.nextInt(100_000, 1_000_000)
@@ -91,7 +78,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sendRevo() {
-        val secretKey = "lamoda_secretkey"
+        val secretKey = "0aba16fd742571e091a2fb6da161ae4b"
 
         val request = Request(
             credentials = RequestCredentials(
