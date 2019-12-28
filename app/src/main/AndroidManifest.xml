@@ -76,7 +76,14 @@
             android:name="io.fabric.ApiKey"
             android:value="838fb419d5dd966c34fbf0f6e6dbd5e6c6e6be72" />
 
-
+        <service
+            android:name=".FcmService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

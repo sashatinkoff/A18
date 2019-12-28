@@ -100,6 +100,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
     implementation "androidx.preference:preference-ktx:${versions.preferences}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraint}"
+    implementation "com.google.firebase:firebase-messaging:${versions.firebase_messages}"
 
 // firebase / google gcm
 // network
@@ -113,3 +114,4 @@ dependencies {
     implementation project(':logger')
 }
 
+apply plugin: 'com.google.gms.google-services'

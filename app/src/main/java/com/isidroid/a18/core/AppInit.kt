@@ -12,5 +12,6 @@ object AppInit {
             disableCrashlytics = BuildConfig.DEBUG
         )
 
+        NotificationsChannels()
     }
 }

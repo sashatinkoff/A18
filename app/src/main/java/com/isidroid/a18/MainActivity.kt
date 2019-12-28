@@ -1,14 +1,22 @@
 package com.isidroid.a18
 
 import android.annotation.SuppressLint
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
+import com.isidroid.a18.core.NotificationsChannels
 import com.isidroid.a18.extensions.alert
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
@@ -47,9 +55,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createForm() {
-        btnFillForm.setOnClickListener { fillForm() }
-        btnSubmit.setOnClickListener { sendRevo() }
+        btnFillForm.setOnClickListener {
+            sendNotification(
+                title = "Title",
+                body = "body",
+                url = null
+            )
+        }
+
+        btnSubmit.setOnClickListener {
+            sendNotification(
+                title = "Title",
+                body = "body",
+                url = "https://ya.ru"
+            )
+        }
     }
+
 
     @SuppressLint("SetTextI18n")
     private fun fillForm() {
