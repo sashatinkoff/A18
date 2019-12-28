@@ -56,26 +56,36 @@ class MainActivity : AppCompatActivity() {
 
     private fun createForm() {
         btnFillForm.setOnClickListener { fillForm() }
+        btnFillFormStage.setOnClickListener { fillStageForm() }
         btnSubmit.setOnClickListener { sendRevo() }
+    }
+
+    private fun fillStageForm() {
+        fillForm(
+            storeId = 309,
+            phone = "78884112555"
+        )
     }
 
 
     @SuppressLint("SetTextI18n")
-    private fun fillForm() {
-        val storeId = 379
-        val phone = "99912${Random.nextInt(100_000, 999_999)}"
-        val merchantId = UUID.randomUUID().toString().substring(0, 15)
-        val orderId = Random.nextInt(100_000, 1_000_000)
-        val amount = Random.nextInt(1_000, 100_000).toFloat().toString()
-        val clientPhone = "99912${Random.nextInt(100_000, 999_999)}"
+    private fun fillForm(
+        storeId: Int = 379,
+        phone: String = "99912${Random.nextInt(100_000, 999_999)}",
+        merchantId: String = UUID.randomUUID().toString().substring(0, 15),
+        orderId: Int = Random.nextInt(100_000, 1_000_000),
+        amount: Float = Random.nextInt(1_000, 100_000).toFloat(),
+        clientPhone: String = "99912${Random.nextInt(100_000, 999_999)}"
+    ) {
 
         inputStoreId.setText("$storeId")
         inputAgentPhone.setText(phone)
         inputMerchantAgentId.setText("$merchantId@fake.lamoda2revo")
         inputOrderId.setText("$orderId")
-        inputAmount.setText(amount)
+        inputAmount.setText("$amount")
         inputPhone.setText(clientPhone)
     }
+
 
     private fun sendRevo() {
         val secretKey = "0aba16fd742571e091a2fb6da161ae4b"

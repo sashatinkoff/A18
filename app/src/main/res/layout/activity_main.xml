@@ -6,16 +6,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="56dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="18dp"
         android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
         android:orientation="vertical">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="12dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
             app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -26,8 +26,8 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayout"
                     android:id="@+id/inputStoreIdLayout"
+                    style="@style/TextInputLayout"
                     android:hint="Торговая точка (store id)">
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -38,8 +38,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayout"
                     android:id="@+id/inputAgentPhoneLayout"
+                    style="@style/TextInputLayout"
                     android:hint="Телефон агента курьера (agent_phone)">
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -50,8 +50,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayout"
                     android:id="@+id/inputMerchantAgentIdLayout"
+                    style="@style/TextInputLayout"
                     android:hint="Id сотрудника в системе партнера(merchant_agent_id)">
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -61,8 +61,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayout"
                     android:id="@+id/inputOrderIdLayout"
+                    style="@style/TextInputLayout"
                     android:hint="Id заказа (order_id)">
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -72,8 +72,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayout"
                     android:id="@+id/inputAmountLayout"
+                    style="@style/TextInputLayout"
                     android:hint="Сумма заказа (amount)">
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -84,8 +84,8 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/TextInputLayout"
                     android:id="@+id/inputPhoneLayout"
+                    style="@style/TextInputLayout"
                     android:hint="Телефон клиента (phone)">
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -115,8 +115,18 @@
             android:layout_margin="12dp"
             android:text="Заполнить форму"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnFillFormStage"
             app:layout_constraintStart_toEndOf="@+id/btnSubmit" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnFillFormStage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:text="Тестовые данные"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnFillForm" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
