@@ -63,7 +63,8 @@ class MainActivity : AppCompatActivity() {
     private fun fillStageForm() {
         fillForm(
             storeId = 309,
-            phone = "78884112555"
+            phone = "78884112555",
+            clientPhone = "78881211111"
         )
     }
 
