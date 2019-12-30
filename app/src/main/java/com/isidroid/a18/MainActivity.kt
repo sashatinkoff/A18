@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         phone: String = "99912${Random.nextInt(100_000, 999_999)}",
         merchantId: String = UUID.randomUUID().toString().substring(0, 15),
         orderId: Int = Random.nextInt(100_000, 1_000_000),
-        amount: Float = Random.nextInt(1_000, 100_000).toFloat(),
+        amount: Float = Random.nextInt(1_000, 10_000).toFloat(),
         clientPhone: String = "99912${Random.nextInt(100_000, 999_999)}"
     ) {
 
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                 agentPhone = inputAgentPhone.text.toString(),
                 merchantAgentId = inputMerchantAgentId.text.toString(),
                 orderId = inputOrderId.text.toString(),
-                amount = inputOrderId.text.toString().toFloatOrNull() ?: 0f,
+                amount = inputAmount.text.toString().toFloatOrNull() ?: 0f,
                 phone = inputPhone.text.toString()
             )
         )
