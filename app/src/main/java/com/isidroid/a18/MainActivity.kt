@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         val message =
             if (resultCode == RESULT_OK) "все прошло удачно" else "произошла какая-то ошибка"
 
-        debug("onActivityResult response=$response")
+        debug("onActivityResult response=$response\n isOk=${resultCode == RESULT_OK}")
 
         if (alert == null) alert(
             title = "Получен результат от Revo",
