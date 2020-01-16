@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">A18</string>
+    <string name="app_name">Exponea.Test</string>
+
+    <!-- Exponea -->
+    <string name="exponea_auth" translatable="false">Basic MDkwZWU2eTJmMWdtNzBsNXZ2amFmeWUzeDZtc2hkZzd3bTVxdDRqbG05bmEweXpnNDJ1dnJ1cDJvNnF1bDh4Nzp0a3hzMHdlM21rMDNrcThxdDJjZ2Rlc2YwazI3cGtheXNkbXdiZm9pMXB2eHk4ZjA1N2ppNWNteWRhOWVpdmo0</string>
+    <string name="exponea_project_token" translatable="false">e60b373a-668c-11e9-a28c-ac1f6b02225e</string>
+    <string name="exponea_base_url" translatable="false">https://api-cis.exponea.com</string>
 </resources>

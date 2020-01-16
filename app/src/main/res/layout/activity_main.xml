@@ -7,19 +7,46 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/textview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-condensed-light"
+            android:padding="24dp"
+            android:scrollbars="vertical" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_height="wrap_content"
+            android:layout_margin="14dp"
+            android:hint="Укажите номер телефона пользователя"
+            app:endIconDrawable="@android:drawable/ic_menu_close_clear_cancel"
+            app:endIconMode="clear_text">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/inputPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:selectAllOnFocus="true"
+                android:text="89028391999" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCredentials"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Отправить данные пользователя" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnClickPush"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Имитировать нажатие на уведомление" />
 
     </LinearLayout>
 
