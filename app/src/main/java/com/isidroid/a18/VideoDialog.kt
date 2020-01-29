@@ -16,6 +16,7 @@ import androidx.fragment.app.DialogFragment
 import com.isidroid.a18.extensions.visible
 import com.isidroid.utils.extensions.screenHeightPx
 import com.isidroid.utils.extensions.screenWidthPx
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import kotlinx.android.synthetic.main.sample_dialog.*
@@ -55,6 +56,21 @@ class VideoDialog : DialogFragment() {
         youtubeview.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
             override fun onReady(youTubePlayer: YouTubePlayer) {
                 youTubePlayer.loadVideo(id, 0f)
+            }
+
+            override fun onStateChange(
+                youTubePlayer: YouTubePlayer,
+                state: PlayerConstants.PlayerState
+            ) {
+                Timber.i("addYouTubePlayerListener.onStateChange state=$state")
+            }
+
+            override fun onVideoDuration(youTubePlayer: YouTubePlayer, duration: Float) {
+                Timber.i("addYouTubePlayerListener.onVideoDuration duration=$duration")
+            }
+
+            override fun onCurrentSecond(youTubePlayer: YouTubePlayer, second: Float) {
+                Timber.i("addYouTubePlayerListener.onCurrentSecond second=$second")
             }
         })
     }
@@ -103,7 +119,6 @@ class VideoDialog : DialogFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        webview.destroy()
         youtubeview.release()
     }
 }
