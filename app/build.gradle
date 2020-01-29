@@ -131,6 +131,7 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:${versions.glide}"
     implementation "com.google.code.gson:gson:${versions.gson}"
     implementation "com.github.chrisbanes:PhotoView:${versions.photoview}"
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 // cores
     implementation project(':utils')
     implementation project(':logger')
