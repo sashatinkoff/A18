@@ -1,12 +1,10 @@
-package com.isidroid.a18
+package com.isidroid.a18.ui
 
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.isidroid.a18.sample.rest.ApiTest
 import com.isidroid.utils.CoroutineViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.isActive
 import timber.log.Timber
 

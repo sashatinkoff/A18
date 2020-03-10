@@ -1,4 +1,4 @@
-package com.isidroid.a18
+package com.isidroid.a18.repository
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -13,8 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.isidroid.a18.R
-import timber.log.Timber
 
 @SuppressLint("MissingPermission")
 class LocationRepository(private val activity: Activity) {
@@ -24,7 +22,11 @@ class LocationRepository(private val activity: Activity) {
     private val locationIntervalLimit = 10_000L
     private val handler = Handler()
     private val runOnNoLocation =
-        Runnable { onError?.invoke(NoLocationFoundException("")) }
+        Runnable { onError?.invoke(
+            NoLocationFoundException(
+                ""
+            )
+        ) }
 
     lateinit var lastLocation: Location
 
@@ -67,7 +69,11 @@ class LocationRepository(private val activity: Activity) {
             }
 
             override fun onProviderDisabled(provider: String?) {
-                onError?.invoke(ProviderDisableException(provider))
+                onError?.invoke(
+                    ProviderDisableException(
+                        provider
+                    )
+                )
             }
 
             override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
@@ -127,7 +133,9 @@ class LocationRepository(private val activity: Activity) {
     private fun onResolutionRequired(e: ApiException) {
         try {
             val rae = e as ResolvableApiException
-            rae.startResolutionForResult(activity, CODE_GPS_RESOLUTION)
+            rae.startResolutionForResult(activity,
+                CODE_GPS_RESOLUTION
+            )
         } catch (sie: IntentSender.SendIntentException) {
             onError?.invoke(sie)
         }
