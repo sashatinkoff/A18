@@ -1,7 +1,7 @@
 package com.isidroid.a18.sample.rest
 
 import com.google.gson.annotations.SerializedName
-import com.isidroid.a18.rest.Api
+import com.isidroid.a18.rest.ApiFactory
 import retrofit2.Call
 import retrofit2.http.GET
 
@@ -13,8 +13,12 @@ interface ApiTest {
     fun posts(): Call<List<PostResponse>>
 
 
-    data class PostResponse(@SerializedName("id") var id: Int, @SerializedName("userId") var userId: Int)
+    data class PostResponse(
+        @SerializedName("id") var id: Int,
+        @SerializedName("userId") var userId: Int
+    )
+
     companion object {
-        fun create(): ApiTest = Api(ApiTest::class.java, ENDPOINT).build()
+        fun create(): ApiTest = ApiFactory.create(ENDPOINT, cl = ApiTest::class.java)
     }
 }
