@@ -1,25 +1,21 @@
 package com.isidroid.a18.rest
 
-import com.google.gson.GsonBuilder
-import com.isidroid.a18.rest.interceptors.AuthInterceptor
+import okhttp3.logging.HttpLoggingInterceptor
 
 object ApiFactory {
     const val ENDPOINT = "https://ya.ru/"
     const val TIMEOUT = 15L
 
-    private fun <T> createBase(cl: Class<T>): Api<T> {
-        return Api(cl, ENDPOINT)
-            .withLogLevel(Api.LogLevel.BODY)
-            .withDebug(true)
-            .withGson(GsonBuilder().create())
-            .withDecorator {
-                it.addInterceptor(AuthInterceptor())
-            }
-            .withTimeout(TIMEOUT)
-    }
-
-
-    fun <T> create(cl: Class<T>, level: Api.LogLevel? = null): T {
-        return createBase(cl).withLogLevel(level).build()
+    fun <T> create(
+        endpoint: String = ENDPOINT,
+        cl: Class<T>,
+        level: HttpLoggingInterceptor.Level = HttpLoggingInterceptor.Level.BASIC
+    ): T {
+        return Api(
+            cl = cl,
+            endPoint = endpoint,
+            logLevel = level,
+            timeout = TIMEOUT
+        ).build()
     }
 }
