@@ -66,7 +66,7 @@ class TakePictureRepository(private val context: Context, val forceRotate: Boole
                 imageInfo.orientation = when (orientation) {
                     ExifInterface.ORIENTATION_ROTATE_90 -> 90
                     ExifInterface.ORIENTATION_ROTATE_180 -> 180
-                    1 -> 270
+                    ExifInterface.ORIENTATION_ROTATE_270 -> 270
                     else -> 0
                 }
 
@@ -74,9 +74,20 @@ class TakePictureRepository(private val context: Context, val forceRotate: Boole
                     val orientationMatrix = Matrix()
                     orientationMatrix.postRotate(imageInfo.orientation.toFloat())
 
-                    val rotatedFile = File(context.cacheDir, UUID.randomUUID().toString().substring(0, 5) + ".jpg")
+                    val rotatedFile = File(
+                        context.cacheDir,
+                        UUID.randomUUID().toString().substring(0, 5) + ".jpg"
+                    )
                     bitmap = BitmapFactory.decodeFile(imageInfo.localPath)
-                    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, orientationMatrix, false)
+                    bitmap = Bitmap.createBitmap(
+                        bitmap,
+                        0,
+                        0,
+                        bitmap.width,
+                        bitmap.height,
+                        orientationMatrix,
+                        false
+                    )
                     fileOutputStream = FileOutputStream(rotatedFile)
                     bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
 
