@@ -108,6 +108,19 @@ dependencies {
     implementation "com.google.firebase:firebase-core:${versions.playServicesVersion}"
     implementation "com.google.firebase:firebase-ml-vision:${versions.firebaseMLVision}"
     implementation "com.google.firebase:firebase-messaging:${versions.firebase_messages}"
+
+// Firebase Authentication
+    implementation "com.google.firebase:firebase-auth:${versions.firebase_auth}"
+    // Google Sign In SDK (only required for Google Sign In)
+    implementation "com.google.android.gms:play-services-auth:${versions.play_service_auth}"
+    // Firebase UI
+    // Used in FirebaseUIActivity.
+    implementation "com.firebaseui:firebase-ui-auth:${versions.firebase_ui_auth}"
+    // Facebook Android SDK (only required for Facebook Login)
+    // Used in FacebookLoginActivity.
+    implementation "com.facebook.android:facebook-login:${versions.facebook_login}"
+    implementation "androidx.browser:browser:${versions.androidx_browser}"
+
 // livedata
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
