@@ -9,7 +9,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-
 class Api<T>(
     private val cl: Class<T>,
     private val endPoint: String,

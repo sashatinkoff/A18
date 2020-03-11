@@ -4,7 +4,7 @@ ext {
 
             // COMMON A18 STARTS HERE
 
-            "isidroid"            : "1.3.9",
+            "isidroid"            : "1.3.11",
 
             // sdk
             'compileSdk'          : 29,
@@ -19,7 +19,7 @@ ext {
 
             // Google
             'androidx'            : '1.1.0',
-            'corektx'             : '1.3.0-alpha01',
+            'corektx'             : '1.3.0-alpha02',
             'annotationsX'        : '1.1.0',
             'constraint'          : '2.0.0-beta4',
             'lifecycle'           : '2.2.0',
@@ -29,7 +29,7 @@ ext {
             'eventbus'            : '3.1.1',
             'kotlinx_coroutines'  : '1.3.4',
             'room'                : '2.2.4',
-            "swipe_refresh"       : '1.1.0-alpha03',
+            "swipe_refresh"       : '1.1.0-beta01',
             "preferences"         : "1.1.0",
 
             // network

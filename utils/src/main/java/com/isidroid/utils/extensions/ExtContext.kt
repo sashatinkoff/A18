@@ -1,14 +1,10 @@
 package com.isidroid.utils.extensions
 
-import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.util.DisplayMetrics
 import android.util.TypedValue
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import androidx.annotation.AttrRes
-import androidx.appcompat.app.AppCompatActivity
 import kotlin.math.roundToInt
 
 fun Context.resourceFromAttr(@AttrRes attr: Int) = if (attr == 0) 0 else with(TypedValue()) {
