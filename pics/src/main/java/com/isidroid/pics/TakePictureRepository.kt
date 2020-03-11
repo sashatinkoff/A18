@@ -12,7 +12,11 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
 
-class TakePictureRepository(private val context: Context, val forceRotate: Boolean = true) {
+class TakePictureRepository(
+    private val context: Context,
+    val forceRotate: Boolean = true,
+    private val debugCallback: ((String) -> Unit)? = null
+) {
     fun getFromGallery(intent: Intent?): List<ImageInfo> {
         val uris = mutableListOf<Uri>()
         intent?.data?.let { uris.add(it) }
@@ -23,19 +27,24 @@ class TakePictureRepository(private val context: Context, val forceRotate: Boole
             if (uri != null) uris.add(uri)
         }
 
+        debugCallback?.invoke("getFromGallery uris=${uris.distinct().size}, forceRotate=$forceRotate")
+
         return getFromGallery(uris.distinct())
     }
 
     fun getFromGallery(uris: List<Uri>?): List<ImageInfo> {
-        check(uris?.isNullOrEmpty() != true) { "Uris are null" }
+        check(!uris.isNullOrEmpty()) {
+            debugCallback?.invoke("getFromGallery error occurred: Uris are null")
+            "Uris are null"
+        }
 
-        return uris
-            .mapTo(mutableListOf()) {
-                MediaUriParser(context).parse(it)?.apply {
+        return uris.mapNotNull {
+            MediaUriParser(context).parse(it)
+                ?.apply {
+                    debugCallback?.invoke("getFromGallery parse file $localPath, isImage=${isImage()}")
                     if (isImage()) localPath = rotate(this)
                 }
-            }.filterNotNull()
-
+        }
     }
 
     fun processPhoto(request: PictureHandler.TakePictureRequest?): ImageInfo {
@@ -70,6 +79,8 @@ class TakePictureRepository(private val context: Context, val forceRotate: Boole
                     else -> 0
                 }
 
+                debugCallback?.invoke("rotate file ${imageInfo.localPath}, orientation=$orientation, angle=${imageInfo.orientation}")
+
                 if (orientation >= 0) {
                     val orientationMatrix = Matrix()
                     orientationMatrix.postRotate(imageInfo.orientation.toFloat())
@@ -79,6 +90,9 @@ class TakePictureRepository(private val context: Context, val forceRotate: Boole
                         UUID.randomUUID().toString().substring(0, 5) + ".jpg"
                     )
                     bitmap = BitmapFactory.decodeFile(imageInfo.localPath)
+
+                    debugCallback?.invoke("rotate original=[${bitmap.width}, ${bitmap.height}]")
+
                     bitmap = Bitmap.createBitmap(
                         bitmap,
                         0,
@@ -88,13 +102,19 @@ class TakePictureRepository(private val context: Context, val forceRotate: Boole
                         orientationMatrix,
                         false
                     )
+
+                    debugCallback?.invoke("rotate modified bitmap=[${bitmap.width}, ${bitmap.height}]")
+
                     fileOutputStream = FileOutputStream(rotatedFile)
                     bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+
+                    debugCallback?.invoke("rotate saved file=${rotatedFile.absolutePath}, exists=${rotatedFile.exists()}")
 
                     path = rotatedFile.absolutePath
                 }
             }
         } catch (e: Exception) {
+            debugCallback?.invoke("rotate error occurred ${e.message}")
             e.printStackTrace()
         } finally {
             wrapTry { bitmap?.recycle() }

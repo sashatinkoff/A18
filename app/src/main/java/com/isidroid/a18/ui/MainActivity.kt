@@ -12,11 +12,13 @@ import com.isidroid.pics.PictureHandler
 import com.isidroid.utils.BindActivity
 import com.isidroid.utils.Tasks
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 
 class MainActivity : BindActivity<ActivityMainBinding>(layoutRes = R.layout.activity_main) {
     private val handler = PictureHandler(
         app = App.instance,
-        forceRotate = true
+        forceRotate = true,
+        debugCallback = { Timber.tag("PictureHandler").i(it) }
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
