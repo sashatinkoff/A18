@@ -35,7 +35,9 @@ ext {
             'room'                : '2.2.4',
             'swipe_refresh'       : '1.1.0-beta01',
             'preferences'         : '1.1.0',
-            'androidx_browser'    : '1.0.0',
+            'androidx_browser'    : '1.2.0',
+            'camerax'             : '1.0.0-beta01',
+            'camerax_view'        : '1.0.0-alpha08',
 
             // network
             'okhttp'              : '4.4.1',
@@ -49,6 +51,7 @@ ext {
             'glide'               : '4.11.0',
             'photoview'           : '2.3.0',
             'timber'              : '4.7.1',
+            'facebook'            : '[5,6)',
 
             // tests
             'junit'               : '4.13',

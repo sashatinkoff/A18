@@ -15,7 +15,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.isidroid.utils.utils.KeyboardEventListener
 import kotlin.math.roundToInt
 
-internal fun Activity.getRootView(): View = findViewById<View>(android.R.id.content)
+internal fun Activity.getRootView(): View = findViewById(android.R.id.content)
 
 fun Activity.isKeyboardOpen(): Boolean {
     val visibleBounds = Rect()

@@ -103,6 +103,14 @@ dependencies {
     implementation "androidx.room:room-runtime:${versions.room}"
     implementation "androidx.room:room-ktx:${versions.room}"
     kapt "androidx.room:room-compiler:${versions.room}"
+
+// CameraX core library using the camera2 implementation
+    implementation "androidx.camera:camera-camera2:${versions.camerax}"
+    implementation "androidx.camera:camera-view:${versions.camerax_view}"
+    implementation "androidx.camera:camera-extensions:${versions.camerax_view}"
+    implementation "androidx.camera:camera-lifecycle:${versions.camerax}"
+
+
 // firebase / google gcm
     implementation "com.google.android.gms:play-services-location:${versions.playServicesLocation}"
     implementation "com.google.firebase:firebase-core:${versions.playServicesVersion}"
@@ -120,7 +128,7 @@ dependencies {
     // Used in FacebookLoginActivity.
     implementation "com.facebook.android:facebook-login:${versions.facebook_login}"
     implementation "androidx.browser:browser:${versions.androidx_browser}"
-
+    implementation "com.facebook.android:facebook-login:${versions.facebook_login}"
 // livedata
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
