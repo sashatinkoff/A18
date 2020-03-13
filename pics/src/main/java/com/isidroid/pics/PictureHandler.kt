@@ -101,13 +101,13 @@ class PictureHandler(
             else -> null
         }
 
-
         val pictureResult = result?.let { PictureResults(it, data) }
         debugCallback?.invoke("result pictureResult=$pictureResult")
 
         return pictureResult
     }
 
+    fun rotate(path: String) = repository.rotate(ImageInfo(localPath = path))
 
     data class TakePictureRequest(
         val file: File,
