@@ -42,9 +42,7 @@ dependencies {
 
 // logging
     api "com.jakewharton.timber:timber:${versions.timber}"
-    api("com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}@aar") {
-        transitive = true
-    }
+    api "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}"
 
     // must be removed in the project's build.gradle
     api "androidx.core:core-ktx:${versions.corektx}"

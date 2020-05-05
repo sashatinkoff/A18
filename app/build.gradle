@@ -116,6 +116,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:${versions.playServicesVersion}"
     implementation "com.google.firebase:firebase-ml-vision:${versions.firebaseMLVision}"
     implementation "com.google.firebase:firebase-messaging:${versions.firebase_messages}"
+    implementation "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}"
 
 // Firebase Authentication
     implementation "com.google.firebase:firebase-auth:${versions.firebase_auth}"
