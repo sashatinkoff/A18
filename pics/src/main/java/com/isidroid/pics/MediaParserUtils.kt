@@ -22,6 +22,7 @@ object MediaParserUtils {
         "com.microsoft.skydrive.content.StorageAccessProvider"
     ).contains(uri.authority)
 
+
     /**
      * Get the value of the data column for this Uri. This is useful for
      * MediaStore Uris, and other file-based ContentProviders.
@@ -32,7 +33,12 @@ object MediaParserUtils {
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
-    fun getDataColumn(context: Context, uri: Uri?, selection: String?, selectionArgs: Array<String>?): String? {
+    fun getDataColumn(
+        context: Context,
+        uri: Uri?,
+        selection: String?,
+        selectionArgs: Array<String>?
+    ): String? {
         uri ?: return null
         var cursor: Cursor? = null
         val column = MediaStore.Files.FileColumns.DATA
@@ -69,9 +75,10 @@ object MediaParserUtils {
     @SuppressLint("ObsoleteSdkInt")
     fun getPath(context: Context, uri: Uri): String? {
         // DocumentProvider
-        if (isDropboxUri(uri) || isYandexDiskUri(
-                uri
-            ) || isOneDriveUri(uri)
+        if (isDropboxUri(uri)
+            || isYandexDiskUri(uri)
+            || isOneDriveUri(uri)
+            || MediaHelper.isChromeDownload(uri)
         ) {
             val fileName = getFileName(context, uri)
             val cacheDir = getDocumentCacheDir(context)

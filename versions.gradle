@@ -4,7 +4,7 @@ ext {
 
 
             // COMMON A18 STARTS HERE
-            "isidroid"            : "1.3.16",
+            "isidroid"            : "1.3.17",
 
             // sdk
             'compileSdk'          : 29,
@@ -20,6 +20,8 @@ ext {
             'firebase_ui_auth'    : '6.2.0',
             'facebook_login'      : '4.42.0',
             'crashlytics'         : '2.10.1',
+    'analytics': '17.4.0',
+            
 
             // Google
             'androidx'            : '1.1.0',

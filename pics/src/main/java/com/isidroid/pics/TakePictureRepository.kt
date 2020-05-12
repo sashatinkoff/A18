@@ -40,7 +40,9 @@ class TakePictureRepository(
         }
 
         return uris.mapNotNull {
-            MediaUriParser(context).parse(it)
+            debugCallback?.invoke("getFromGallery uri=$it")
+
+            MediaUriParser(context, debugCallback = debugCallback).parse(it)
                 ?.apply {
                     debugCallback?.invoke("getFromGallery parse file $localPath, isImage=${isImage()}")
                     if (isImage()) localPath = rotate(this)

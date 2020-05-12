@@ -14,7 +14,10 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.*
 
-class MediaUriParser(private val context: Context) {
+class MediaUriParser(
+    private val context: Context,
+    private val debugCallback: ((String) -> Unit)?
+) {
     private var imageInfo: ImageInfo? = null
     private fun getColumn(cursor: Cursor, name: String) = cursor.getColumnIndex(name)
 
@@ -48,11 +51,11 @@ class MediaUriParser(private val context: Context) {
                 MediaStore.Files.FileColumns.MEDIA_TYPE,
                 MediaStore.Files.FileColumns.PARENT,
                 MediaStore.Files.FileColumns._ID
-
         )
 
         val cursor: Cursor? = null
         try {
+            debugCallback?.invoke("chromeDownloads uri=$uri")
             getData(uri, null, projection)
         } catch (e: Exception) {
             e.printStackTrace()

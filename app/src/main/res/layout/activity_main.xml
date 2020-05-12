@@ -8,49 +8,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.camera.view.PreviewView
-            android:id="@+id/previewView"
+        <ImageView
+            android:id="@+id/imageview"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSwitchLenses"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Front / back" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCamera"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Take picture" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnTwitter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Sign in with Twitter"
-            android:visibility="gone" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnGoogle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Sign in with Google"
-            android:visibility="gone" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnFacebook"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Sign in with Facebook"
-            android:visibility="gone" />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 
