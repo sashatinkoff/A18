@@ -130,9 +130,8 @@ dependencies {
     implementation "com.firebaseui:firebase-ui-auth:${versions.firebase_ui_auth}"
     // Facebook Android SDK (only required for Facebook Login)
     // Used in FacebookLoginActivity.
-    implementation "com.facebook.android:facebook-login:${versions.facebook_login}"
+//    implementation "com.facebook.android:facebook-login:${versions.facebook_login}"
     implementation "androidx.browser:browser:${versions.androidx_browser}"
-    implementation "com.facebook.android:facebook-login:${versions.facebook_login}"
 // livedata
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"

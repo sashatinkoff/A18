@@ -1,14 +1,14 @@
 package com.isidroid.logger
 
 import android.util.Log
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
-private const val CRASHLYTICS_KEY_PRIORITY = "priority"
-private const val CRASHLYTICS_KEY_TAG = "tag"
-private const val CRASHLYTICS_KEY_MESSAGE = "message"
-
 open class YDebugTree : Timber.DebugTree() {
+    enum class Key {
+        PRIORITY, TAG, MESSAGE
+    }
+
     internal var fileLoggers = mutableListOf<FileLogger>()
 
     fun startLogger(logger: FileLogger) {
@@ -34,12 +34,14 @@ open class YDebugTree : Timber.DebugTree() {
         if (priority == Log.VERBOSE || priority == Log.DEBUG || priority == Log.INFO)
             return
 
-        Crashlytics.setInt(CRASHLYTICS_KEY_PRIORITY, priority)
-        Crashlytics.setString(CRASHLYTICS_KEY_TAG, tag)
-        Crashlytics.setString(CRASHLYTICS_KEY_MESSAGE, message)
-
         val exception = t?.let { Exception(it) } ?: Exception(message)
-        Crashlytics.logException(exception)
+        FirebaseCrashlytics.getInstance().apply {
+            setCustomKey(Key.PRIORITY.name, priority)
+            setCustomKey(Key.MESSAGE.name, message)
+            tag?.let { setCustomKey(Key.TAG.name, tag) }
+            log("some messate ")
+            recordException(exception)
+        }
     }
 
     override fun log(priority: Int, message: String?, vararg args: Any?) {

@@ -1,9 +1,7 @@
 package com.isidroid.logger
 
 import android.content.Context
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.core.CrashlyticsCore
-import io.fabric.sdk.android.Fabric
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 import java.io.File
 
@@ -21,9 +19,7 @@ class DiagnosticsConfig(
         val directory = File(application.cacheDir, LOGCAT_BASEDIR)
             .apply { if (!exists()) mkdirs() }
 
-        val crashlyticsConfigBuilder = Crashlytics.Builder()
-            .core(CrashlyticsCore.Builder().disabled(disableCrashlytics).build())
-
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!disableCrashlytics)
         Diagnostics(
             context = application.applicationContext,
             authority = fileAuthority,
@@ -31,7 +27,6 @@ class DiagnosticsConfig(
             baseDir = directory
         )
 
-        Fabric.with(application, crashlyticsConfigBuilder.build())
         Timber.plant(tree)
     }
 }

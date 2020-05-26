@@ -90,6 +90,7 @@ class CameraxHelper(
                 imagePreview = createImagePreview()
                 imagePreview.setSurfaceProvider(previewView.previewSurfaceProvider)
 
+
                 imageCapture = createImageCapture()
                 imageAnalysis = createImageAnalysis()
 

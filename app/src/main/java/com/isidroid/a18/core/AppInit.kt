@@ -11,7 +11,7 @@ object AppInit {
         DiagnosticsConfig(
             application = app,
             appName = BuildConfig.APPLICATION_ID,
-            disableCrashlytics = BuildConfig.DEBUG
+            disableCrashlytics = false
         )
 
         RealmConfig(
