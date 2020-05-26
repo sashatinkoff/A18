@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'io.fabric'
 
 apply from: '../tasks.gradle'
 
@@ -33,16 +32,12 @@ android {
     }
 }
 
-crashlytics {
-    manifestPath = "$buildDir/../../app/src/main/AndroidManifest.xml"
-}
-
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin"
 
 // logging
     api "com.jakewharton.timber:timber:${versions.timber}"
-    api "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}"
+    api "com.google.firebase:firebase-crashlytics:${versions.crashlytics}"
 
     // must be removed in the project's build.gradle
     api "androidx.core:core-ktx:${versions.corektx}"

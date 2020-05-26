@@ -19,9 +19,9 @@ ext {
             'play_service_auth'   : '18.0.0',
             'firebase_ui_auth'    : '6.2.0',
             'facebook_login'      : '4.42.0',
-            'crashlytics'         : '2.10.1',
-    'analytics': '17.4.0',
-            
+            'crashlytics'         : '17.0.0',
+            'analytics'           : '17.4.0',
+
 
             // Google
             'androidx'            : '1.1.0',
@@ -48,7 +48,6 @@ ext {
             'okio'                : '2.6.0',
 
             // stuff
-            'crashlytics'         : '2.10.1',
             'gson'                : '2.8.6',
             'glide'               : '4.11.0',
             'photoview'           : '2.3.0',

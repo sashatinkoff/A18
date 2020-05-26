@@ -3,7 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
-apply plugin: 'io.fabric'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 apply from: '../tasks.gradle'
 
@@ -116,8 +117,8 @@ dependencies {
     implementation "com.google.firebase:firebase-core:${versions.playServicesVersion}"
     implementation "com.google.firebase:firebase-ml-vision:${versions.firebaseMLVision}"
     implementation "com.google.firebase:firebase-messaging:${versions.firebase_messages}"
-    implementation "com.crashlytics.sdk.android:crashlytics:${versions.crashlytics}"
     implementation "com.google.firebase:firebase-analytics:${versions.analytics}"
+    implementation "com.google.firebase:firebase-crashlytics:${versions.crashlytics}"
 
 
 // Firebase Authentication
@@ -165,5 +166,4 @@ dependencies {
 //    implementation(name: "runtimepermissions.${versions.isidroid}", ext: 'aar')
 }
 
-apply plugin: 'com.google.gms.google-services'
 

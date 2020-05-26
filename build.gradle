@@ -5,17 +5,16 @@ apply from: 'versions.gradle'
 
 buildscript {
     repositories {
-        google()
         jcenter()
         maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
-        maven { url 'https://maven.fabric.io/public' }
+        google()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:${androidPlugin}"
         classpath "io.realm:realm-gradle-plugin:$realm"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin"
-        classpath "io.fabric.tools:gradle:$fabric"
         classpath "com.google.gms:google-services:$gms_google_servivces"
+        classpath "com.google.firebase:firebase-crashlytics-gradle:$crashlyticPlugin"
     }
 }
 
