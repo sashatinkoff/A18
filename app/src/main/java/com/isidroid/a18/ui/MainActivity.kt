@@ -7,6 +7,7 @@ import com.isidroid.a18.App
 import com.isidroid.a18.GlideApp
 import com.isidroid.a18.R
 import com.isidroid.a18.databinding.ActivityMainBinding
+import com.isidroid.logger.Diagnostics
 import com.isidroid.pics.PictureHandler
 import com.isidroid.utils.BindActivity
 import com.isidroid.utils.Tasks
@@ -20,11 +21,9 @@ class MainActivity : BindActivity<ActivityMainBinding>(layoutRes = R.layout.acti
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         button.setOnClickListener {
+//            throw RuntimeException("Test fail 2")
 
-//            throw RuntimeException("Test fail")
-
-
-            throw RuntimeException("Test fail")
+            Timber.e("something went wrong")
         }
     }
 }

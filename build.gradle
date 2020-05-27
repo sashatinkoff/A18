@@ -22,7 +22,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://maven.fabric.io/public' }
         maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
         maven { url "https://jitpack.io" }
         flatDir { dirs 'libs' } // in real project it's a place where core libraries will be

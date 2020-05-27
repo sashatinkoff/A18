@@ -26,7 +26,6 @@ open class YDebugTree : Timber.DebugTree() {
         fileLoggers.clear()
     }
 
-
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         super.log(priority, tag, message, t)
         fileLoggers.forEach { it.log(priority, tag, message, t, null) }
@@ -39,7 +38,6 @@ open class YDebugTree : Timber.DebugTree() {
             setCustomKey(Key.PRIORITY.name, priority)
             setCustomKey(Key.MESSAGE.name, message)
             tag?.let { setCustomKey(Key.TAG.name, tag) }
-            log("some messate ")
             recordException(exception)
         }
     }
