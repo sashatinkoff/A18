@@ -1,23 +1,16 @@
 package com.isidroid.a18
 
 import android.annotation.SuppressLint
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
-import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
-import com.isidroid.a18.core.NotificationsChannels
 import com.isidroid.a18.extensions.alert
+import com.isidroid.utils.extensions.md5
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import java.security.MessageDigest
@@ -55,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createForm() {
-        btnFillForm.setOnClickListener { fillForm() }
+        btnError.setOnClickListener { sendRevo(withError = true) }
         btnFillFormStage.setOnClickListener { fillStageForm() }
         btnSubmit.setOnClickListener { sendRevo() }
     }
@@ -88,8 +81,10 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun sendRevo() {
-        val secretKey = "0aba16fd742571e091a2fb6da161ae4b"
+    private fun sendRevo(withError: Boolean = false) {
+        val secretKey = if (withError) UUID.randomUUID().toString().hash()
+        else "0aba16fd742571e091a2fb6da161ae4b"
+
 
         val request = Request(
             credentials = RequestCredentials(
@@ -99,7 +94,7 @@ class MainActivity : AppCompatActivity() {
                 agentPhone = inputAgentPhone.text.toString(),
                 merchantAgentId = inputMerchantAgentId.text.toString(),
                 orderId = inputOrderId.text.toString(),
-                amount = inputAmount.text.toString().toFloatOrNull() ?: 0f,
+                amount = inputAmount.text.toString(),
                 phone = inputPhone.text.toString()
             )
         )
@@ -157,7 +152,7 @@ class MainActivity : AppCompatActivity() {
         @SerializedName("agent_phone") val agentPhone: String,
         @SerializedName("merchant_agent_id") val merchantAgentId: String,
         @SerializedName("order_id") val orderId: String,
-        @SerializedName("amount") val amount: Float,
+        @SerializedName("amount") val amount: String,
         @SerializedName("phone") val phone: String
     )
 }
