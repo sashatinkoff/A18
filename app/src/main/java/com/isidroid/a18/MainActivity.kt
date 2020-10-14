@@ -83,8 +83,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun sendRevo(withError: Boolean = false) {
         val secretKey = if (withError) UUID.randomUUID().toString().hash()
-        else "e76e83d16870eb123cfe48a5bcfa0ef5"
-
+        else "ae712f68e194004aa737c4313217b3a8"
 
         val request = Request(
             credentials = RequestCredentials(
